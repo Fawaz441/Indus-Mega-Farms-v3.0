@@ -10,7 +10,7 @@ from django.dispatch import receiver
 from pinax.referrals.models import Referral
 from account.views import SignupView as BaseSignupView
 from .models import Student,Farmer,Company,ReferralCode,Message,SpecialMessage,ProfilePictures,CompanySellerPlan,FarmerPlan,IMNews
-from .forms import StudentForm,FarmerForm,CompanyForm,SignUpForm,AdvertForm,ComplaintForm,CategoryForm,ProfilePicForm
+from .forms import StudentForm,FarmerForm,CompanyForm,SignUpForm,ComplaintForm,CategoryForm,ProfilePicForm
 from products.models import Order
 from indus_mega_farms.utils import newsletter
 from paystack.views import payment_verified
@@ -246,9 +246,9 @@ def complaint_form(request):
     if request.method == 'POST':
         form = ComplaintForm(request.POST)
         if form.is_valid():
-            advert = form.save(commit=False)
-            advert.user=request.user
-            advert.save()
+            complaint = form.save(commit=False)
+            complaint.user=request.user
+            complaint.save()
             messages.info(request,"Your complaint will be reviewed shortly.Thank you")
             return redirect("users:user_home")
         else:

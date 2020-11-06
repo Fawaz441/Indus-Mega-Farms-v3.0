@@ -73,6 +73,26 @@ class Challenger(models.Model):
 
 
 
+# Advertisers
+class Adverts(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    name_of_product = models.CharField(max_length=100)
+    sample_of_product = models.ImageField(upload_to='adverts')
+    minimum_price = models.FloatField()
+    maximum_price = models.FloatField()
+    location = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000,null=True,blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural = 'Adverts'
+        ordering = ['-created_date']
+
+
+
 class Complaint(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     complaint = models.CharField(max_length=1000)

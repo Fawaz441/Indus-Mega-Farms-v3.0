@@ -20,7 +20,7 @@ urlpatterns = [
     path('password_reset_complete',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),
     path('change_password',PasswordChangeView.as_view(template_name='users/password_change.html',success_url='login'),name='password_change'),
     path('send_complaint',views.complaint_form,name='send_complaint'),
-    path('farmers_subscribe',views.FarmerSubscribeView.as_view(),name='farmers_subscribe'),
+    # path('farmers_subscribe',views.FarmerSubscribeView.as_view(),name='farmers_subscribe'),
     # path('gold-farmer',views.FarmGoldPlanDetailView.as_view(),name='gold_farmer'),
     # path('silver-farmer',views.FarmSilverPlanDetailView.as_view(),name='silver_farmer'),
     # path('premium-farmer',views.FarmPremiumPlanDetailView.as_view(),name='premium_farmer'),

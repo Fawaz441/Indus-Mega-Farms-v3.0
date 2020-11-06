@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django import forms
-from .models import Challenger,Adverts,Complaint,SpecialMessage,Message
+from .models import Challenger,Complaint,SpecialMessage,Message
 
 CATEGORIES = (
     ('S','Join as a Student/Individual'),
@@ -79,14 +79,6 @@ class ChallengerForm(forms.ModelForm):
             raise forms.ValidationError("User already signed up for IMchallenge updates.")
         return email
 
-
-class AdvertForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea(attrs={"label":"Enter brief description"}))
-
-    class Meta:
-        model = Adverts
-        fields = ["name_of_product","sample_of_product","minimum_price","maximum_price",
-                    "location","description"]
 
 class ComplaintForm(forms.ModelForm):
     complaint = forms.CharField(widget=forms.Textarea())

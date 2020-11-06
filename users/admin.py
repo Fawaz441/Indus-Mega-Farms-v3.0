@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student,Farmer,Company,Adverts,Complaint,ReferralCode,Challenger,NewLetter,SpecialMessage,Message,ProfilePictures,CompanySellerPlan,FarmerPlan,IMNews
+from .models import Student,Farmer,Company,Complaint,ReferralCode,Challenger,NewLetter,SpecialMessage,Message,ProfilePictures,CompanySellerPlan,FarmerPlan,IMNews
 
 class AdvertAdmin(admin.ModelAdmin):
     list_display = ["name_of_product","location","minimum_price","maximum_price","created_date"]
@@ -31,7 +31,6 @@ admin.site.register(Message,MessageAdmin)
 admin.site.register(Challenger)
 admin.site.register(ReferralCode)
 admin.site.register(Complaint,ComplaintAdmin)
-admin.site.register(Adverts,AdvertAdmin)
 admin.site.register(Student)
 admin.site.register(Farmer)
 admin.site.register(Company)
