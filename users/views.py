@@ -236,32 +236,7 @@ class CompanyReg(View):
             messages.warning(self.request,'Form not valid')
         return redirect('users:user_home')
 
-# Advert Form reg
-@login_required()
-def advert_form(request):
-    title = 'Make an Advert'
-    if request.method == 'POST':
-        form = AdvertForm(request.POST,request.FILES)
-        if form.is_valid():
-           
-            advert = form.save(commit=False)
-            advert.user=request.user
-            advert.save()
-            messages.info(request,"Your advert has been successfully created")
-            return redirect("users:user_home")
-        else:
-            messages.info(request,"Your form is not valid")
-        form = AdvertForm(request.POST)
-        if form.is_valid():
-            advert = form.save(commit=False)
-            advert.user=request.user
-            advert.save()
-        else:
-            messages.info("Your form is not valid")
-    else:
-        form = AdvertForm()
-    context = {"title":title,"form":form}
-    return render(request,"users/create_advert.html",context)
+
 
 
 # Complaint form reg
@@ -284,73 +259,7 @@ def complaint_form(request):
     return render(request,"users/send_complaint.html",context)
 
 
-# Subscription to plans
 
-# Farmer's view of 3 plans
-class FarmerSubscribeView(View,LoginRequiredMixin):
-    def get(self,request,*args,**kwargs):
-        farmer_qs = Farmer.objects.get(user=self.request.user)
-        if not farmer_qs:
-            return Http404
-        else:
-            return render(request,'users/farmers_subscribe.html')
-
-# Farmer gold plan
-class FarmGoldPlanDetailView(View,LoginRequiredMixin):
-    def get(self, request, *args, **kwargs):
-        farmer = Farmer.objects.filter(user=request.user).first()
-        if not farmer:
-            return Http404
-        farmer_plan_qs = FarmerPlan.objects.filter(subscribee=farmer)
-        if farmer_plan_qs.exists():
-            subscribed_plan = farmer_plan_qs.first()
-            messages.info(request,"You're already subscribed to the Farmer {} plan".format(subscribed_plan.category))
-            return redirect('users:user_home')
-        self.request.session['gold'] = True
-        context = {'amount':500,'email':self.request.user.email}
-        return render(request,'users/gold.html',context)
-  
-# Farmer silver plan
-class FarmSilverPlanDetailView(View,LoginRequiredMixin):
-    def get(self, request, *args, **kwargs):
-        farmer = Farmer.objects.filter(user=request.user).first()
-        if not farmer:
-            return Http404
-        farmer_plan_qs = FarmerPlan.objects.filter(subscribee=farmer)
-        if farmer_plan_qs.exists():
-            subscribed_plan = farmer_plan_qs.first()
-            messages.info(request,"You're already subscribed to the Farmer {} plan".format(subscribed_plan.category))
-            return redirect('users:user_home')
-        self.request.session['silver'] = True
-        print(self.request.session['silver'])
-        context = {'amount':250,'email':self.request.user.email}
-        return render(request,'users/silver.html',context)
-   
-
-# Farmer premium plan
-class FarmPremiumPlanDetailView(TemplateView,LoginRequiredMixin):
-    def get(self, request, *args, **kwargs):
-        farmer = Farmer.objects.filter(user=request.user).first()
-        if not farmer:
-            return Http404
-        farmer_plan_qs = FarmerPlan.objects.filter(subscribee=farmer)
-        if farmer_plan_qs.exists():
-            subscribed_plan = farmer_plan_qs.first()
-            messages.info(request,"You're already subscribed to the Farmer {} plan".format(subscribed_plan.category))
-            return redirect('users:user_home')
-        self.request.session['premium'] = True
-        context = {'amount':100,'email':self.request.user.email}
-        return render(request,'users/premium.html',context)
-    
-
-
-#company seller plan
-class CompanySellerPlanView(View,LoginRequiredMixin):
-    def get(self,request,*args,**kwargs):
-        redirect_field_name = 'users:login'
-        context = {'amount':300,'email':self.request.user.email}
-        self.request.session['company_sole'] = True
-        return render(request,'users/company_seller.html',context=context)
    
 
 # set harvest time
@@ -376,63 +285,5 @@ def falsify_harvest_time(request):
     return redirect("users:user_home")
 
 
-# reveiving payments from farmers and companies
-@login_required 
-@receiver(payment_verified)
-def on_payment_received(request,sender,ref,amount,**kwargs):
-    farmer_qs = Farmer.objects.filter(user=request.user)
-    company_qs = Company.objects.filter(user=request.user)
 
-    if farmer_qs.exists():
-        farmer = farmer_qs.first()
-        if amount == 100.0 and 'premium' in request.session.keys():
-            farmer.is_subscribed = True
-            farmer.save()
-            farmer_plan = FarmerPlan.objects.create(
-                subscribee = farmer,
-                category = "PREMIUM",
-            )
-            farmer_plan.save()
-            del request.session['premium']
-        elif amount == 250.0 and 'silver' in request.session.keys():
-            farmer.is_subscribed = True
-            farmer.save()
-            farmer_plan = FarmerPlan.objects.create(
-                subscribee = farmer,
-                category = "SILVER",
-            )
-            farmer_plan.save()
-            del request.session['silver']
-
-        elif amount == 500.0 and 'gold' in request.session.keys():
-            farmer.is_subscribed = True
-            farmer.save()
-            farmer_plan = FarmerPlan.objects.create(
-                subscribee = farmer,
-                category = "GOLD",
-            )
-            farmer_plan.save()
-            del request.session['gold']
-
-        messages.info(request,'Subscribed successfully')
-        return redirect('users:user_home')
-
-    if company_qs.exists():
-        company = company_qs.first()
-        if amount == 300.0 and 'company_sole' in request.session.keys():
-            company.is_subscribed = True
-            company.is_seller=True
-            company.save()
-            company_plan = CompanySellerPlan.objects.create(
-                subscribee = company,
-            )
-            company_plan.save()
-            del request.session['company_sole']
-
-        messages.info(request,'Subscribed successfully')
-        return redirect('users:user_home')
-    
-    
-    
-  
        

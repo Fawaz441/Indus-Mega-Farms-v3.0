@@ -1,0 +1,18 @@
+{% autoescape off %}
+<div class="cont">
+    <p>Click the link below to reset your password</p>
+    {{protocol}}://{{domain}}{% url 'password_reset_confirm' %}
+    <span>If clicking the link doesn't work, try copying and pasting the link in a new browser window</span>
+    The Indus-Mega Farms Tech Team.
+</div>
+{% endautoescape %}
+
+<style>
+.cont{
+    background:#fff;
+    border-radius:5px;
+    box-shadow: 0 20px 40px rgba(204, 204, 204, 0.212);
+}
+.cont p{margin-bottom: 1rem;}
+.cont span{margin-top:1rem;}
+</style>

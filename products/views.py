@@ -110,6 +110,7 @@ def remove_whole_from_cart(request,slug):
         return redirect('products:products')
 
 def add_product_review(request):
+    '''Add a product review'''
     slug = request.POST.get('product')
     product = Product.objects.filter(slug=request.POST.get('product'))[0]
     review = request.POST.get('review')
@@ -121,17 +122,12 @@ def add_product_review(request):
     )
     messages.info(request,"Review added successfully")
     return redirect('products:detail',slug=slug)
-    # return redirect('products:products')
 
 
 
 @login_required
 def order_final(request):
     """Pre - Payment view"""
-    plans = ['gold','silver','company_sole','premium']
-    for plan in plans:
-        if plan in request.session.keys():
-            del request.session[plan]
     newsletter(request)
     current_order = Order.objects.filter(user=request.user,ordered=False)
     if current_order.exists():
@@ -169,12 +165,14 @@ def order_final(request):
 @receiver(payment_verified)
 def on_payment_received(request,sender,ref,amount,**kwargs):
     order_qs = Order.objects.filter(user=request.user,ordered=False)
-    if order_qs.exists() and (not 'gold' in request.session.keys()) and (not 'silver' in request.session.keys()) and (not 'company_sole' in request.session.keys()) and (not 'premium' in request.session.keys()):
+    # if order_qs.exists() and (not 'gold' in request.session.keys()) and (not 'silver' in request.session.keys()) and (not 'company_sole' in request.session.keys()) and (not 'premium' in request.session.keys()):
+    if order_qs.exists() and "order_payment" in request.session.keys():
         user_order = order_qs[0]
         user_order.paystack_reference_code = ref
         user_order.amount_paid = "N" + str(amount)
         user_order.ordered = True
         user_order.save()
+        del request.session["order_payment"]
         messages.info(request,"Payment successful")
         return redirect('users:user_home')
 
@@ -185,6 +183,7 @@ def on_payment_received(request,sender,ref,amount,**kwargs):
 @login_required
 def pay_now(request):
     """Payment View"""
+    request.session["order_payment"] = "order_payment"
     email = request.user.email
     current_order = Order.objects.filter(user=request.user,ordered=False,paystack_reference_code=None)
     if current_order.exists():

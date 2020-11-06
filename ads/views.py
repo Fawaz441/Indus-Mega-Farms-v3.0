@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import AdCategory,Seller,Ad
 from .forms import SellerForm
@@ -13,8 +14,9 @@ def ad_categories_view(request):
     }
     return render(request,'ads/index.html',context)
 
-
+@login_required
 def ad_category_detail(request,name):
+    login_redirect_url = 'users:login'
     form = SellerForm()
     seller_query = Seller.objects.filter(user=request.user)
     if seller_query.exists():
