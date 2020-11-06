@@ -67,11 +67,12 @@ def ad_category_detail(request,name):
         'form':form,
     }
     # if request.user in ad_category.users.all():
-    user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
-    context['user_ads'] = user_ads
-    if user_ads.exists():
-        context['category_user_ads_count'] = user_ads.count
-    else:
+    try:
+        user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
+        context['user_ads'] = user_ads
+        if user_ads.exists():
+            context['category_user_ads_count'] = user_ads.count
+    except:
         context['category_user_ads_count'] = 0
 
     

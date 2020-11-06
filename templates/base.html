@@ -19,11 +19,7 @@
             <li><a href="{% url 'users:login' %}">Log in</a></li>
             <li><a href="{% url 'users:signup' %}">Sign up</a></li>
             {% endif %}
-            {% if user.is_authenticated %}
             <li><a href="{% url 'products:products' %}">Agrowell</a></li>
-            {% else %}
-            <li><a href="{% url 'products:stranger' %}">Agrowell</a></li>
-            {% endif %}
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'home' %}#galleria">Gallery</a></li>
             {% if request.user.is_authenticated %}
