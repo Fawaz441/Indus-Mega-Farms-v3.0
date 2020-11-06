@@ -56,8 +56,10 @@ def product_detail(request,slug):
     """
     item = get_object_or_404(Product,slug=slug)
     title = item.name
-    in_cart_quantity = check_quantity_in_cart(request,item)
-    context = {'item':item,"title":title,"in_cart_quantity":in_cart_quantity}
+    context = {'item':item,"title":title}
+    if request.user.is_authenticated:
+        in_cart_quantity = check_quantity_in_cart(request,item)
+        context["in_cart_quantity"] = in_cart_quantity
     item_ad = Ad.objects.filter(product=item)
     if item_ad.exists():
         the_ad = item_ad.first()

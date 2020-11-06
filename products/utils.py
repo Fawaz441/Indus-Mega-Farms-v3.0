@@ -45,3 +45,5 @@ def check_quantity_in_cart(request,item):
             return in_cart_quantity
         else:
             return 0
+    else:
+        return 0
