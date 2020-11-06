@@ -1,5 +1,5 @@
 .vscode/
 media/
 static/
-indus_mega_farms/local_settings
+indus_mega_farms/local_settings.py
 db.sqlite3

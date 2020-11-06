@@ -44,8 +44,6 @@
             {% if request.user.is_authenticated %}
             <li><a href="{% url 'products:order_final' %}" class="nav_a"><img src="{% static 'svgs/cart.svg' %}" alt="cart"></a></li>
             <li><a href="{% url 'products:products' %}" class="nav_a">IMagrowell</a></li>
-            {% else %}            
-            <li><a href="{% url 'products:stranger' %}" class="nav_a">Agrowell</a></li>
             {% endif %}           
             <li><a href="{% url 'about' %}" class="nav_a">About</a></li>  
             {% if not request.user.is_authenticated %}
