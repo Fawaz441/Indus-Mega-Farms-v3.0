@@ -103,16 +103,14 @@
                     <li><a href="{% url 'ads:index' %}"><i class="fa fa-microphone"></i>Ads</a></a></li>
                     {% if request.user.company and not has_plan %}
                     <li><a href="#"><i class="fa fa-user"></i> Seller Dashboard</a></li>
-                    <li><a href="{% url 'users:company_subscribe' %}"><i class="fa fa-edit"></i>Subscribe</a></li>
+    
                     {% endif %}
 
                     <li class="msg"><a href="#"><i class="fa fa-envelope"></i>Messages</a></li>
                     <li><a href="{% url 'users:send_complaint' %}"><i class="fa fa-comments"></i>Register complaint</a></li>
 
                     {% if request.user.farmer %}
-                    {% if not has_plan %}
-                    <li><a href="{% url 'users:farmers_subscribe' %}"><i class="fa fa-edit"></i>Subscribe</a></li>
-                    {% endif %}
+             
                     {% if not request.user.farmer.harvest_time %}
                     <li><a href="{% url 'users:set_harvest_time' %}"><i class="fa fa-bell"></i>Set Harvest Time</a></li>
                     {% else %}
