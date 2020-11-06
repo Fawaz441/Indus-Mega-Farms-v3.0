@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{title}}{% endblock title%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ads_presets.css' %}">
+<link rel="stylesheet" href="{% static 'css/ads_details.css' %}">
+{% endblock css%}
+{% block content %}
+<div class="plan_wrapper">
+    {% if not has_seller %}
+    <form action="" method="post" class="plan-form">
+        <small>Fill in your details to get started.</small>
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit" name="details_to_start">
+    </form>
+    <div class="shbackdrop"></div>
+    {% endif %}
+    <div class="backdrop"></div>
+    <form action="" class="ad-form" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <label for="category">Category</label>
+        <select name="product_category" id="#">
+            <option value="PROCESSED_FOOD">Processed Food</option>
+            <option value="CROPS">Crops</option>
+            <option value="FRUITS">Fruits</option>
+            <option value="LIVESTOCK">Livestock</option>
+            <option value="STUDENT_ITEMS">Student Items</option>
+            <option value="FARM_TOOLS">Farm Tools</option>
+            <option value="FARM_MACHINERY">Farm Machinery</option>
+            <option value="FARM_SERVICES">Farm Services</option>
+            <option value="FOOD_STUFF">Food Stuff</option>
+            <option value="LAND">Land</option>
+            <option value="OTHER">Other</option>
+        </select>
+        <label for="brand_name">brand Name</label>
+        <input type="hidden" name="ad_category" value="{{ad_category.name}}">
+        <input type="text" name="" id="" value="{{request.user.seller.brand_name}}">
+        <label for="Product Name">Product Name</label>
+        <input type="text" name="product_name" id="">
+        <label for="whatsapp_no">Whatsapp Number</label>
+        <input type="text" name="" id="" value="{{request.user.seller.whatsapp_number}}">
+        <label for="description">Product Description</label>
+        <textarea name="description" id="" cols="30" rows="10"></textarea>
+        <label for="negotiable" style="display: inline-block;margin-bottom: 0.5rem;">Negotiable</label>
+        <input type="checkbox" name="negotiable" id="">
+        <label for="fixed_price" class="fixed_price">Fixed Price</label>
+        <input type="fixed_price" class="fixed_price" name="fixed_price" id="">
+        <label for="minimum_price" class="negotia">Minimum Price</label>
+        <input type="number" class="negotia" name="minimum_price" id="">
+        <label for="maximum_price" class="negotia">Maximum Price</label>
+        <input type="number" class="negotia" name="maximum_price" id="">
+        <label for="image">Image</label>
+        <input type="file" name="product_image" required>
+        <label for="Location">Location</label>
+        <input type="text" name="Location" id="" value="{{request.user.seller.location}}">
+        <input type="submit" value="Add">
+    </form>
+    <div class="holder">
+        <div class="centered">
+            <h1 class="flex a-cent j-cent">{{ad_category.name}}</h1>
+            <div class="plan_details flex-col a-cent j-cent">
+                <p>Validity : {{ad_category.validity}}</p>
+                <p>No of Ads : {{ad_category.no_of_ads}}</p>
+                <p>Cost : &#8358;{{ad_category.cost|floatformat:2|intcomma}}</p>
+            </div>
+            <div class="user-ads flex j-cent">
+                {% for user_ad in user_ads %}
+                <div class="user-ad grid">
+                    <img src="{{user_ad.sample_of_product.url}}" alt="">
+                    <div class="details_ad">
+                        <li class="flex">
+                            <span>Displayed on:</span>
+                            <span>{{user_ad.created_date.date}}</span>
+                        </li>
+                        <li class="flex">
+                            <span>Ends on:</span>
+                            <span>{{user_ad.ending_date.date}}</span>
+                        </li>
+                        <li class="flex">
+                            <span>Views:</span>
+                            <span>{{user_ad.view}}</span>
+                        </li>
+                        <li class="flex a-cent j-cent">
+                            {% if user_ad.product %}
+                            <a href="{% url 'products:detail' user_ad.product.slug %}" class="plan-cta">View Details</a>
+                            {% endif %}
+                        </li>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div class="user-ad grid"></div>
+                 <div class="user-ad grid"></div> -->
+                {% if category_user_ads_count < ad_category.no_of_ads %}
+                <a href="#" class="plan-adder circ flex a-cent j-cent">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="height:1rem;stroke:#fff;fill:#fff;">
+                        <path
+                            d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+                        </svg>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+
+        let screen = document.querySelector('.backdrop');
+        let form = document.querySelector('.ad-form');
+        let cta = document.querySelector('.plan-adder')
+
+        cta.addEventListener('click', () => {
+            screen.classList.add('backdrop-show')
+            form.classList.add('ad-form-show')
+        })
+
+        let fixed_price = document.querySelectorAll('.fixed_price')
+        let negotiaToggle = document.querySelector("input[name='negotiable']")
+        let Negotiable = document.querySelectorAll('.negotia')
+        negotiaToggle.addEventListener('change', () => {
+            console.log('changed')
+            fixed_price.forEach(item => {
+                item.classList.toggle('negotia')
+            })
+            Negotiable.forEach(item => {
+                item.classList.toggle('negotia-show')
+            })
+
+        })
+
+        screen.style.cursor = 'pointer'
+        screen.addEventListener('click', () => {
+            screen.classList.remove('backdrop-show')
+            form.classList.remove('ad-form-show')
+        })
+    </script>
+    {% endblock content%}
+    {% block footer %}
+    {% endblock footer %}

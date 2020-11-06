@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load paystack %}
+{% block title %}Gold Plan{% endblock title %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/farmers_sub.css' %}">
+{% endblock css %}
+{% block content %}
+<div class="container">
+    <center> <h1 class="title">Gold Plan<span></span></h1></center>
+    <div class="plan gold">
+        <h1>Gold</h1>
+        <h2>&#8358;500.00       </h2>
+        <div class="features">
+            <p>50 customers max in 90 days</p>
+            <p>10 customers min in 90 days</p>
+            <p>Refundable(full payment)</p>
+            <p>Higher Recognition compared to silver plan</p>
+        </div>
+        {% paystack_button amount=amount email=email button_class=" cta silver_btn" %}
+    </div>
+    
+    <style>
+        form{
+    margin-top:auto;
+}
+        button{
+   margin-top:auto;
+        border:none;
+       background:none;
+       outline:none;
+       cursor:pointer;
+   }
+   .plan{margin:auto;}
+       </style>
+    {% endblock content %}
+    {% block footer %}{% endblock footer %}
+    

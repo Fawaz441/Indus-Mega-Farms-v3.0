@@ -1,0 +1,5 @@
+.vscode/
+media/
+static/
+indus_mega_farms/local_settings
+db.sqlite3

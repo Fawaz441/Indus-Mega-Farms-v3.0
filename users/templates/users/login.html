@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block content %}
+
+<div class="login_wrapper">
+    <h1 class="thin major_header">Log in</h1>
+    <form method="post">
+        {% csrf_token %}
+        {%if form.errors %}
+        <div class="errors">
+            <p>Wrong Credentials</p>
+        </div>
+        {% endif %}
+        {{form.as_p}}
+        <input type="checkbox" onclick="see()" name="" id="seer">
+        <input type="submit" class="input-submit" value="Log In">        
+    </form>
+    <hr>
+
+    <a href="{% url 'users:password_reset' %}" style="color:rgb(69, 182, 69);display:block;">Forgot Password?</a>
+    <a href="{% url 'users:signup' %}" style="color:rgb(69, 182, 69);display: block;">Don't have an account?</a>
+</div>
+
+<script>
+        var opener = document.getElementById("seer");
+        function see(){
+            var x = document.getElementById("id_password");
+            if (x.type==='password'){
+                x.type="text";
+                
+            }
+        
+            else{
+                x.type="password";
+            }
+        }
+        
+        var get = document.getElementById("password");
+        
+        </script>
+{% endblock %}
+{% block mobile_entry %}
+
+<a href="{% url 'users:signup' %}" class="mobile_entry">Sign up</a>
+{% endblock mobile_entry %}

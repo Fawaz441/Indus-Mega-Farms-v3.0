@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Category{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/choices.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block content %}
+
+
+<div class="login_wrapper">
+    <h1 class="thin major_header">Category</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" class="input-submit" value="Submit">        
+    </form>
+</div>
+<style>
+   
+</style>
+<br>
+<br>
+<br>
+{% endblock %}

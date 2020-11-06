@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/smart_lockdown.css' %}">
+{% endblock css %}
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="shadow-huge"></div>
+<header>
+    <div class="mega">
+
+        <div class="text-wrapper">
+            <h1>Smart Farmers
+                <span>Smart Farmers</span>
+                <span>Smart Farmers</span>
+                <span>Smart Farmers</span>
+            </h1>
+            <h1>Naija Lockdown
+                <span>Naija Lockdown</span>
+                <span>Naija Lockdown</span>
+                <span>Naija Lockdown</span>
+            </h1>
+        </div>
+        <div class="images">
+            <img id='cucum1' src="{% static 'images/cucum1.png' %}" alt="">
+            <img id='cucum2' src="{% static 'images/cucum2.png' %}" alt="">
+            <div class="shadow"></div>
+        </div>
+    </div>
+
+    <div class="steps">
+        <div class="prizes">
+            <h2>PRIZES TO BE WON</h2>
+            <div class="containment">
+                <ul>
+                    <li>Winner</li>
+                    <li>1st runner up</li>
+                    <li>2nd runner up</li>
+                </ul>
+                <ul>
+                    <li>&#8358;100,000.00</li>
+                    <li>&#8358;50,000.00</li>
+                    <li>&#8358;20,000.00</li>
+                </ul>
+            </div>
+        </div>
+        <h2>STEPS</h2>
+        <p>Present an idea using slides and a compressed video clip, showing how to generate <b>more than 15 healthy
+                cucumbers</b> from a single stalk in
+            less than <span><b>71 days</b></span>
+        </p>
+        <ul style="margin-top:1rem;list-style:disc">
+            <li>Click the button below to submit your entry slides</li>
+            <li>Send your entry video as a mail to indusmegafarms@gmail.com</li>
+        </ul>
+        <a href="#">Submit Entry</a>
+        <div class="benefits" style="position:absolute;padding-bottom:10px;color:#fff;width:100%;margin-top:50px;">
+            <p><b>Other benefits include:</b>
+                <p>Full and gainful employment for the top five participants.</p>
+                <p>Certificate of participation for the top ten candidates. </p>
+            </p>
+            <p style="margin-top:20px"><b>Special package for the winner of the competition: </b>
+                <p>A day trip to one of Nigeria’s biggest mega farms.</p>
+                <p>Full and gainful employment in top agro-firms in Nigeria.</p>
+            </p>
+        </div>
+    </div>
+
+</header>
+<form action="" class="vidForm" enctype="multipart/form-data" method="POST">
+    <span class="door"></span>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit">
+</form>
+</body>
+<script>
+    let myForm = document.querySelector('.vidForm');
+    let exit_instigator = document.querySelector('.door');
+    let form_getter = document.querySelector('.steps a');
+    let shadow_huge = document.querySelector('.backdrop');
+
+    form_getter.addEventListener('click', () => {
+        myForm.classList.add('activeForm');
+        shadow_huge.classList.add('activeShadow');
+    })
+
+    exit_instigator.addEventListener('click', () => {
+        myForm.classList.remove('activeForm');
+        shadow_huge.classList.remove('activeShadow');
+    })
+
+</script>
+{% endblock content %}
+{% block footer %}{% endblock footer %}

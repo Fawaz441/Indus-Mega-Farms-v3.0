@@ -1,0 +1,946 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon">
+    <title>Dashboard</title>
+</head>
+{% block css %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock css %}
+
+{% block content %}
+<nav class="main_nav">
+    <a href="{% url 'home' %}">
+        <div class="logo">
+            <img src="{% static 'svgs/logo.svg' %}" alt="">
+            <span>Indus-Mega Farms</span>
+        </div>
+    </a>
+    <ul class="nav_list">
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'products:order_final' %}" class="nav_a"><img src="{% static 'svgs/cart.svg' %}" alt="cart"></a></li>
+        <li><a href="{% url 'products:products' %}" class="nav_a">IMagrowell</a></li>
+        {% else %}            
+        <li><a href="{% url 'products:stranger' %}" class="nav_a">Agrowell</a></li>
+        {% endif %}           
+        <li><a href="{% url 'about' %}" class="nav_a">About</a></li>  
+        {% if not request.user.is_authenticated %}
+        <li class="signup_cta"><a class="nav_signup" href="{% url 'users:login' %}">Log in</a></li>
+        {% else %}
+        <li><a href="{% url 'users:user_home' %}" class="nav_a">Dashboard</a></li>
+        <li><a href="{% url 'users:logout' %}" class="nav_a">Logout</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% if messages %}
+{% include 'messages.html' %}
+{% endif %}
+<nav class="mobile_nav">
+    <img class="toggler" src="{% static 'svgs/nav_toggler.svg' %}" alt="" onclick="bring_mobile()">
+    <a href="{% url 'home' %}"><img src="{% static 'svgs/logo.svg' %}" alt=""></a>
+    <a href="{% url 'products:order_final' %}"><img src="{% static 'svgs/cart.svg' %}" alt=""></a>
+</nav>
+<div class="hidden_mobile">
+    <span onclick="exit_mobile()"></span>
+    <ul>{% if not request.user.is_authenticated %}
+        <li><a href="{% url 'users:login' %}">Log in</a></li>
+        <li><a href="{% url 'users:signup' %}">Sign up</a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'products:products' %}">Agrowell</a></li>
+        {% else %}
+        <li><a href="{% url 'products:stranger' %}">Agrowell</a></li>
+        {% endif %}
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'home' %}#galleria">Gallery</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'users:user_home' %}">Dashboard</a></li>
+        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+
+<body>
+    
+    <div class="dsh-backdrop"></div>
+    <div class="dsh-wrapper">
+        <div class="dsh-left-nav">
+            <div class="profile">
+                <div class="profile-img-holder">
+                    <div class="img">
+                     
+                        <img src={{user.pic.profile_pic.url}}>
+                        {% if request.user.superuser %}Admin {% endif %}
+                        <div class="overlay-img"></div>
+                    </div>
+                    <span class="edit-icon"><i class="fa fa-edit"></i></span>
+                </div>
+                <div class="title">{{request.user.first_name}}  {{request.user.last_name}}</div>
+                <div class="username">{{request.user.username}}</div>
+                <div class="class">
+                    {% if request.user.farmer %}<small>Farmer</small>{% endif %}
+                    {% if request.user.student %}<small>Student</small>{% endif %}
+                    {% if request.user.company %}<small>Company</small>{% endif %}
+                    {% if request.user.superuser %}<small>Admin </small>{% endif %}
+                </div>
+                <div class="imf-progress">
+                    {% if has_plan %}
+                    <span><div><i class="fa fa-arrow-up"></i></div>Customers {{ customers }}</span>
+                    {% if request.user.farmer %}<span><div><i class="fa fa-star"></i></div>Plan<span></span><span>{{ plan_type }}</span></span> {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <!-- End of profile -->
+            <!-- Start of buttons and all -->
+            <nav class="actions">
+                <ul>
+                    <li><a href="{% url 'ads:index' %}"><i class="fa fa-microphone"></i>Ads</a></a></li>
+                    {% if request.user.company and not has_plan %}
+                    <li><a href="#"><i class="fa fa-user"></i> Seller Dashboard</a></li>
+                    <li><a href="{% url 'users:company_subscribe' %}"><i class="fa fa-edit"></i>Subscribe</a></li>
+                    {% endif %}
+
+                    <li class="msg"><a href="#"><i class="fa fa-envelope"></i>Messages</a></li>
+                    <li><a href="{% url 'users:send_complaint' %}"><i class="fa fa-comments"></i>Register complaint</a></li>
+
+                    {% if request.user.farmer %}
+                    {% if not has_plan %}
+                    <li><a href="{% url 'users:farmers_subscribe' %}"><i class="fa fa-edit"></i>Subscribe</a></li>
+                    {% endif %}
+                    {% if not request.user.farmer.harvest_time %}
+                    <li><a href="{% url 'users:set_harvest_time' %}"><i class="fa fa-bell"></i>Set Harvest Time</a></li>
+                    {% else %}
+                    <li><a href="{% url 'users:falsify_harvest_time' %}"><i class="fa fa-comments"></i>Unset Harvest Time</a></li>
+                    
+                    {% endif %}
+                    {% endif %}
+                    <li><a href="{% url 'users:create_advert' %}"><i class="fa fa-plus"></i>Advertise Goods</a></li>
+                    <li><a href="{% url 'users:password_change' %}"><i class="fa fa-cog"></i>Change Password</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="right-nav">
+            <!-- IMnews -->
+            <div class="imnews" style="overflow-y: scroll;">
+                
+                <div class="title_">IMnews</div>
+                {% for stuff in news %}
+                <p>{{stuff.news}}</p>
+                {% empty %}
+                <p>No news at the moment.</p>
+                {% endfor %}
+            </div>
+            <!-- End IMnews -->
+            
+            <!-- IMchallenge -->
+            <div class="imchallenge">
+                <div class="title_">IMchallenge</div>
+                <div class="middleman">
+                    IMchallenge Coming Soon.
+                    <span>Loading....<span class='perc'>80%</span></span>
+                    <div class="loader">
+                        <div class="truck">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" height="512px" viewBox="0 0 128 128" width="512px" class=""><g><g><path d="m6.306 27.554h67.68v53.313h-67.68z" fill="#fc883a" data-original="#FC883A" class="active-path" style="fill:#078787" data-old_color="#fc883a"/><path d="m121.694 80.867v-21.023l-12.986-2.633-12.828-21.795h-21.894v45.451z" fill="#3ea2e5" data-original="#3EA2E5" class="" style="fill:#00AF80" data-old_color="#3ea2e5"/><path d="m82.064 27.554h6.099v7.862h-6.099z" fill="#fc883a" data-original="#FC883A" class="active-path" style="fill:#078787" data-old_color="#fc883a"/><path d="m113.38 65.979h8.314v6.741h-8.314z" fill="#dfeef4" data-original="#DFEEF4" class=""/><path d="m100.266 42.868h-18.202v14.343h26.644z" fill="#dfeef4" data-original="#DFEEF4" class=""/><path d="m6.306 80.867h115.387v12.193h-115.387z" fill="#3ea2e5" data-original="#3EA2E5" class="" style="fill:#00AF80" data-old_color="#3ea2e5"/><circle cx="29.86" cy="86.936" fill="#6d7a84" r="13.51" data-original="#6D7A84" class=""/><circle cx="98.14" cy="86.936" fill="#6d7a84" r="13.51" data-original="#6D7A84" class=""/><circle cx="29.86" cy="86.936" fill="#dfeef4" r="5.028" data-original="#DFEEF4" class=""/><circle cx="98.14" cy="86.936" fill="#dfeef4" r="5.028" data-original="#DFEEF4" class=""/><path d="m86.069 65.75h-4.006a1.75 1.75 0 1 1 0-3.5h4.006a1.75 1.75 0 1 1 0 3.5z" fill="#1892d6" data-original="#1892D6" class=""/><g fill="#e57b33"><path d="m33.463 37.536h-17.342a1.75 1.75 0 1 1 0-3.5h17.342a1.75 1.75 0 0 1 0 3.5z" data-original="#E57B33" class="" style="fill:#12DBB0" data-old_color="#E57B33"/><path d="m43.993 37.536h-3.593a1.75 1.75 0 0 1 0-3.5h3.594a1.75 1.75 0 0 1 0 3.5z" data-original="#E57B33" class="" style="fill:#12DBB0" data-old_color="#E57B33"/></g></g></g> </svg>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End IMchallenge -->
+            
+            <!-- Imagrowell -->
+            <div class="imagrowell">
+                <div class="title_">IMagrowell</div>
+                <p>Access our well varieted store of quality products at low prices.</p>
+                <center> <a href="{% url 'products:products' %}" class="major_btn__">View Products</a></center>
+            </div>
+            <!-- End imagrowell -->
+            
+            <div class="current_orders">
+                <div class="title_">Pending Orders</div>
+                {% for order in pending_orders %}
+                <li>{{order.created_time.date}}  {{order.created_time.time}} 
+                    {% for item in order.order_items.all %}
+                    <span style="margin-left:2px;">{{ item.item }}({{ item.quantity }})</span>
+                    {% endfor %}
+                    <span>&#8358;{{order.get_total_order_price|floatformat:2|intcomma}}</span></li>
+                {% empty %}
+                <p>You have no pending orders.</p>
+                {% endfor %}
+            </div>
+            
+            {% if not request.user.student and has_plan %}
+            <div class="plan">
+                <div class="title_">Plan</div>
+                <p>
+                    <h1 style="margin-bottom: 10px;">{{ customers }} </h1>
+                    <span>customers so far</span>
+                </p>
+                <a href="#" class="major_btn__">View Plan</a>
+            </div>
+            {% endif %}
+            
+            {% if request.user.student %}
+            <div class="imfoods">
+                <div class="title_">IMfoods</div>
+                <p>Order for our IMfoods and get it at your doorstep instantly </p>
+                <a href="{% url 'products:add_to_cart' slug='impack' %}" class="major_btn__">Order Now</a>
+            </div>
+            {% endif %}
+            
+            {% if request.user.farmer %}
+            <div class="imaid">
+                <div class="title_">IMaid</div>
+                <p>Have your account operated by a proxy</p>
+                <a href="#" class="major_btn__" disabled >Get IMaid</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="messages">
+        <span class="exit"><i class="fa fa-times"></i></span>
+        <nav class="fixed">
+            <li class="gen">GENERAL({{general_messages.count}})</li>
+            <li class="stone"></li>
+            <li class="personal">PERSONAL({{special_messages.count}})</li>
+        </nav>
+        <div class="message_contents">
+            <ul>
+                <div class="message_t">
+                    
+                    <div class="gen-contents">
+                        {% for info in general_messages %}
+                        <li>
+                            <span class="date">{{info.created_date.date}}</span>
+                            <span class="time">{{info.created_date.time}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="sender"><b>Admin</b></span><br>
+                            {{info.message}}
+                        </li>
+                        {% empty %}
+                        <li>No messages.</li>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="per-contents hidden">
+                        {% for info in special_messages %}
+                        <li> 
+                            <span class="date">{{info.created_date.date}}</span>
+                            <span class="time">{{info.created_date.time}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="sender"><b>Admin</b></span><br>
+                            {{info.message}}
+                        </li>
+                        {% empty %}
+                        <li>No messages.</li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data" class='picForm'>
+        {% csrf_token %}
+        {{pic_form.as_p}}
+        <input type="submit" value="Change">
+    </form>
+</body>
+{% comment %}
+{% if request.user.student %}
+<input type="text" class="referral_link" readonly value="{{request.user.code.code.url}}">
+<span onclick="copylink()" class="chain">copy</span>
+<span class="copied">Copied to clipboard!</span>
+<!-- IMCROWDY -->
+<div class="white_shadowed imcrowdfunding">
+    <span class="tab_title">IMcrowdy</span>
+    
+    <div class="text">
+        As a student,you have the opportunity to opt in for 
+        our crowdfunding scheme. Save with us and earn multiple
+        benefits.
+    </div>
+    <a href="#"  class="imcrowdy well">
+        IMcrowdy
+    </a>
+    <div class="access-container-image-holder">
+        <img src="{% static 'images/capacity.png' %}" alt="">
+    </div>
+</div>
+{% endif %}
+{% endcomment %}
+<!-- <script src="all.js"></script>
+    <script src="dash.js">
+    </script> -->
+    <script>
+        let backdrop = document.querySelector(".dsh-backdrop");
+        let exiter = document.querySelector(".exit");
+        let msg = document.querySelector(".msg");
+        let messages = document.querySelector(".messages");
+        let general = document.querySelector(".gen");
+        let personal = document.querySelector(".personal");
+        let general_messages = document.querySelector(".gen-contents");
+        let personal_messages = document.querySelector(".per-contents");
+        let loader = document.querySelector(".loader");
+        var imchallenge = document.querySelector(".imchallenge");
+        let holder = document.querySelector(".dsh-wrapper");
+        function dis(){
+            var showPos = imchallenge.getBoundingClientRect().top;
+            if ( window.innerHeight/showPos < 1.2 ){
+                loader.classList.add("mover");
+            }
+            
+        }
+        
+        if(window.innerWidth<400){
+            holder.addEventListener("scroll",dis);
+        }
+        else{
+            loader.classList.add('mover');
+        }
+        
+        var mobile_navbar = document.querySelector(".hidden_mobile");
+        
+        function bring_mobile(){
+            mobile_navbar.style.top = 0;
+            backdrop.style.display= 'block';
+        }
+        function exit_mobile(){
+            mobile_navbar.style.top="-350px";
+            backdrop.style.display= 'none';
+            
+        }
+        
+        
+        
+        msg.addEventListener("click",() => {
+            messages.classList.add("message-show");
+            backdrop.classList.add("show-bdrop");
+            general.classList.add('clicked');
+        })
+        
+        exiter.addEventListener("click",() => {
+            messages.classList.remove("message-show");
+            backdrop.classList.remove("show-bdrop");
+        })
+        
+        
+        
+        personal.addEventListener('click',() => {
+            personal.classList.add('clicked');
+            general.classList.remove('clicked');
+            personal_messages.classList.remove('hidden');
+            general_messages.classList.add('hidden');
+        })
+        
+        
+        general.addEventListener('click',() => {
+            general.classList.add('clicked');
+            personal.classList.remove('clicked');
+            general_messages.classList.remove('hidden');
+            personal_messages.classList.add('hidden');
+        })
+        
+        // function copylink(){
+            //         var link = document.querySelector(".referral_link");
+            //         var alerter = document.querySelector(".copied");
+            //         link.select();
+            //         link.setSelectionRange(0, 99999); /*For mobile devices*/
+            //         /* Copy the text inside the text field */
+            //         document.execCommand("copy");
+            //         alerter.classList.add("copied_float");
+            //     }
+            
+            
+        </script>
+        <style>
+            body,html{
+                height:100%;
+                width:100%;
+                margin:0;
+                padding:0;
+                background:rgba(12, 158, 134, 0.548);
+                /* background:#f1fef4; */
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-family:Roboto;
+                position: relative;
+                overflow-x:hidden;
+                flex-direction: column;
+            }
+            ul,li{padding:0;list-style: none;}
+            a{text-decoration:none;}
+            .main_nav{
+                height:80px;
+                display:flex;
+                align-items:center;
+                justify-content: space-between;
+                width:100%;
+                padding:0 30px 0 20px;
+            }
+            .main_nav .logo{
+                display:flex;
+                align-items:center;
+                margin-left:2rem;
+                color:#fff;
+            }
+            .main_nav .nav_list{
+                display:flex;
+                margin-right:30px;
+            }
+            .main_nav .nav_list li{
+                margin-right:2rem;
+            }
+            .main_nav .nav_list li a{color:#fff;}
+            .dsh-wrapper{
+                height:85%;
+                width:90%;
+                background:rgba(3, 47, 40, 0.835);
+                margin:auto;
+                border-radius:20px;
+                /* margin-top:20px; */
+                padding:1.5rem 2rem;
+                display:grid;
+                grid-template-columns:300px auto;
+                box-shadow:1px 2px 9px 3px rgba(0, 0, 0, 0.479);
+                overflow-y:scroll;
+            }
+            
+            .dsh-wrapper::-webkit-scrollbar,.imnews::-webkit-scrollbar{
+                background:rgb(60, 218, 191);
+                width:10px;
+                border-radius:10px;
+                overflow:hidden;
+            }
+            
+            .dsh-wrapper::-webkit-scrollbar-thumb,.imnews::-webkit-scrollthumb{
+                background:rgb(9, 117, 103);
+                border-radius:10px;
+            }
+            
+            .dsh-left-nav{
+                width:230px;
+                padding:2rem 1.5rem;
+                background:rgba(11, 110, 94, 0.486);
+                border-radius:20px;
+                color:#fff;
+                max-height:75vh;
+                box-shadow:1px 1px 4px 1px rgba(128, 146, 144, 0.198),-1px -1px 4px 1px rgba(42, 117, 106, 0.568);
+                
+            }
+            
+            .profile{
+                display:flex;
+                flex-direction:column;
+                /* justify-content:center; */
+                align-items:center;
+            }
+            
+            .profile-img-holder{
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                position:relative;
+            }
+            
+            .edit-icon{
+                position:absolute;
+                left:45%;
+                bottom:1rem;
+                cursor:pointer;
+            }
+            
+            .img{
+                width:100px;
+                height:100px;
+                border-radius:50%;
+                position:relative;
+                overflow:hidden;
+            }
+
+            .img img{
+                height:100%;
+                width:100%;
+                object-position: center;
+                object-fit: cover;
+            }
+
+            
+            .title{margin-top:10px;}
+            .class{margin-top:2px;font-size:1.1rem}
+            
+            .imf-progress{
+                display:flex;
+                justify-content:space-between;
+                width:100%;
+                margin-top:0.6rem;
+            }
+            
+            .imf-progress span > div{
+                width:20px;
+                height:20px;
+                border:1px solid #fff;
+                border-radius:50%;
+                display:inline-flex;
+                align-items:center;
+                justify-content: center;
+                margin-right:0.5rem;
+            }
+            
+            .imf-progress span > div svg{
+                font-size:0.8rem;
+                height:0.8rem;
+            }
+            
+            .imf-progress span:nth-of-type(2) > span{
+                display:flex;
+                justify-content: space-between;
+            }
+            .imf-progress span:nth-of-type(2) span  {
+                display:block;
+                margin-left:2rem;
+                font-size:0.8rem;
+                color:gold;
+            }
+            
+            .actions{
+                margin-top:2rem;
+            }
+            
+            .actions ul li{
+                width:100%;
+                margin-bottom:16px;
+                padding:3px 0;
+                padding-left:4px;
+            }
+            
+            .actions ul li a{color:#fff;transition:0.3s ease;}
+            .actions ul li a:hover{color:rgb(5, 255, 234);}
+            
+            .actions ul li a i{
+                margin-right:0.6rem;
+            }
+            
+            
+            /* Right Navbar */
+            .right-nav{
+                display:grid;
+                grid-template-columns: repeat(3,1fr);
+                grid-gap:20px;
+                /* align-items:flex-start; */
+                grid-auto-rows:minmax(150px,auto);
+                
+                
+            }
+            .right-nav > div{
+                background:rgba(11, 110, 94, 0.486);
+                padding:2rem 1.5rem;
+                border-radius:10px;
+                color:rgba(255, 255, 255, 0.842);
+                position: relative;
+                transition:all 0.5s ease-in-out;
+            }
+            
+            .title_{
+                position:absolute;
+                left:1.3rem;
+                top:1rem;
+                font-weight:bold;
+            }
+            
+            .current_orders{
+                grid-column:1/3;
+            }
+            
+            .imchallenge{
+                align-self:flex-start;
+            }
+            
+            .middleman{
+                margin-top:20px;
+            }
+            
+            .middleman > span{
+                margin-top:2rem;
+                display:block;  
+            }
+            
+            .loader{
+                position:relative;
+                height:10px;
+                width:100%;
+                background:rgba(255, 255, 255, 0.294);
+                border-radius:5px;
+                margin-top:3px;
+            }
+            
+            .loader:after{
+                content:'';
+                position:absolute;
+                left:0;
+                top:0;
+                background:#12dbb0;
+                height:100%;
+                width:0%;
+                border-radius:5px;
+            }
+            
+            .mover:after{
+                animation:increase 2s ease-out forwards;
+            }
+            
+            @keyframes increase{
+                0%{}
+                100%{width:80%;}
+            }
+            
+            .truck{
+                height:40px;
+                width:40px;
+                position: absolute;
+                left:0;
+                top:-35px;
+            }
+            
+            .mover .truck{
+                animation:play 2s ease-out forwards;
+                
+            }
+            
+            
+            .perc{
+                opacity:0;
+                animation:brighten 2s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+                
+            }
+            
+            @keyframes brighten{
+                0%{}
+                100%{opacity:1;}
+            }
+            
+            @keyframes play{
+                0%{}
+                100%{left:calc(80% - 40px);}
+            }
+            
+            .truck svg{
+                height:100%;
+                width:100%;
+            }
+            
+            .imagrowell{align-self:flex-start;}
+            
+            .major_btn__{
+                padding:10px 1.5rem;
+                background:rgb(60, 218, 191);
+                margin-top:4px;
+                display: inline-block;
+                color:rgba(255, 255, 255, 0.959);
+                border-radius:5px;
+                text-align:center;
+                box-shadow:1px 1px 9px 4px rgba(109, 105, 105, 0.212);
+                transition:all 0.4s ease-in-out;
+            }
+            
+            .major_btn__:hover{
+                background:rgb(27, 250, 176);
+                color:rgb(20, 54, 20);
+            }
+            
+            .current_orders{
+                overflow-y:scroll;
+            }
+            
+            .current_orders::-webkit-scrollbar{
+                width:7px;
+                background:rgb(60, 218, 191);
+                border-radius:5px;
+            }
+            
+            .current_orders li{
+                margin-top:15px;
+                display:flex;
+                justify-content:space-between;
+            }
+            
+            
+            .messages{
+                position:absolute;
+                transform:translate(50%,-50%);
+                /* left:50%; */
+                background:rgb(241, 233, 233);
+                padding:2rem 1rem;
+                min-width:260px;
+                max-width:400px;
+                overflow-y:scroll;
+                z-index:2;
+                opacity:0;
+                transform:scale(0)
+            }
+            
+            .messages:-webkit-scrollbar{
+                width:8px;
+                border-radius:5px;
+                background:rgba(71, 212, 71, 0.774);
+            }
+            
+            .message-show{
+                animation:skew-in 0.5s ease-in-out forwards;
+            }
+            
+            @keyframes skew-in{
+                0%{transform:scale(0)}
+                50%{transform:scale(0) rotate(50deg);opacity:0.8; }
+                70%{transform:scale(1.2);}
+                100%{transform:scale(1);opacity:1; }
+            }
+            
+            .exit{
+                position:absolute;
+                right:1rem;
+                top:1rem;
+                cursor:pointer;
+            }
+            
+            .fixed{
+                width:100%;
+                display:flex;
+                border-bottom:1px solid #000;
+                border-top:1px solid #000;
+                justify-content:space-between;
+                margin-top:1rem;
+            }
+            
+            .stone{
+                border-right:1px solid #000;
+            }
+            
+            .gen,.personal{
+                cursor:pointer;
+            }
+            
+            .gen-contents,.per-contents{
+                position: relative;
+            }
+            
+            .dsh-backdrop{
+                height:100vh;
+                width:100vw;
+                background:rgba(0, 0, 0, 0.561);
+                position:absolute;
+                z-index:1;
+                display:none;
+                opacity: 0;
+            }
+            
+            .show-bdrop{
+                animation:fade-in 0.4s ease-in-out forwards;
+                display:block;
+            }
+            
+            @keyframes fade-in{
+                0%{}
+                100%{opacity:1;}
+            }
+            
+            
+            /* Media queries */
+            @media(max-width:1053px){
+                .right-nav{
+                    grid-template-columns: auto;
+                }
+            }
+            
+            @media(max-width:834px){
+                .imfoods{align-self:flex-start;}
+                .imagrowell{grid-column:1/3;}
+            }
+            
+            @media(max-width:761px){
+                .dsh-wrapper{
+                    grid-template-columns: 1fr;
+                }
+                .dsh-left-nav{
+                    justify-self:center;
+                    margin-bottom:1.5rem;
+                }
+            }
+            
+            @media(max-width:486px){
+                .right-nav{
+                    grid-template-columns:1fr;
+                }
+                .imagrowell,.current_orders{
+                    grid-column:1/2;
+                }
+                .messages{
+                    width:80vw;
+                }
+            }
+            
+            /* MEssages */
+            .gen-contents li,.per-contents li{
+                margin-bottom:1rem;
+            }
+            
+            .clicked{
+                color:#0e3f34;
+                font-weight:bold;
+            }
+            
+            .hidden{
+                display:none;
+            }
+            
+            .hidden_mobile{
+                top:-350px;
+                background:rgba(220, 255, 247, 0.842);
+                /* opacity:0.9; */
+                /* height:45vh; */
+                padding:35px 0;
+                position:fixed;
+                width:100%;
+                display:-webkit-box;
+                display:-ms-flexbox;
+                display:flex;
+                -webkit-box-align:center;
+                -ms-flex-align:center;
+                align-items:center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                -o-transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index:4;
+                -webkit-box-shadow:0px 2px 9px var(--intro-shadow-color);
+                box-shadow:0px 2px 9px var(--intro-shadow-color);
+            }
+            
+            .hidden_mobile span{
+                position:absolute;
+                right:22px;
+                top:2px;
+                font-size:22px;
+                background:rgba(3, 172, 93);
+                cursor:pointer;
+                display: block;
+                height:30px;
+                width:2px;
+                -webkit-transform:rotate(45deg);
+                -ms-transform:rotate(45deg);
+                transform:rotate(45deg);
+            }
+            
+            .hidden_mobile span::before{
+                content:'';
+                position:absolute;
+                height:100%;
+                width:100%;
+                background:rgba(3, 172, 93);
+                right:0;
+                -webkit-transform:rotate(-90deg);
+                -ms-transform:rotate(-90deg);
+                transform:rotate(-90deg);
+            }
+            
+            .hidden_mobile ul{
+                width:100%;
+            }
+            
+            .hidden_mobile ul li{
+                padding:12px 1rem;
+                background:rgba(3, 172, 93, 0.541);
+                border-bottom: 1px solid #fff;
+                text-align: center;
+            }
+            
+            .hidden_mobile ul li a{
+                color:#fff;
+                text-transform: uppercase;
+            }
+            
+            .copyright{
+                color:#fff;
+                text-align: center;
+                margin-top:30px;
+                font-size:0.8rem;
+            }
+            
+            
+            
+            /* Mobile_nav */
+            .mobile_nav{
+                display:none;
+                -ms-grid-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr;
+                justify-items: center;
+                -webkit-box-align:center;
+                -ms-flex-align:center;
+                align-items:center;
+                background:var(--body-bg);
+                width:100%;
+                height:70px;
+            }
+            
+            .toggler{
+                height:20px;
+                -ms-grid-column-align:start;
+                justify-self:start;
+                margin-left:20px;
+                cursor: pointer;
+            }
+            
+            .mobile_nav img:nth-of-type(2){
+                -ms-grid-column-align: center;
+                justify-self: center;
+            }
+            
+            .mobile_nav img:nth-of-type(3){
+                -ms-grid-column-align: end;
+                justify-self: end;
+                margin-right:20px;
+                cursor:pointer;
+            }
+            .picForm{
+                transition:0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                position:absolute;
+                background:rgb(158, 212, 154);
+                text-align:center;
+                z-index:3;
+                padding:10px 30px;
+                border-radius:3px;
+                top:-100%;
+                left:50%;
+                transform:translate(-50%,-50%)
+            }
+            .yay{
+                top:50%;
+            }
+            .picForm label{
+                display:none;
+            }
+            @media(max-width:770px){
+                .main_nav{display:none;}
+                .mobile_nav{display:grid;}
+            }
+            
+        </style>
+        <script>
+            let picForm = document.querySelector('.picForm');
+            let editor = document.querySelector('.fa-edit');
+            editor.addEventListener('click',() => {
+                picForm.classList.toggle('yay');
+            })
+        </script>
+        
+        
+        {% endblock content %}
+        {% block footer %}
+        {% endblock footer %}

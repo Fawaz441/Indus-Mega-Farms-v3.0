@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Student{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container jumbotron">
+    <h1  style="color: green;">Student Details</h1>
+<form method="POST" class="in_form">
+    {% csrf_token %}
+{{form.as_p}}
+<br>
+<input type="submit" value="Submit" class="input-submit">
+</form>
+</div>
+<style>
+.in_form{
+    width:60vw;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Silver Plan{% endblock %}
+{% load paystack %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/farmers_sub.css' %}">
+{% endblock css %}
+{% block content %}
+<div class="subscription_container">
+    <center> <h1 class="title">Silver Plan<span></span></h1></center>
+    <div class="plan silver">
+        <h1>Silver</h1>
+        <h2>&#8358;250.00</h2>
+        <div class="features">
+            <p>5-25 customers max in 90 days</p>
+            <p>Refundable(half payment)</p>
+            <p>Higher recognition compared to premium plan</p>
+        </div>
+        {% paystack_button amount=amount email=email button_class=" cta silver_btn" %}
+    </div>
+</div>
+
+<style>
+    form{
+    margin-top:auto;
+}
+    button{
+  border:none;
+   background:none;
+   outline:none;
+   cursor: pointer;
+   margin-top:auto;
+}
+.plan{margin:auto;}
+   </style>
+
+{% endblock content %}
+{% block footer %}{% endblock footer %}

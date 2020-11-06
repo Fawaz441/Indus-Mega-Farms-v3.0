@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{title}}{% endblock title%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ads_presets.css' %}">
+<link rel="stylesheet" href="{% static 'css/ads.css' %}">
+{% endblock css%}
+{% block content %}
+<div class="plan_wrapper">
+    <h1 class="flex a-cent j-cent">Subscription Plans</h1>
+    <p class="flex a-cent j-cent">Subscribe to one of our plans and boost your business with our effective ads!</p>
+    <div class="plan_cards grid">
+        {% for category in ad_categories %}
+        <div class="plan_card grid">
+            <img src="{{category.image.url}}" alt="">
+                <div class="plan_dets">
+                    <h3>{{category.name}}</h3>
+                    <p>Validity : {{category.validity}}</p>
+                    <p>No of Ads : <span class='circ flex a-cent j-cent'>{{category.no_of_ads}}</span></p>
+                    <p><span>Cost : &#8358;{{category.cost|floatformat:2|intcomma}}</span>
+                        {% if request.user in category.users.all %}
+                        <a class="plan_cta fr subscribed" href="{% url 'ads:ad_cat_detail' category.name %}">View Ads</a>
+                        {% else %}
+                        <a class="plan_cta fr" href="{% url 'ads:ad_cat_detail' category.name %}">Subscribe</a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content%}

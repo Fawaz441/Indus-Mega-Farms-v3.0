@@ -1,0 +1,448 @@
+{% load static %}
+{% load humanize %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/style_products.css' %}">
+
+{% endblock css %}
+
+<body>
+    <div class="py-1 top" style="background: rgb(14, 185, 128);">
+        <div class="container">
+            <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+                <div class="col-lg-12 d-block">
+                    <div class="row d-flex">
+                        <div class="col-md pr-4 d-flex topper align-items-center">
+                            <div class="icon mr-2 d-flex justify-content-center align-items-center"><span
+                                    class="icon-phone2"></span></div>
+                            <span class="text">+2349035136650</span>
+                        </div>
+                        <div class="col-md pr-4 d-flex topper align-items-center">
+                            <div class="icon mr-2 d-flex justify-content-center align-items-center"><span
+                                    class="icon-paper-plane"></span></div>
+                            <span class="text">indusmegafarms@gmail.com</span>
+                        </div>
+                        <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right justify-content-end">
+                            <p class="mb-0 register-link"><span>Open hours:</span> <span>Monday - Sunday</span>
+                                <span>8:00AM - 7:00PM</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END nav -->
+
+
+
+
+
+
+
+    <section class="ftco-section ftco-counter img" id="section-counter" data-stellar-background-ratio="0.5">
+        <!-- <section class="ftco-section ftco-counter img ftco-no-pt" id="section-counter"> -->
+        <div class="container">
+            <div class="row d-md-flex align-items-center justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row d-md-flex align-items-center">
+                        <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18">
+                                <div class="text">
+                                    <strong class="number" data-number="20">0</strong>
+                                    <span>Years of Experience</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18">
+                                <div class="text">
+                                    <strong class="number" data-number="150">0</strong>
+                                    <span>Happy Customers</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18">
+                                <div class="text">
+                                    <strong class="number" data-number="{{total}}">0</strong>
+                                    <span>Products</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+                            <div class="block-18">
+                                <div class="text">
+                                    <strong class="number" data-number="20">0</strong>
+                                    <span>Staffs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="ftco-section" style="padding-top:2.5rem;">
+        <div class="container-fluid px-4">
+            <div class="row justify-content-center mb-5 pb-2">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <h2 class="mb-4">Our Products</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                {% if processed_foods %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Processed Foods</h3>
+                    </div>
+                    {% for item in processed_foods %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                        <div class="menus d-flex ftco-animate">
+                            <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                            <div class="text">
+                                <div class="d-flex">
+                                    <div class="one-half">
+                                        <h3>{{item.name}}</h3>
+                                    </div>
+                                    <div class="one-forth">
+                                        <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}
+                                            <span class="badge">Ad</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if crops %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Crops</h3>
+                    </div>
+                    {% for item in crops %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if fruits %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Fruits</h3>
+                    </div>
+                    {% for item in fruits %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if livestock %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Livestock</h3>
+                    </div>
+                    {% for item in livestock %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if student_items %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Student Items</h3>
+                    </div>
+                    {% for item in student_items %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if land %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Lands</h3>
+                    </div>
+                    {% for item in land %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if farm_tools %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Farm Tools</h3>
+                    </div>
+                    {% for tool in farm_tools %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if farm_machinery %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Farm Machinery</h3>
+                    </div>
+                    {% for item in farm_machinery %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if farm_services %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Farm Services</h3>
+                    </div>
+                    {% for item in farm_services %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+
+                {% if food_stuff %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Food Stuff</h3>
+                    </div>
+                    {% for item in food_stuff %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if lands %}
+                <div class="col-md-6 col-lg-4 menu-wrap">
+                    <div class="heading-menu text-center ftco-animate">
+                        <h3>Lands</h3>
+                    </div>
+                    {% for item in lands %}
+                    <a href="{% url 'products:detail' item.slug %}">
+                    <div class="menus d-flex ftco-animate">
+                        <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
+                        <div class="text">
+                            <div class="d-flex">
+                                <div class="one-half">
+                                    <h3>{{item.name}}</h3>
+                                </div>
+                                <div class="one-forth">
+                                    <span class="price">&#8358;{{item.price|floatformat:0|intcomma}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- <section class="ftco-section ftco-no-pt ftco-no-pb">
+			<div class="container-fluid px-0">
+				<div class="row no-gutters">
+					<div class="col-md">
+						<a href="#" class="instagram img d-flex align-items-center justify-content-center" style="background-image: url(images/insta-1.jpg);">
+							<span class="ion-logo-instagram"></span>
+						</a>
+					</div>
+					<div class="col-md">
+						<a href="#" class="instagram img d-flex align-items-center justify-content-center" style="background-image: url(images/insta-2.jpg);">
+							<span class="ion-logo-instagram"></span>
+						</a>
+					</div>
+					<div class="col-md">
+						<a href="#" class="instagram img d-flex align-items-center justify-content-center" style="background-image: url(images/insta-3.jpg);">
+							<span class="ion-logo-instagram"></span>
+						</a>
+					</div>
+					<div class="col-md">
+						<a href="#" class="instagram img d-flex align-items-center justify-content-center" style="background-image: url(images/insta-4.jpg);">
+							<span class="ion-logo-instagram"></span>
+						</a>
+					</div>
+					<div class="col-md">
+						<a href="#" class="instagram img d-flex align-items-center justify-content-center" style="background-image: url(images/insta-5.jpg);">
+							<span class="ion-logo-instagram"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section> -->
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="green" /></svg></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.1/jquery-migrate.min.js"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar.js/0.6.2/jquery.stellar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-animateNumber/0.0.14/jquery.animateNumber.min.js"></script>
+    <script src="{% static 'js/scrollax.min.js' %}"></script>
+    <script src="{% static 'js/product_main.js' %}"></script>
+
+</body>
+
+</html>

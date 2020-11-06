@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load paystack %}
+{% block title %}Susbscribe{% endblock title %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/farmers_sub.css' %}">
+{% endblock css %}
+{% block content %}
+    <div class="subscription_container">
+           <center> <h1 class="title">Premium Plan<span></span></h1></center>
+
+        <div class="plans">
+            <div class="plan premium">
+                <h1>Premium</h1>
+                <h2>&#8358;100.00</h2>
+                <div class="features">
+                    <p>2-10 customers max in 90 days</p>
+                </div>
+        {% paystack_button amount=amount email=email button_class=" cta silver_btn" %}
+    </div>
+        </div>
+        <style>
+            form{
+    margin-top:auto;
+}
+            button{
+   margin-top:auto;
+            border:none;
+           background:none;
+           outline:none;
+           cursor: pointer;
+       }
+       .plan{margin:auto;}
+           </style>
+{% endblock content %}
+{% block footer %}{% endblock footer %}
+

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load paystack %}
+{% block title %}Susbscribe{% endblock title %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/farmers_sub.css' %}">
+{% endblock css %}
+{% block content %}
+    <div class="subscription_container">
+           <center> <h1 class="title">Subscription Plans<span></span></h1></center>
+
+        <div class="plans">
+            
+            <div class="plan premium">
+                <h1>Premium</h1>
+                <h2>&#8358;100.00</h2>
+                <div class="features">
+                    <p>2-10 customers max in 90 days</p>
+                </div>
+                <a href="{% url 'users:premium_farmer' %}" class="cta premium_btn">Choose</a>
+            </div>
+            
+            <div class="plan gold">
+                <h1>Gold</h1>
+                <h2>&#8358;500.00       </h2>
+                <div class="features">
+                    <p>50 customers max in 90 days</p>
+                    <p>10 customers min in 90 days</p>
+                    <p>Higher Recognition compared to silver plan</p>
+                </div>
+
+                <a href="{% url 'users:gold_farmer' %}" class="cta gold_btn">Choose</a>
+
+                       
+                
+            </div>
+            
+            
+         <div class="plan silver">
+            <h1>Silver</h1>
+            <h2>&#8358;250.00</h2>
+            <div class="features">
+                <p>5-25 customers max in 90 days</p>
+                <p>Higher recognition compared to premium plan</p>
+            </div>
+                <a href="{% url 'users:silver_farmer' %}" class="cta silver_btn">Choose</a>
+
+            </a>
+        </div>
+            
+        </div>
+
+        <style>
+         button{
+        background:none;
+        outline:none;
+    }
+    .plan{margin:auto;}
+        </style>
+
+{% endblock content %}
+{% block footer %}{% endblock footer %}

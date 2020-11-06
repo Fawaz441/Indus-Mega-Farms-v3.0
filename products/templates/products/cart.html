@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Your Cart{% endblock %}
+{% block css %}
+{% load static %}
+{% load humanize %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="pay_now_modal spec">
+    <div class="question">
+        <p><b>Pay Now?</b></p>
+        <a onclick="location_input()" class="pay_delivery" style="cursor:pointer;">Yes</a>
+        <a href="#" class="cancel">Cancel</a>
+    </div>
+</div>
+
+
+<div class="location_modal pay_now_modal">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Set Order Location" class="pay_delivery">
+    </form>
+</div>
+
+<div class="cart_wrapper">
+    <h3 class="thin cart_title">Your Cart
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20.241" height="20" viewBox="0 0 20.241 20">
+                <g transform="translate(1609.1 -127)">
+                    <path
+                        d="M1119.9,16a2,2,0,1,0,2,2A2.006,2.006,0,0,0,1119.9,16Zm-16-15a.945.945,0,0,0,1,1h1l3.6,7.6-1.3,2.4a2.04,2.04,0,0,0,1.8,3h11a1,1,0,0,0,0-2h-11l1.1-2h7.5a2.1,2.1,0,0,0,1.8-1l3.6-6.5a1,1,0,0,0-.9-1.5h-14.8l-.7-1.4a1.149,1.149,0,0,0-.9-.6h-1.6A1.062,1.062,0,0,0,1103.9,1Zm6,15a2,2,0,1,0,2,2A2.006,2.006,0,0,0,1109.9,16Z"
+                        transform="translate(-2713 127)" />
+                </g>
+            </svg>
+        </span>
+    </h3>
+    <div class="items_in_carts">
+        {% for order_item in current_order.order_items.all %}
+        <a href="{% url 'products:detail' order_item.item.slug %}" style="color:#000;">
+            <div class="item">
+                <div class="item_title_with_image">
+                    <div class="item_small_image">
+                        <img src="{{order_item.item.image.url}}" alt="">
+                    </div>
+                    <div class="title">
+                        <span><b>{{order_item.item.name}}</b></span>
+                        <span class="price">&#8358;{{order_item.item.get_price|floatformat:2|intcomma}}</span>
+                    </div>
+
+                </div>
+                <div class="add_or_subtract">
+                    <span class="number">{{order_item.quantity}}</span>
+                </div>
+                <div class="total_single">
+                    <span>&#8358;{{order_item.get_final_price|floatformat:2|intcomma}}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+    </div>
+    {% if current_order.get_total_order_price %}
+    <b>Total: &#8358;{{current_order.get_total_order_price|floatformat:2|intcomma}}</b>
+    {% endif %}
+
+    {% if current_order.get_total_order_price %}
+    <div class="payment_redirect_buttons">
+        <button href="" class="pay_now major_button" onclick="confirm_pay_now()">Pay Now</button>
+    </div>
+    {% else %}
+    <p>No item in your cart.</p>
+    {% endif %}
+
+</div>
+
+<div class="delivery_pay">
+
+</div>
+<script>
+    var cancel_btn = document.querySelectorAll(".cancel");
+    var pay_now_modal = document.querySelector(".pay_now_modal");
+    var location_modal = document.querySelector(".location_modal");
+    var backdrop = document.querySelector(".backdrop");
+    var pay_on_delivery_modal = document.querySelector(".pay_delivery_modal");
+    let special = document.querySelector('.spec');
+    function confirm_pay_now() {
+        pay_now_modal.classList.add("appear");
+        backdrop.style.display = "block";
+
+    }
+    function confirm_pay_on_delivery() {
+        pay_on_delivery_modal.classList.add("appear");
+        backdrop.style.display = "block";
+    }
+    for (var i = 0; i < cancel_btn.length; i++) {
+        cancel_btn[i].addEventListener("click", function () {
+            var parent = this.parentElement.parentElement;
+            parent.classList.remove("appear");
+            backdrop.style.display = "none";
+        })
+    }
+
+    function location_input() {
+        location_modal.classList.add("appear");
+        special.style.display = "none";
+        console.log(special)
+    }
+
+
+</script>
+
+{% endblock content %}

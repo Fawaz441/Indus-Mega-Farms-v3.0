@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sign up{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block content %}
+
+
+<div class="login_wrapper">
+    <h1 class="thin major_header">Sign up</h1>
+    <form method="post">
+        {% csrf_token %}
+        {%if form.errors %}
+        <div class="errors">
+            <p>Wrong Credentials</p>
+        </div>
+        {% endif %}
+        {{form.as_p}}
+        <input type="submit" class="input-submit" value="Sign up">        
+    </form>
+</div>
+<style>
+    .help-block,.helptext,ul:first-of-type{font-size:0.8rem;}
+    ul:first-of-type,.helptext{margin-bottom:0.5rem;}
+    .helptext{margin-top:-5px;}
+</style>
+<br>
+<br>
+<br>
+{% endblock %}
