@@ -18,7 +18,7 @@ urlpatterns = [
     path('password_reset_done',PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'),name='password_reset_done'),
     re_path('password_reset_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html',success_url=reverse_lazy('users:password_reset_complete'))
     ,name='password_reset_confirm'),
-    path('password_reset_complete',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),
+    path('password_reset_complete',PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),name='password_reset_complete'),
     path('change_password',PasswordChangeView.as_view(template_name='users/password_change.html',success_url='login'),name='password_change'),
     path('send_complaint',views.complaint_form,name='send_complaint'),
     # path('farmers_subscribe',views.FarmerSubscribeView.as_view(),name='farmers_subscribe'),
