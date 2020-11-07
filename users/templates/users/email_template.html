@@ -1,6 +1,6 @@
 {% autoescape off %}
     Click the link below to reset your password
-    {{protocol}}://{{domain}}{% url 'users:password_reset_confirm' %}
+    {{protocol}}://{{domain}}{% url 'users:password_reset_confirm' uidb64=uid token=token %}
     If clicking the link doesn't work, try copying and pasting the link in a new browser window
     The Indus-Mega Farms Tech Team.
 
