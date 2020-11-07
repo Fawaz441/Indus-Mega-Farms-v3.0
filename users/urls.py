@@ -16,8 +16,8 @@ urlpatterns = [
     path('reg/company',views.CompanyReg.as_view(),name='company_reg'),
     path('reset_password',PasswordResetView.as_view(subject_template_name='users/subject_template.txt',email_template_name='users/email_template.html',template_name='users/password_reset.html',success_url = 'password_reset_done'),name='password_reset'),
     path('password_reset_done',PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'),name='password_reset_done'),
-    re_path('password_reset_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'),name='password_reset_confirm',success_url=reverse_lazy(
-        'users:password_reset_complete')),
+    re_path('password_reset_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html',success_url=reverse_lazy('users:password_reset_complete'))
+    ,name='password_reset_confirm),
     path('password_reset_complete',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),
     path('change_password',PasswordChangeView.as_view(template_name='users/password_change.html',success_url='login'),name='password_change'),
     path('send_complaint',views.complaint_form,name='send_complaint'),
