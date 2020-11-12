@@ -23,16 +23,46 @@ def products_list(request):
     View for the product list. Shows all the products available (ads inclusive)
     """
     total_products = Product.objects.count()
-    processed_foods = Product.objects.filter(category='PROCESSED_FOOD')
-    crops = Product.objects.filter(category='CROPS')
-    fruits = Product.objects.filter(category='FRUITS')
-    livestock = Product.objects.filter(category='LIVESTOCK')
-    student_items = Product.objects.filter(category='STUDENT_ITEMS')
-    farm_tools = Product.objects.filter(category='FARM_TOOLS')
-    farm_machinery = Product.objects.filter(category='FARM_MACHINERY')
-    farm_services = Product.objects.filter(category='FARM_SERVICES')
-    food_stuff = Product.objects.filter(category='FOOD_STUFF')
-    lands = Product.objects.filter(category='LAND')
+    try:
+        processed_foods = Product.objects.filter(category='PROCESSED_FOOD')[:5]
+    except:
+        Product.objects.filter(category='PROCESSED_FOOD')
+    try:
+        crops = Product.objects.filter(category='CROPS')[:5]
+    except:
+        Product.objects.filter(category='CROPS')
+    try:
+        fruits = Product.objects.filter(category='FRUITS')[:5]
+    except:
+        fruits = Product.objects.filter(category='FRUITS')
+    try:
+        livestock = Product.objects.filter(category='LIVESTOCK')[:5]
+    except:
+        livestock = Product.objects.filter(category='LIVESTOCK')
+    try:
+        student_items = Product.objects.filter(category='STUDENT_ITEMS')[:5]
+    except:
+        student_items = Product.objects.filter(category='STUDENT_ITEMS')
+    try:
+        farm_tools = Product.objects.filter(category='FARM_TOOLS')[:5]
+    except:
+        farm_tools = Product.objects.filter(category='FARM_TOOLS')
+    try:
+        farm_machinery = Product.objects.filter(category='FARM_MACHINERY')[:5]
+    except:
+        farm_machinery = Product.objects.filter(category='FARM_MACHINERY')
+    try:
+        farm_services = Product.objects.filter(category='FARM_SERVICES')[:5]
+    except:
+        farm_services = Product.objects.filter(category='FARM_SERVICES')
+    try:
+        food_stuff = Product.objects.filter(category='FOOD_STUFF')[:5]
+    except:
+        food_stuff = Product.objects.filter(category='FOOD_STUFF')
+    try:
+        lands = Product.objects.filter(category='LAND')[:5]
+    except:
+        Product.objects.filter(category='LAND')
     context = {
         'processed_foods':processed_foods,
         'crops':crops,

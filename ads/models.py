@@ -44,7 +44,6 @@ class Ad(models.Model):
     category = models.CharField(choices=PRODUCT_CATEGORY,max_length=120)
     product = models.ForeignKey(Product,blank=True,null=True,on_delete=models.SET_NULL)
     view = models.IntegerField(default = 0)
-    
 
     def __str__(self):
         return self.seller.user.username

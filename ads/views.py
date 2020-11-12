@@ -28,6 +28,9 @@ def ad_category_detail(request,name):
             form = SellerForm(request.POST)
             seller_form = form.save(commit=False)
             seller_form.user = request.user
+            if has_seller:
+                messages.info(request,'You already have your seller info registered.')
+                return redirect('users:user_home')
             seller_form.save()
             return redirect(request.META.get('HTTP_REFERER'))
         else:
@@ -49,7 +52,10 @@ def ad_category_detail(request,name):
                 min_price = 0
             if max_price == '':
                 max_price = 0
-            Ad.objects.create(
+            user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
+            if user_ads.exists():
+                context['unpaid'] = False
+                Ad.objects.create(
                 ad_category = ad_category,
                 seller = request.user.seller,
                 minimum_price = min_price,
@@ -58,8 +64,23 @@ def ad_category_detail(request,name):
                 name_of_product = product_name,
                 negotiable = negotiable,
                 description = description,
-                category = prod_category
+                category = prod_category,
+                active = True
             )
+            else:
+                context['unpaid'] = True
+                Ad.objects.create(
+                    ad_category = ad_category,
+                    seller = request.user.seller,
+                    minimum_price = min_price,
+                    maximum_price = max_price,
+                    sample_of_product = image,
+                    name_of_product = product_name,
+                    negotiable = negotiable,
+                    description = description,
+                    category = prod_category,
+                    active = False
+                )
             return redirect(request.META.get('HTTP_REFERER'))
     ad_category = get_object_or_404(AdCategory,name=name)
     context = {
@@ -67,11 +88,13 @@ def ad_category_detail(request,name):
         'ad_category':ad_category,
         'has_seller':has_seller,
         'form':form,
+        'amount':str(ad_category.amount),
+        'email':request.user.email
     }
     # if request.user in ad_category.users.all():
     try:
         user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
-        context['user_ads'] = user_ads
+        context['user_ads'] = user_ads[0]
         if user_ads.exists():
             context['category_user_ads_count'] = user_ads.count
     except:

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load paystack %}
 {% block title %}{{title}}{% endblock title%}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/ads_presets.css' %}">
@@ -100,6 +101,9 @@
                         </svg>
                 </a>
                 {% endif %}
+                {% if unpaid %}
+                {% paystack_button amount=amount email=email button_class='btn-pay' %}
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -134,6 +138,16 @@
             form.classList.remove('ad-form-show')
         })
     </script>
+    <style>
+        .btn-pay{
+            outline:none;
+            border:none;
+            background:forestgreen;
+            color:#fff;
+            padding:0.4rem 1rem;
+            border-radius: 5px;
+        }
+    </style>
     {% endblock content%}
     {% block footer %}
     {% endblock footer %}
