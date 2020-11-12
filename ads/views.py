@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import AdCategory,Seller,Ad
 from .forms import SellerForm
+from products.models import Product
 
 
 # View for all the ad_categories
@@ -16,6 +17,7 @@ def ad_categories_view(request):
 
 @login_required
 def ad_category_detail(request,name):
+    request.session['ad_category'] = name
     login_redirect_url = 'users:login'
     form = SellerForm()
     seller_query = Seller.objects.filter(user=request.user)
@@ -55,7 +57,7 @@ def ad_category_detail(request,name):
             user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
             if user_ads.exists():
                 context['unpaid'] = False
-                Ad.objects.create(
+                ad = Ad.objects.create(
                 ad_category = ad_category,
                 seller = request.user.seller,
                 minimum_price = min_price,
@@ -66,6 +68,12 @@ def ad_category_detail(request,name):
                 description = description,
                 category = prod_category,
                 active = True
+            )
+            Product.objects.create(name=ad.name_of_product,
+            price = ad.minimum_price,
+            image = ad.sample_of_product,
+            description = ad.description,
+            category = ad.category
             )
             else:
                 context['unpaid'] = True

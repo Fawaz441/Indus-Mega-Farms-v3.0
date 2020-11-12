@@ -13,7 +13,7 @@ from .models import Product,Order,OrderedProduct,Address,ProductReview
 from .utils import add_to_cart_helper,check_quantity_in_cart
 from users.forms import DeliveryForm
 from indus_mega_farms.utils import newsletter
-from ads.models import Ad
+from ads.models import Ad,AdCategory
 
 
 
@@ -205,10 +205,17 @@ def on_payment_received(request,sender,ref,amount,**kwargs):
         del request.session["order_payment"]
         messages.info(request,"Payment successful")
         return redirect('users:user_home')
-
-    else:
-        messages.warning(request,"No order!")
-        return redirect('home')
+    if 'ad_category' in request.session.keys():
+        category = request.session["ad_category"]
+        print(category)
+        ad_category = AdCategory.objects.filter(name=category)
+        ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
+        for ad in ads:
+            ad.active = True
+            ad.save()
+            del request.session["ad_category"]
+            messages.info(request,"Payment successful")
+            return redirect('users:user_home')
 
 @login_required
 def pay_now(request):
