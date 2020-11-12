@@ -25,6 +25,14 @@ def ad_category_detail(request,name):
         has_seller = True
     else:
         has_seller = False
+    ad_category = get_object_or_404(AdCategory,name=name)
+    context = {
+        'title':ad_category.name,
+        'ad_category':ad_category,
+        'has_seller':has_seller,
+        'amount':str(ad_category.cost),
+        'email':request.user.email
+    }
     if request.method == 'POST':
         if 'details_to_start' in request.POST:
             form = SellerForm(request.POST)
@@ -90,15 +98,7 @@ def ad_category_detail(request,name):
                     active = False
                 )
             return redirect(request.META.get('HTTP_REFERER'))
-    ad_category = get_object_or_404(AdCategory,name=name)
-    context = {
-        'title':ad_category.name,
-        'ad_category':ad_category,
-        'has_seller':has_seller,
-        'form':form,
-        'amount':str(ad_category.cost),
-        'email':request.user.email
-    }
+  
     # if request.user in ad_category.users.all():
     try:
         user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
@@ -108,7 +108,7 @@ def ad_category_detail(request,name):
     except:
         context['category_user_ads_count'] = 0
 
-    
+    context["form"] = form
     return render(request,'ads/detail.html',context)
 
 
