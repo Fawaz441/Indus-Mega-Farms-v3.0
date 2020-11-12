@@ -63,7 +63,7 @@ def ad_category_detail(request,name):
             if max_price == '':
                 max_price = 0
             user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
-            if user_ads.exists():
+            if user_ads_items.exists():
                 context['unpaid'] = False
                 ad = Ad.objects.create(
                 ad_category = ad_category,
