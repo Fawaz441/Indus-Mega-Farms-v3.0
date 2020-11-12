@@ -88,7 +88,7 @@ def ad_category_detail(request,name):
         'ad_category':ad_category,
         'has_seller':has_seller,
         'form':form,
-        'amount':str(ad_category.amount),
+        'amount':str(ad_category.cost),
         'email':request.user.email
     }
     # if request.user in ad_category.users.all():
