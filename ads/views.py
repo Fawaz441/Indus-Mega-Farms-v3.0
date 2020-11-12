@@ -33,6 +33,12 @@ def ad_category_detail(request,name):
         'amount':str(ad_category.cost),
         'email':request.user.email
     }
+    user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
+    all_user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
+    if user_ads_items.exists():
+        context['unpaid'] = False
+    else:
+        context['unpaid']  = True
     if request.method == 'POST':
         if 'details_to_start' in request.POST:
             form = SellerForm(request.POST)
@@ -62,9 +68,7 @@ def ad_category_detail(request,name):
                 min_price = 0
             if max_price == '':
                 max_price = 0
-            user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
-            if user_ads_items.exists():
-                context['unpaid'] = False
+            if unpaid:
                 ad = Ad.objects.create(
                 ad_category = ad_category,
                 seller = request.user.seller,
@@ -84,7 +88,6 @@ def ad_category_detail(request,name):
                 category = ad.category
                 )
             else:
-                context['unpaid'] = True
                 Ad.objects.create(
                     ad_category = ad_category,
                     seller = request.user.seller,
