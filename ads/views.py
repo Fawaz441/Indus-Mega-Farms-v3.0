@@ -68,13 +68,13 @@ def ad_category_detail(request,name):
                 description = description,
                 category = prod_category,
                 active = True
-            )
-            Product.objects.create(name=ad.name_of_product,
-            price = ad.minimum_price,
-            image = ad.sample_of_product,
-            description = ad.description,
-            category = ad.category
-            )
+                )
+                Product.objects.create(name=ad.name_of_product,
+                price = ad.minimum_price,
+                image = ad.sample_of_product,
+                description = ad.description,
+                category = ad.category
+                )
             else:
                 context['unpaid'] = True
                 Ad.objects.create(
