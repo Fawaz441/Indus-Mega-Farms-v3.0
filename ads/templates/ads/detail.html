@@ -67,7 +67,7 @@
                 <p>Cost : &#8358;{{ad_category.cost|floatformat:2|intcomma}}</p>
             </div>
             <div class="user-ads flex j-cent">
-                {% for user_ad in user_ads %}
+                {% for user_ad in user_ads_items %}
                 <div class="user-ad grid">
                     <img src="{{user_ad.sample_of_product.url}}" alt="">
                     <div class="details_ad">
