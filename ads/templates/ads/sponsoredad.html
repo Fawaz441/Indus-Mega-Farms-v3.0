@@ -173,7 +173,7 @@
 
 
     user_input.on('keyup', function () {
-        if($(this).val != ''){
+        if($(this).val() != ''){
             const request_parameters = {
                 q: $(this).val() // value of user_input: the HTML element with ID user-input
             }
