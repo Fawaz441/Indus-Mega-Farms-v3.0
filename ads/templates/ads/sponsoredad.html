@@ -192,7 +192,13 @@
     })
 
 </script>
-
+<script>
+document.querySelector('#user-input').addEventListener('keyup',() => {
+    if(document.querySelector('#user-input').value == ''){
+        document.querySelector('.results').style.display = 'none'
+    }
+})
+</script>
 <script src="{% static 'js/popads.js' %}"></script>
 <style>
     .ad_categories>a {
