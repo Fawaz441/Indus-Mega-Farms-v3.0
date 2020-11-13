@@ -149,7 +149,7 @@ def sponsoredAds(request):
         'page_obj':page_obj
     }
     failed = ''
-    if parameter:
+    if parameter != '':
         results = Product.objects.filter(name__icontains=parameter)
         if not results.exists():
             failed = "No products match your search."
