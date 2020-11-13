@@ -1,8 +1,10 @@
-{% autoescape off %}
+<div style="padding:3rem 2rem;background:#f1fef4">
+    <p style="color:rgb(68, 65, 65);font-size:1.5rem;padding:0 1rem;font-family: Roboto;">
     Click the link below to reset your password
+</p>
     {{protocol}}://{{domain}}{% url 'users:password_reset_confirm' uidb64=uid token=token %}
+<p style="padding:0 1rem;font-size:1rem;">
     If clicking the link doesn't work, try copying and pasting the link in a new browser window
+</p>
     The Indus-Mega Farms Tech Team.
-
-{% endautoescape %}
-
+</div>

@@ -86,7 +86,6 @@ class SponsoredAd(models.Model):
     maximum_price = models.FloatField(null=True,blank=True)
     negotiable = models.BooleanField(default=False)
     image = models.ImageField(upload_to='adverts')
-    image1 = models.ImageField(upload_to='adverts')
     image2 = models.ImageField(upload_to='adverts')
     image3 = models.ImageField(upload_to='adverts')
     image4 = models.ImageField(upload_to='adverts')
@@ -96,7 +95,25 @@ class SponsoredAd(models.Model):
     description = models.CharField(max_length=1000,null=True,blank=True)
     product = models.ForeignKey(Product,blank=True,null=True,on_delete=models.SET_NULL,related_name='sponsored_ad')
     view = models.IntegerField(default = 0)
+    category = models.CharField(choices=PRODUCT_CATEGORY,max_length=100,blank=True,null=True)
+
 
     def __str__(self):
         return self.name
 
+def create_sponsored_ad_product(sender,instance,created,**kwargs):
+    if created:
+        product = Product.objects.create(
+            name = instance.name,
+            price = instance.maximum_price,
+            image = instance.image,
+            image2 = instance.image2,
+            image3 = instance.image3,
+            image4 = instance.image4,
+            image5 = instance.image5,
+            image6 = instance.image6
+        )
+        instance.product = product
+        instance.save()
+
+post_save.connect(create_sponsored_ad_product,sender=SponsoredAd)

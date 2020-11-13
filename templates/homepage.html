@@ -1052,7 +1052,9 @@
             <a href="#" class="view_more">View More <img src="{% static 'svgs/slide_arrow.svg' %}" alt=""></a>
         </div> -->
 </div>
-
+{% block popup %}
+{% include 'check_ads.html' %}
+{% endblock popup %}
 <!-- GetButton.io widget -->
 <script type="text/javascript">
     (function () {

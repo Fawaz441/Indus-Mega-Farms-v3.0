@@ -1,0 +1,60 @@
+<div class="popup">
+    <h2>Check out our special products today!</h2>
+    <p>Ranging from smoothies to ice-creams and lands..</p>
+    <div class="flex" style="justify-content: center;align-items:center;">
+        <a href="{% url 'ads:sponsored_ads' %}" class="view_them_all">Take a Tour</a>
+    </div>
+</div>
+<style>
+    .popup{
+        background:rgb(12, 80, 63);
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        position: fixed;
+        bottom:-400px;
+        width:80%;
+        padding:0.5rem 1rem;
+        z-index:5;
+        box-shadow: 0px 3px 30px 60px rgba(204, 204, 204, 0.096);
+        box-sizing:border-box;
+        transform:translateX(-50%);
+        left:50%;
+        transition:0.4s ease;
+        transition-delay: 3s;
+    }
+    .popup h2{
+        font-size:2rem;
+        text-align: center;
+        color:#ccc;
+    }
+.view_them_all{
+    padding:0.4rem 1rem;
+    background:rgb(37, 190, 73);
+    color:#fff;
+    margin-top:1rem;
+    border-radius:5px;
+    margin-bottom: 1.5rem;
+}
+
+    .popup p{
+        text-align: center;
+        color:#ccc;
+    }
+    .popped{
+        bottom:0;
+
+    }
+    @media(max-width:400px){
+        .popup{
+            width:100%;
+        }
+        .popup h2{
+            font-size:1.4rem;
+        }
+    }
+</style>
+<script>
+window.addEventListener('DOMContentLoaded',() => {
+    document.querySelector('.popup').classList.add('popped')
+})
+</script>

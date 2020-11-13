@@ -105,17 +105,20 @@
         </div>
         <div class="category_name">Post an Ad</div>
     </div>
+    </a>
 </section>
 <section class="popular_ads">
     <h1>Popular Ads</h1>
     <div class="ads grid">
         {% for ad in sup_ads %}
+        <a href="{% url 'products:detail' ad.product.slug %}">
         <div class="ad">
-            <div class="image">
+            <div class="image" style="background: none;">
+                <img src="{{ad.image.url}}" alt="" style="height:100%;width:100%;object-fit:cover;">
             </div>
-            <div class="ad_dets flex_col">
-                <p>Lorem, ipsum.</p>
-                <p class="flex sep">Amount here
+            <div class="ad_dets flex_col" style="color:#000">
+                <p>{{ad.name}}</p>
+                <p class="flex sep">&#8358;{{ad.maximum_price|floatformat:2|intcomma}}
                     <span class="small flex a-cent">
                         <img src="svgs/Icon awesome-angle-left.svg" alt="">
 
@@ -123,6 +126,7 @@
                 </p>
             </div>
         </div>
+    </a>
         {% endfor %}
     </div>
 </section>
