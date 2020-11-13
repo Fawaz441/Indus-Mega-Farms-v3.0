@@ -154,7 +154,7 @@ def sponsoredAds(request):
         if not results.exists():
             failed = "No products match your search."
     else:
-        results = Product.objects.all()
+        results = ''
     if request.is_ajax():
         html = render_to_string(
             template_name="ads/search_results.html", 
