@@ -36,9 +36,11 @@ def ad_category_detail(request,name):
     user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
     all_user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
     if user_ads_items.exists():
+        unpaid = False
         context['unpaid'] = False
     else:
         context['unpaid']  = True
+        unpaid = True
     if request.method == 'POST':
         if 'details_to_start' in request.POST:
             form = SellerForm(request.POST)
