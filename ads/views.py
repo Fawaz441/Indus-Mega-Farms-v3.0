@@ -30,7 +30,7 @@ def ad_category_detail(request,name):
         'title':ad_category.name,
         'ad_category':ad_category,
         'has_seller':has_seller,
-        'amount':str(ad_category.cost),
+        'amount':str(int(ad_category.cost)),
         'email':request.user.email
     }
     user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
