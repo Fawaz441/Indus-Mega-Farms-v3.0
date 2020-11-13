@@ -13,7 +13,7 @@ from .models import Product,Order,OrderedProduct,Address,ProductReview
 from .utils import add_to_cart_helper,check_quantity_in_cart
 from users.forms import DeliveryForm
 from indus_mega_farms.utils import newsletter
-from ads.models import Ad,AdCategory
+from ads.models import Ad,AdCategory,SponsoredAd
 from django.views.generic import ListView
 
 class ProdCatList(ListView):
@@ -110,6 +110,18 @@ def product_detail(request,slug):
             the_ad.save()
         context["is_an_ad"] = True
         context["ad"] = item_ad[0]
+    else:
+        try:
+            item_ad = SponsoredAd.filter(product=item)
+            if item_ad.exists():
+                the_ad = item_ad.first()
+                if request.user != the_ad.seller.user:
+                    the_ad.view += 1
+                    the_ad.save()
+                context["is_an_ad"] = True
+                context["ad"] = item_ad[0]
+        except:
+            pass
     return render(request,'products/product_detail.html',context=context)
     
 
