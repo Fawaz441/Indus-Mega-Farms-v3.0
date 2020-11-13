@@ -26,7 +26,11 @@
         transform:translateX(-50%);
         left:50%;
         transition:0.4s ease;
-        transition-delay: 3s;
+    }
+
+    @keyframes showedup{
+        0%{}
+        100%{bottom:0;}
     }
     .popup h2{
         font-size:2rem;
@@ -48,7 +52,8 @@
     }
     .popped{
         bottom:0;
-
+        animation:showedup 0.4s ease forwards;
+        animation-delay: 4s;
     }
     @media(max-width:400px){
         .popup{
