@@ -3,9 +3,15 @@
     <p>Ranging from smoothies to ice-creams and lands..</p>
     <div class="flex" style="justify-content: center;align-items:center;">
         <a href="{% url 'ads:sponsored_ads' %}" class="view_them_all">Take a Tour</a>
+        <a href="#" class="no_thanks">No, thanks</a>
     </div>
 </div>
 <style>
+    .no_thanks{
+        padding:0.5rem 1rem;
+        background:rgb(85, 98, 95);
+        color:#000;
+    }
     .popup{
         background:rgb(12, 80, 63);
         border-top-left-radius: 20px;
@@ -56,5 +62,9 @@
 <script>
 window.addEventListener('DOMContentLoaded',() => {
     document.querySelector('.popup').classList.add('popped')
+})
+document.querySelector('.no_thanks').addEventListener('click',() => {
+    document.querySelector('.popup').classList.remove('popped')
+    
 })
 </script>
