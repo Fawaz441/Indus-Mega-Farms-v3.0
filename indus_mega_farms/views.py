@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.contrib import messages
 from .utils import newsletter
 from users.forms import ChallengerForm
+from django.views.decorators.cache import never_cache
 
 
 # Homepage View
+@never_cache
 def homepage(request):
     challenge_form = ChallengerForm(request.POST or None)
     if challenge_form.is_valid():
