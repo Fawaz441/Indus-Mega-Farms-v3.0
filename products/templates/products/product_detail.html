@@ -2,69 +2,116 @@
 {% load static %}
 {% load humanize %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/prod_dets.css' %}">{% endblock css %}
+<link rel="stylesheet" href="{% static 'css/ads_presets.css' %}">
+<link rel="stylesheet" href="{% static 'css/prod_dets.css' %}">
+{% endblock css %}
 {% block title %}{{title}}{% endblock title %}
 {% block content %}
-<div class="prod_wrapper">
-    <div class="prod_image">
-        <img src="{{item.image.url}}" alt="" class="img">
-    </div>
-    <div class="prod_details">
-        <h1>{{item.name}}</h1>
-        {% if is_an_ad %}
-        <h4>{{ad.seller.brand_name|title}}</h4>
+<div class="slides_wrapper">
+    <div class="slides">
+        {% if item.image2 %}
+        <div class="left_arrow flex a_cent j_cent" onclick="plusSlides(-1)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14.533" height="22.507" viewBox="0 0 14.533 22.507">
+                <path id="Icon_awesome-angle-left" data-name="Icon awesome-angle-left"
+                    d="M2.229,16.8l9.563-9.562a1.681,1.681,0,0,1,2.384,0l1.589,1.589a1.681,1.681,0,0,1,0,2.384L8.993,18l6.778,6.778a1.681,1.681,0,0,1,0,2.384l-1.589,1.6a1.681,1.681,0,0,1-2.384,0L2.236,19.2A1.683,1.683,0,0,1,2.229,16.8Z"
+                    transform="translate(-1.734 -6.746)" fill="#f1fef4" />
+            </svg>
+
+        </div>
         {% endif %}
-        <h4>&#8358;{{item.price|floatformat:2|intcomma}}</h4>
+        <img src="{{item.image.url}}" alt="" class="slide-cover">
+        {% if item.image2 %}
+        <img src="{{item.image2.url}}" alt="" class="slide-cover">
+        {% endif %}
+        {% if item.image3 %}
+        <img src="{{item.image3.url}}" alt="" class="slide-cover">
+        {% endif %}
+        {% if item.image4 %}
+        <img src="{{item.image4.url}}" alt="" class="slide-cover">
+        {% endif %}
+        {% if item.image5 %}
+        <img src="{{item.image5.url}}" alt="" class="slide-cover">
+        {% endif %}
+        {% if item.image6 %}
+        <img src="{{item.image6.url}}" alt="" class="slide-cover">
+        {% endif %}
+        {% if item.image2 %}
+        <div class="right_arrow flex a_cent j_cent" onclick="plusSlides(1)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14.526" height="22.507" viewBox="0 0 14.526 22.507">
+                <path id="Icon_awesome-angle-right" data-name="Icon awesome-angle-right"
+                    d="M15.771,19.2,6.209,28.758a1.681,1.681,0,0,1-2.384,0L2.236,27.169a1.681,1.681,0,0,1,0-2.384l6.778-6.778L2.236,11.229a1.681,1.681,0,0,1,0-2.384l1.582-1.6a1.681,1.681,0,0,1,2.384,0L15.764,16.8a1.683,1.683,0,0,1,.007,2.391Z"
+                    transform="translate(-1.74 -6.746)" fill="#f1fef4" />
+            </svg>
+        </div>
+        {% endif %}
+    </div>
+
+
+</div>
+<div class="prod_wrapper flex a-cent j-cent">
+    <div class="prod_details flex_col a-cent j-cent">
+        <h1 class="flex a-cent j-cent">{{item.name}}</h1>
+        {% if is_an_ad %}
+        <h4 class="flex a-cent j-cent">{{ad.seller.brand_name|title}}</h4>
+        {% endif %}
+        <h4 class='flex a-cent j-cent grey'>&#8358;{{item.price|floatformat:2|intcomma}}</h4>
         <!-- rating stars here -->
-        <p>{{item.description}}</p>
-        <div class="actions">
+        <p class="flex a-cent j-cent">{{item.description}}</p>
+        <div class="actions flex a-cent j-cent">
             {% if not is_an_ad %}
             <input type="hidden" name="item" value="{{item.slug}}" class="product_slug">
             <input type="number" name="quantity" id="num" min="0" class="quantity" value="{{in_cart_quantity}}">
             <a href="#" class="add_to_cart">Add To Cart</a>
             <a href="{% url 'products:remove_whole' item.slug %}" class="remove_from_cart">Remove</a>
             {% else %}
-            <a href="https://wa.me/{{ad.seller.whatsapp_number}}" class="whatsapp_btn">
-                <div class="fi">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                        <path
-                            d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+            <section class="links flex a_cent j_cent">
+                    <a href="https://wa.me/{{ad.seller.whatsapp_number}}" id="whatsapp" class="flex a_cent j_cent" target="__blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                            <path id="Icon_awesome-whatsapp" data-name="Icon awesome-whatsapp"
+                                d="M17,5.156a9.914,9.914,0,0,0-15.6,11.96L0,22.25l5.254-1.379a9.881,9.881,0,0,0,4.737,1.205h0a10.006,10.006,0,0,0,10-9.911,9.95,9.95,0,0,0-3-7.009ZM10,20.406a8.223,8.223,0,0,1-4.2-1.147l-.3-.179L2.384,19.9l.83-3.04-.2-.312a8.253,8.253,0,1,1,15.308-4.379A8.329,8.329,0,0,1,10,20.406Zm4.518-6.17c-.246-.125-1.464-.723-1.692-.8s-.393-.125-.558.125-.638.8-.786.973-.29.188-.536.063a6.741,6.741,0,0,1-3.371-2.946c-.254-.437.254-.406.728-1.353a.459.459,0,0,0-.022-.433c-.062-.125-.558-1.344-.763-1.839s-.406-.415-.558-.424-.308-.009-.473-.009a.917.917,0,0,0-.661.308,2.783,2.783,0,0,0-.866,2.067,4.851,4.851,0,0,0,1.009,2.563A11.066,11.066,0,0,0,10.2,16.268a4.846,4.846,0,0,0,2.973.621,2.536,2.536,0,0,0,1.67-1.179,2.071,2.071,0,0,0,.143-1.179C14.924,14.42,14.759,14.357,14.513,14.237Z"
+                                transform="translate(0 -2.25)" fill="#07483d" />
                         </svg>
-                </div>
-                <div class="se">{{ad.seller.whatsapp_number}}</div>
-            </a>
-            <a href="#" class="phone_no whatsapp_btn">
-                <div class="fi">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z"/></svg>
-                </div>
-                <div class="se">{{ad.seller.phone_number}}</div></a>
+            
+                        <span>{{ad.seller.whatsapp_number|truncatechars:8}}</span>
+                    </a>
+                    <a href="tel:{{ad.seller.phone_number}}" id='phone' class="flex a_cent j_cent" target="__blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                            <path id="Icon_ionic-ios-call" data-name="Icon ionic-ios-call"
+                                d="M23.912,20.163A16.8,16.8,0,0,0,20.4,17.815c-1.052-.505-1.437-.495-2.182.042-.62.448-1.02.864-1.734.708A10.343,10.343,0,0,1,13,15.987,10.269,10.269,0,0,1,10.428,12.5c-.151-.719.266-1.114.708-1.734.536-.745.552-1.13.042-2.182A16.468,16.468,0,0,0,8.829,5.079c-.765-.765-.937-.6-1.359-.448a7.732,7.732,0,0,0-1.244.661A3.754,3.754,0,0,0,4.732,6.87c-.3.64-.64,1.833,1.109,4.947a27.6,27.6,0,0,0,4.852,6.472h0l.005.005.005.005h0a27.707,27.707,0,0,0,6.472,4.853c3.113,1.75,4.306,1.406,4.946,1.109A3.69,3.69,0,0,0,23.7,22.766a7.733,7.733,0,0,0,.661-1.244C24.511,21.1,24.683,20.928,23.912,20.163Z"
+                                transform="translate(-4.49 -4.503)" fill="#f1fef4" />
+                        </svg>
+            
+                        <span>{{ad.seller.phone_number|truncatechars:8}}</span>
+                    </a>
+                </section>
             {% endif %}
         </div>
         {% if item.reviews.all %}
-        <div class="reviews">
-            <h2>Reviews</h2>
+        <div class="info_box" style="margin-top: 1.5rem;">
+            <h2 class="field">Reviews</h2>
             <ul>
                 {{item.ads_set.all}}
                 {% for review in item.reviews.all %}
                 <li>
                     <p>{{review.review}}</p>
-                    <span>-{{review.user}}</span>
+                    <span class="reviewer">-{{review.user}}</span>
                 </li>
                 {% endfor %}
             </ul>
         </div>
         {% endif %}
-   
-        <div class="leave_a_review">
-            <form action="{% url 'products:add_review' %}" method="post">
-                {% csrf_token %}
-                <h3>Leave A Review</h3>
-                <input type="text" name="name" id="" placeholder="Name">
+
+        <section class="review info">
+                <h3 class="field">Leave a Review</h3>
+                <form action="{% url 'products:add_review' %}" method="POST" class="info_box review_box">
+                        {% csrf_token %}
+                    <input type="text" name="name" id="" placeholder="Name (optional)">
                 <input type="hidden" name="product" value={{item.slug}}>
-                <textarea name="review" id="" cols="30" rows="10"></textarea>
-                <input type="submit" value="Submit">
-            </form>
-        </div>
+                    
+                    <textarea name="review" id="" cols="30" rows="10"  placeholder="Your review here.."></textarea>
+                    <input type="submit" value="Submit" class="review_send">
+                </form>
+            </section>
     </div>
 </div>
 <script>
@@ -110,6 +157,33 @@
         opacity: 0;
         pointer-events: none;
     }
+
     /* works */
 </style>
+<script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+    
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+    
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+    
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("slide-cover");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+    
+            slides[slideIndex - 1].style.display = "block";
+        }
+    </script>
 {% endblock content %}
