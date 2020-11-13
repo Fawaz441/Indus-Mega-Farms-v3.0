@@ -10,7 +10,7 @@ from .views import homepage,about
 urlpatterns = [
       path('oginni/', admin.site.urls),                                                               #admin
       path('',homepage,name='home'),     
-      path('ads',include('ads.urls')),                                                                 #homepage
+      path('ads/',include('ads.urls')),                                                                 #homepage
       path('user/',include('users.urls')),                                                            #users
       path('products/',include('products.urls')),                                                     #products
       path('about/',about,name='about'),                                                              #about us
