@@ -70,7 +70,7 @@ def ad_category_detail(request,name):
                 min_price = 0
             if max_price == '':
                 max_price = 0
-            if unpaid:
+            if not unpaid:
                 ad = Ad.objects.create(
                 ad_category = ad_category,
                 seller = request.user.seller,
@@ -83,6 +83,7 @@ def ad_category_detail(request,name):
                 category = prod_category,
                 active = True
                 )
+                ad.save()
                 Product.objects.create(name=ad.name_of_product,
                 price = ad.minimum_price,
                 image = ad.sample_of_product,
