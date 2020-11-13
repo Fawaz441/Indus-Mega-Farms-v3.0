@@ -16,7 +16,8 @@
     <div class="search_bar flex">
         <input type="text" name="search" id="user-input" placeholder="Search For Products Here..">
         <div class="search_icon_cover flex a-cent j_cent">
-            <svg xmlns="http://www.w3.org/2000/svg" width="35.997" height="36.004" viewBox="0 0 35.997 36.004" id="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35.997" height="36.004" viewBox="0 0 35.997 36.004"
+                id="search-icon">
                 <path id="Icon_awesome-search" data-name="Icon awesome-search"
                     d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
                     fill="#fff" />
@@ -28,83 +29,83 @@
     </div>
 </section>
 <section class="ad_categories grid">
-        <a href="{% url 'products:product_categories' slug='PROCESSED_FOOD' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/icecream_ct.svg' %}" alt="">
+    <a href="{% url 'products:product_categories' slug='PROCESSED_FOOD' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/icecream_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Processed Foods</div>
         </div>
-        <div class="category_name">Processed Foods</div>
-    </div>
-</a>
-<a href="{% url 'products:product_categories' slug='CROPS' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/crops_ct.svg' %}" alt="">
+    </a>
+    <a href="{% url 'products:product_categories' slug='CROPS' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/crops_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Crops</div>
         </div>
-        <div class="category_name">Crops</div>
-    </div>
-</a>
-<a href="{% url 'products:product_categories' slug='FARM_MACHINERY' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/tractor_ct.svg' %}" alt="">
+    </a>
+    <a href="{% url 'products:product_categories' slug='FARM_MACHINERY' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/tractor_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Farm Machinery</div>
         </div>
-        <div class="category_name">Farm Machinery</div>
-    </div>
-</a>
-
-<a href="{% url 'products:product_categories' slug='FARM_SERVICES' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/services_ct.svg' %}" alt="">
-        </div>
-        <div class="category_name">Farm Services</div>
-    </div>
     </a>
 
-<a href="{% url 'products:product_categories' slug='FOOD_STUFF' %}">    
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/food_ct.svg' %}" alt="">
+    <a href="{% url 'products:product_categories' slug='FARM_SERVICES' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/services_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Farm Services</div>
         </div>
-        <div class="category_name">Food Stuff</div>
-    </div>
     </a>
 
-<a href="{% url 'products:product_categories' slug='LAND' %}">
-    
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/farm_ct.svg' %}" alt="">
+    <a href="{% url 'products:product_categories' slug='FOOD_STUFF' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/food_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Food Stuff</div>
         </div>
-        <div class="category_name">Lands</div>
-    </div>
     </a>
 
-<a href="{% url 'products:product_categories' slug='LIVESTOCK' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/cow_ct.svg' %}" alt="">
-        </div>
-        <div class="category_name">Livestock</div>
-    </div>
-</a>
-<a href="{% url 'products:product_categories' slug='FRUITS' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image flex a-cent j_cent">
-            <img src="{% static 'svgs/fruit_ct.svg' %}" alt="">
-        </div>
-        <div class="category_name">Fruits</div>
-    </div>
-</a>
+    <a href="{% url 'products:product_categories' slug='LAND' %}">
 
-<a href="{% url 'ads:index' %}">
-    <div class="category flex_col j_cent a-cent">
-        <div class="category_image category_plus flex a-cent j_cent">
-            <span class="add_post"></span>
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/farm_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Lands</div>
         </div>
-        <div class="category_name">Post an Ad</div>
-    </div>
+    </a>
+
+    <a href="{% url 'products:product_categories' slug='LIVESTOCK' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/cow_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Livestock</div>
+        </div>
+    </a>
+    <a href="{% url 'products:product_categories' slug='FRUITS' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'svgs/fruit_ct.svg' %}" alt="">
+            </div>
+            <div class="category_name">Fruits</div>
+        </div>
+    </a>
+
+    <a href="{% url 'ads:index' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image category_plus flex a-cent j_cent">
+                <span class="add_post"></span>
+            </div>
+            <div class="category_name">Post an Ad</div>
+        </div>
     </a>
 </section>
 <section class="popular_ads">
@@ -112,21 +113,21 @@
     <div class="ads grid">
         {% for ad in sup_ads %}
         <a href="{% url 'products:detail' ad.product.slug %}">
-        <div class="ad">
-            <div class="image" style="background: none;">
-                <img src="{{ad.image.url}}" alt="" style="height:100%;width:100%;object-fit:cover;">
-            </div>
-            <div class="ad_dets flex_col" style="color:#000">
-                <p>{{ad.name}}</p>
-                <p class="flex sep">&#8358;{{ad.maximum_price|floatformat:2|intcomma}}
-                    <span class="small flex a-cent">
-                        <img src="svgs/Icon awesome-angle-left.svg" alt="">
+            <div class="ad">
+                <div class="image" style="background: none;">
+                    <img src="{{ad.image.url}}" alt="" style="height:100%;width:100%;object-fit:cover;">
+                </div>
+                <div class="ad_dets flex_col" style="color:#000">
+                    <p>{{ad.name}}</p>
+                    <p class="flex sep">&#8358;{{ad.maximum_price|floatformat:2|intcomma}}
+                        <span class="small flex a-cent">
+                            <img src="svgs/Icon awesome-angle-left.svg" alt="">
 
-                    </span>
-                </p>
+                        </span>
+                    </p>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
         {% endfor %}
     </div>
 </section>
@@ -190,15 +191,25 @@
 
 </script>
 <script>
-    document.querySelector('#user-input').addEventListener('keyup',()=>{
-        event.preventDefault()
+    document.querySelector('#user-input').addEventListener('keyup', () => {
+        if (document.querySelector('#user-input').value == '') {
+            event.preventDefault()
+            console.log('empty search query')
+        }
     })
 
 </script>
 <script src="{% static 'js/popads.js' %}"></script>
 <style>
-    .ad_categories > a{color:#000;}
-    body,html{height:100%;}
+    .ad_categories>a {
+        color: #000;
+    }
+
+    body,
+    html {
+        height: 100%;
+    }
+
     .fresh {
         position: absolute;
         width: 100%;
