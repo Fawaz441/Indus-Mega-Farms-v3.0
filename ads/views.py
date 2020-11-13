@@ -35,6 +35,7 @@ def ad_category_detail(request,name):
     }
     user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
     all_user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
+    context['all_user_ads'] = all_user_ads
     if user_ads_items.exists():
         unpaid = False
         context['unpaid'] = False
@@ -83,7 +84,6 @@ def ad_category_detail(request,name):
                 category = prod_category,
                 active = True
                 )
-                ad.save()
                 Product.objects.create(name=ad.name_of_product,
                 price = ad.minimum_price,
                 image = ad.sample_of_product,
