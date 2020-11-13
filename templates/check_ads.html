@@ -1,7 +1,7 @@
 <div class="popup">
     <h2>Check out our special products today!</h2>
     <p>Ranging from smoothies to ice-creams and lands..</p>
-    <div class="flex" style="justify-content: center;align-items:center;">
+    <div class="flex" style="justify-content: center;align-items:center;flex-direction: column;">
         <a href="{% url 'ads:sponsored_ads' %}" class="view_them_all">Take a Tour</a>
         <a href="#" class="no_thanks">No, thanks</a>
     </div>
@@ -10,7 +10,9 @@
     .no_thanks{
         padding:0.5rem 1rem;
         background:rgb(85, 98, 95);
-        color:#000;
+        color:#fff;
+    border-radius:5px;
+
     }
     .popup{
         background:rgb(12, 80, 63);
