@@ -149,19 +149,20 @@ def sponsoredAds(request):
         'page_obj':page_obj
     }
     failed = ''
-    if parameter != '':
-        results = Product.objects.filter(name__icontains=parameter)
-        if not results.exists():
-            failed = "No products match your search."
-    else:
-        results = ''
-    if request.is_ajax():
-        html = render_to_string(
-            template_name="ads/search_results.html", 
-            context={"results": results,"failed":failed}
-        )
+    if parameter:
+        if parameter != '':
+            results = Product.objects.filter(name__icontains=parameter)
+            if not results.exists():
+                failed = "No products match your search."
+        else:
+            results = ''
+        if request.is_ajax():
+            html = render_to_string(
+                template_name="ads/search_results.html", 
+                context={"results": results,"failed":failed}
+            )
 
-        data_dict = {"html_from_view": html}
+            data_dict = {"html_from_view": html}
 
         return JsonResponse(data=data_dict, safe=False)
 
