@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
@@ -9,8 +10,10 @@
     <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/presets.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loader.css' %}">
     {% block css %}{% endblock css%}
 </head>
+
 <body>
     <div class="backdrop"></div>
     <div class="hidden_mobile">
@@ -34,16 +37,17 @@
         <a href="{% url 'products:order_final' %}"><img src="{% static 'svgs/cart.svg' %}" alt=""></a>
     </nav>
     <nav class="main_nav">
-            <a href="{% url 'home' %}">
+        <a href="{% url 'home' %}">
             <div class="logo">
                 <img src="{% static 'svgs/logo.svg' %}" alt="">
                 <span>Indus-Mega Farms</span>
             </div>
         </a>
         <ul class="nav_list">
-            <li><a href="{% url 'products:order_final' %}" class="nav_a"><img src="{% static 'svgs/cart.svg' %}" alt="cart"></a></li>
+            <li><a href="{% url 'products:order_final' %}" class="nav_a"><img src="{% static 'svgs/cart.svg' %}"
+                        alt="cart"></a></li>
             <li><a href="{% url 'products:products' %}" class="nav_a">IMagrowell</a></li>
-            <li><a href="{% url 'about' %}" class="nav_a">About</a></li>  
+            <li><a href="{% url 'about' %}" class="nav_a">About</a></li>
             {% if not request.user.is_authenticated %}
             <li class="signup_cta"><a class="nav_signup" href="{% url 'users:login' %}">Log in</a></li>
             {% else %}
@@ -70,7 +74,7 @@
                 <!-- <li><a href="">Mission & Vision</a></li> -->
                 <!-- <li><a href="">Terms & Conditions</a></li> -->
             </ul>
-            
+
             <ul>
                 <h4>Contact</h4>
                 <li><a href="https://www.twitter.com/indusmegafarms">Twitter</a></li>
@@ -78,16 +82,16 @@
                 <li><a href="https://wa.me/2349035136650">Whatsapp</a></li>
                 <li><a href="tel:+2349035136650">Mobile</a></li>
             </ul>
-            
+
             <div class="newsletter">
                 <form action="" method="post">
                     <label for="">Sign up for our newsletter:</label>
                     <div class="news_wrapper">
                         <form action="" method="post">
                             {% csrf_token %}
-                        <input type="email" name="news_email" id="" placeholder="Email">
-                        <input type="submit" value="SUBMIT">
-                    </form>
+                            <input type="email" name="news_email" id="" placeholder="Email">
+                            <input type="submit" value="SUBMIT">
+                        </form>
                     </div>
                 </form>
             </div>
@@ -98,21 +102,29 @@
     </div>
     {% endblock footer %}
 </body>
+{% block loader %}
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeee" />
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+            stroke="green" /></svg></div>
+<script src="{% static 'js/loader.js' %}"></script>
+{% endblock loader %}
 
-
-
+<style>
+body,html{height:100%;}
+</style>
 <script>
     var mobile_navbar = document.querySelector(".hidden_mobile");
     var backdrop = document.querySelector(".backdrop");
-    
-    function bring_mobile(){
+
+    function bring_mobile() {
         mobile_navbar.style.top = 0;
-        backdrop.style.display= 'block';
+        backdrop.style.display = 'block';
     }
-    function exit_mobile(){
-        mobile_navbar.style.top="-350px";
-        backdrop.style.display= 'none';
-        
+    function exit_mobile() {
+        mobile_navbar.style.top = "-350px";
+        backdrop.style.display = 'none';
+
     }
 </script>
 

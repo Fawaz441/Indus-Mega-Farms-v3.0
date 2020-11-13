@@ -14,8 +14,15 @@ from .utils import add_to_cart_helper,check_quantity_in_cart
 from users.forms import DeliveryForm
 from indus_mega_farms.utils import newsletter
 from ads.models import Ad,AdCategory
+from django.views.generic import ListView
 
+class ProdCatList(ListView):
+    template_name = 'products/product_cat_list.html'
+    context_object_name = 'products'
+    paginate_by = 20
 
+    def get_queryset(self,*args, **kwargs):
+        return Product.objects.filter(category = self.kwargs['slug'])
 
 
 def products_list(request):
@@ -26,11 +33,11 @@ def products_list(request):
     try:
         processed_foods = Product.objects.filter(category='PROCESSED_FOOD')[:5]
     except:
-        Product.objects.filter(category='PROCESSED_FOOD')
+        processed_foods = Product.objects.filter(category='PROCESSED_FOOD')
     try:
         crops = Product.objects.filter(category='CROPS')[:5]
     except:
-        Product.objects.filter(category='CROPS')
+        crops = Product.objects.filter(category='CROPS')
     try:
         fruits = Product.objects.filter(category='FRUITS')[:5]
     except:
@@ -62,7 +69,11 @@ def products_list(request):
     try:
         lands = Product.objects.filter(category='LAND')[:5]
     except:
-        Product.objects.filter(category='LAND')
+        lands = Product.objects.filter(category='LAND')
+    try:
+        others = Product.objects.filter(category='OTHER')[:5]
+    except:
+        others = Product.objects.filter(category='OTHER')
     context = {
         'processed_foods':processed_foods,
         'crops':crops,
@@ -74,6 +85,7 @@ def products_list(request):
         'farm_services':farm_services,
         'food_stuff':food_stuff,
         'lands':lands,
+        'other':others,
         'total':total_products
     }
     return render(request,'products/product_list.html',context)
@@ -145,6 +157,8 @@ def add_product_review(request):
     product = Product.objects.filter(slug=request.POST.get('product'))[0]
     review = request.POST.get('review')
     name = request.POST.get('name')
+    if name ==  '':
+        name = 'Unknown'
     ProductReview.objects.create(
         review = review,
         user = name,
@@ -208,14 +222,25 @@ def on_payment_received(request,sender,ref,amount,**kwargs):
     if 'ad_category' in request.session.keys():
         category = request.session["ad_category"]
         print(category)
-        ad_category = AdCategory.objects.filter(name=category)
+        ad_category = AdCategory.objects.get(name=category)
         ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
-        for ad in ads:
+        for ad in ads.all():
+            print(ad)
             ad.active = True
+            ad.paid = True
+            if not ad.product:
+                product = Product.objects.create(
+                    name = ad.name_of_product,
+                    price = ad.minimum_price,
+                    image = ad.sample_of_product,
+                    description = ad.description,
+                    category = ad.category
+                )
+                ad.product = product
             ad.save()
-            del request.session["ad_category"]
-            messages.info(request,"Payment successful")
-            return redirect('users:user_home')
+        del request.session["ad_category"]
+        messages.info(request,"Payment successful")
+        return redirect('users:user_home')
 
 @login_required
 def pay_now(request):

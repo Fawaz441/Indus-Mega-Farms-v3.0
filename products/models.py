@@ -38,7 +38,11 @@ class Product(models.Model):
     slug = models.SlugField(blank=True,null=True)
     description = models.CharField(max_length=500)
     category = models.CharField(max_length=40,choices=PRODUCT_CATEGORY)
-
+    image2 = models.ImageField(upload_to='products',blank=True,null=True)
+    image3 = models.ImageField(upload_to='products',blank=True,null=True)
+    image4 = models.ImageField(upload_to='products',blank=True,null=True)
+    image5 = models.ImageField(upload_to='products',blank=True,null=True)
+    image6 = models.ImageField(upload_to='products',blank=True,null=True)
     def __str__(self):
         return self.name
 

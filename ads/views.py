@@ -1,9 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import AdCategory,Seller,Ad
+from .models import AdCategory,Seller,Ad,SponsoredAd
 from .forms import SellerForm
 from products.models import Product
+from django.views.generic import ListView
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
 # View for all the ad_categories
@@ -33,15 +37,16 @@ def ad_category_detail(request,name):
         'amount':str(int(ad_category.cost)),
         'email':request.user.email
     }
-    user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
-    all_user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
-    context['all_user_ads'] = all_user_ads
-    if user_ads_items.exists():
-        unpaid = False
-        context['unpaid'] = False
-    else:
-        context['unpaid']  = True
-        unpaid = True
+    if Seller.objects.filter(user=request.user).exists():
+        user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
+        all_user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
+        context['all_user_ads'] = all_user_ads
+        if user_ads_items.exists() or ad_category.name == 'Free Plan' :
+            unpaid = False
+            context['unpaid'] = False
+        else:
+            context['unpaid']  = True
+            unpaid = True
     if request.method == 'POST':
         if 'details_to_start' in request.POST:
             form = SellerForm(request.POST)
@@ -63,6 +68,8 @@ def ad_category_detail(request,name):
             image = request.FILES.get('product_image')
             description = request.POST.get('description')
             ad_category = get_object_or_404(AdCategory,name=ad_category)
+            ad_category.users.add(request.user)
+            ad_category.save()
             if(negotiable == 'on'):
                 negotiable = True
             else:
@@ -71,7 +78,7 @@ def ad_category_detail(request,name):
                 min_price = 0
             if max_price == '':
                 max_price = 0
-            if not unpaid:
+            if not unpaid or ad_category.name == 'Free Plan':
                 ad = Ad.objects.create(
                 ad_category = ad_category,
                 seller = request.user.seller,
@@ -129,3 +136,34 @@ def create_ad(request):
         image = request.POST.cleaned_data.get('.product_image')
         print(ad_category)
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+def sponsoredAds(request):
+    sup_ads = SponsoredAd.objects.all()
+    paginator = Paginator(sup_ads, 25) # Show 25 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    parameter = request.GET.get("q")
+    context = {
+        'sup_ads':sup_ads,
+        'page_obj':page_obj
+    }
+    failed = ''
+    if parameter:
+        results = Product.objects.filter(name__icontains=parameter)
+        if not results.exists():
+            failed = "No products match your search."
+    else:
+        results = Product.objects.all()
+    if request.is_ajax():
+        html = render_to_string(
+            template_name="ads/search_results.html", 
+            context={"results": results,"failed":failed}
+        )
+
+        data_dict = {"html_from_view": html}
+
+        return JsonResponse(data=data_dict, safe=False)
+
+    return render(request,'ads/sponsoredad.html',context)
+    

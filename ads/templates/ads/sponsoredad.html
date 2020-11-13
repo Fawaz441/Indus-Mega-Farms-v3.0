@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Sponsored Ads{% endblock title%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ads_presets.css' %}">
+<link rel="stylesheet" href="{% static 'css/sponsoredads.css' %}">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+{% endblock css%}
+{% block content %}
+<section class="ads_section flex_col a-cent j-cent">
+    <div>
+        <p class="hero_text">Find Products from top selling brands</p>
+    </div>
+    <div class="search_bar flex">
+        <input type="text" name="search" id="user-input" placeholder="Search For Products Here..">
+        <div class="search_icon_cover flex a-cent j_cent">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35.997" height="36.004" viewBox="0 0 35.997 36.004" id="search-icon">
+                <path id="Icon_awesome-search" data-name="Icon awesome-search"
+                    d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
+                    fill="#fff" />
+            </svg>
+        </div>
+        <div class="fresh">
+            {% include 'ads/search_results.html' %}
+        </div>
+    </div>
+</section>
+<section class="ad_categories grid">
+        <a href="{% url 'products:product_categories' slug='PROCESSED_FOOD' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/icecream_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Processed Foods</div>
+    </div>
+</a>
+<a href="{% url 'products:product_categories' slug='CROPS' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/crops_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Crops</div>
+    </div>
+</a>
+<a href="{% url 'products:product_categories' slug='FARM_MACHINERY' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/tractor_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Farm Machinery</div>
+    </div>
+</a>
+
+<a href="{% url 'products:product_categories' slug='FARM_SERVICES' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/services_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Farm Services</div>
+    </div>
+    </a>
+
+<a href="{% url 'products:product_categories' slug='FOOD_STUFF' %}">    
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/food_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Food Stuff</div>
+    </div>
+    </a>
+
+<a href="{% url 'products:product_categories' slug='LAND' %}">
+    
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/farm_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Lands</div>
+    </div>
+    </a>
+
+<a href="{% url 'products:product_categories' slug='LIVESTOCK' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/cow_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Livestock</div>
+    </div>
+</a>
+<a href="{% url 'products:product_categories' slug='FRUITS' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image flex a-cent j_cent">
+            <img src="{% static 'svgs/fruit_ct.svg' %}" alt="">
+        </div>
+        <div class="category_name">Fruits</div>
+    </div>
+</a>
+
+<a href="{% url 'ads:index' %}">
+    <div class="category flex_col j_cent a-cent">
+        <div class="category_image category_plus flex a-cent j_cent">
+            <span class="add_post"></span>
+        </div>
+        <div class="category_name">Post an Ad</div>
+    </div>
+</section>
+<section class="popular_ads">
+    <h1>Popular Ads</h1>
+    <div class="ads grid">
+        {% for ad in sup_ads %}
+        <div class="ad">
+            <div class="image">
+            </div>
+            <div class="ad_dets flex_col">
+                <p>Lorem, ipsum.</p>
+                <p class="flex sep">Amount here
+                    <span class="small flex a-cent">
+                        <img src="svgs/Icon awesome-angle-left.svg" alt="">
+
+                    </span>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<div class="pagination flex a_cent j_cent" style="margin-top:2rem">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<script>
+    const user_input = $("#user-input")
+    const search_icon = $('#search-icon')
+    const artists_div = $('.fresh')
+    const endpoint = 'http://127.0.0.1:8000/ads/sponsored_ads/'
+    const delay_by_in_ms = 700
+    let scheduled_function = false
+
+    let ajax_call = function (endpoint, request_parameters) {
+        $.getJSON(endpoint, request_parameters)
+            .done(response => {
+                // fade out the artists_div, then:
+                artists_div.fadeTo('slow', 0).promise().then(() => {
+                    // replace the HTML contents
+                    artists_div.html(response['html_from_view'])
+                    // fade-in the div with new contents
+                    artists_div.fadeTo('slow', 1)
+                    // stop animating search icon
+                    search_icon.removeClass('blink')
+                })
+            })
+    }
+
+
+    user_input.on('keyup', function () {
+
+        const request_parameters = {
+            q: $(this).val() // value of user_input: the HTML element with ID user-input
+        }
+
+        // start animating the search icon with the CSS class
+        search_icon.addClass('blink')
+
+        // if scheduled_function is NOT false, cancel the execution of the function
+        if (scheduled_function) {
+            clearTimeout(scheduled_function)
+        }
+
+        // setTimeout returns the ID of the function to be executed
+        scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
+    })
+</script>
+<script src="{% static 'js/popads.js' %}"></script>
+<style>
+    .ad_categories > a{color:#000;}
+    body,html{height:100%;}
+    .fresh {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: -38px;
+    }
+
+    .search_bar {
+        position: relative;
+    }
+</style>
+{% endblock content %}
+{% block js %}
+{% endblock js %}

@@ -44,9 +44,10 @@ class Ad(models.Model):
     category = models.CharField(choices=PRODUCT_CATEGORY,max_length=120)
     product = models.ForeignKey(Product,blank=True,null=True,on_delete=models.SET_NULL)
     view = models.IntegerField(default = 0)
+    fixed_price = models.FloatField(null=True,blank=True)
 
     def __str__(self):
-        return self.seller.user.username
+        return self.name_of_product
 
         
 def set_ending_date(sender, instance, created, **kwargs):
@@ -79,4 +80,23 @@ class Seller(models.Model):
     def __str__(self):
         return self.user.username
 
+class SponsoredAd(models.Model):
+    seller = models.ForeignKey('Seller',on_delete=models.CASCADE,related_name='sponsored_ads',null=True)
+    minimum_price = models.FloatField(null=True,blank=True)
+    maximum_price = models.FloatField(null=True,blank=True)
+    negotiable = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='adverts')
+    image1 = models.ImageField(upload_to='adverts')
+    image2 = models.ImageField(upload_to='adverts')
+    image3 = models.ImageField(upload_to='adverts')
+    image4 = models.ImageField(upload_to='adverts')
+    image5 = models.ImageField(upload_to='adverts')
+    image6 = models.ImageField(upload_to='adverts')
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000,null=True,blank=True)
+    product = models.ForeignKey(Product,blank=True,null=True,on_delete=models.SET_NULL,related_name='sponsored_ad')
+    view = models.IntegerField(default = 0)
+
+    def __str__(self):
+        return self.name
 

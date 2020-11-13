@@ -1,0 +1,27 @@
+{% if results %}
+<ul class="results">
+    {% for result in results %}
+    <li class="result"><a href="{% url 'products:detail' result.slug %}">
+        {{result.name}}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% if failed %}
+<li class="failed">{{failed}}</li>
+{% endif %}
+<style>
+    .results,.failed{
+        background:#fff;
+        border-radius:5px;
+        box-shadow: 1px 2px 4px 2px rgba(204, 204, 204, 0.171);
+        margin-top:0.5rem;
+        list-style: none;
+    }
+    .failed{
+        padding:0.5rem 1rem;
+    }
+.result{
+    padding:0.5rem 0.2rem;
+}
+</style>
