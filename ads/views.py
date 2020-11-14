@@ -91,12 +91,14 @@ def ad_category_detail(request,name):
                 category = prod_category,
                 active = True
                 )
-                Product.objects.create(name=ad.name_of_product,
+                ad_product = Product.objects.create(name=ad.name_of_product,
                 price = ad.minimum_price,
                 image = ad.sample_of_product,
                 description = ad.description,
                 category = ad.category
                 )
+                ad.product = ad_product
+                ad.save()
             else:
                 Ad.objects.create(
                     ad_category = ad_category,
