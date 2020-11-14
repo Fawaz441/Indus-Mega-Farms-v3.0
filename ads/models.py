@@ -42,7 +42,7 @@ class Ad(models.Model):
     paid = models.BooleanField(default=False)
     ending_date = models.DateTimeField(null=True,blank=True)
     category = models.CharField(choices=PRODUCT_CATEGORY,max_length=120)
-    product = models.ForeignKey(Product,blank=True,null=True,on_delete=models.SET_NULL)
+    product = models.ForeignKey(Product,blank=True,null=True,on_delete=models.SET_NULL,related_name='prod_ad')
     view = models.IntegerField(default = 0)
     fixed_price = models.FloatField(null=True,blank=True)
 
