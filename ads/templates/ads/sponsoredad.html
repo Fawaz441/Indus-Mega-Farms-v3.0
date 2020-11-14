@@ -98,6 +98,14 @@
             <div class="category_name">Fruits</div>
         </div>
     </a>
+    <a href="{% url 'products:product_categories' slug='OTHER' %}">
+        <div class="category flex_col j_cent a-cent">
+            <div class="category_image flex a-cent j_cent">
+                <img src="{% static 'images/others.png' %}" alt="" style="height:50px;">
+            </div>
+            <div class="category_name">Others</div>
+        </div>
+    </a>
 
     <a href="{% url 'ads:index' %}">
         <div class="category flex_col j_cent a-cent">

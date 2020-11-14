@@ -56,7 +56,7 @@
         {% endif %}
         <h4 class='flex a-cent j-cent grey'>&#8358;{{item.price|floatformat:2|intcomma}}</h4>
         <!-- rating stars here -->
-        <p class="flex a-cent j-cent">{{item.description}}</p>
+        <p class="flex a-cent j-cent info_box">{{item.description}}</p>
         <div class="actions flex a-cent j-cent">
             {% if not is_an_ad %}
             <input type="hidden" name="item" value="{{item.slug}}" class="product_slug">

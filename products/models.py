@@ -32,10 +32,10 @@ class CompanyOrder(models.Model):
 
 # Product
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=1000)
     price = models.FloatField()
     image = models.ImageField(upload_to='products')
-    slug = models.SlugField(blank=True,null=True)
+    slug = models.SlugField(blank=True,null=True,max_length=500)
     description = models.TextField()
     category = models.CharField(max_length=40,choices=PRODUCT_CATEGORY)
     image2 = models.ImageField(upload_to='products',blank=True,null=True)
