@@ -36,7 +36,7 @@ class Product(models.Model):
     price = models.FloatField()
     image = models.ImageField(upload_to='products')
     slug = models.SlugField(blank=True,null=True)
-    description = models.CharField(max_length=500)
+    description = models.TextField()
     category = models.CharField(max_length=40,choices=PRODUCT_CATEGORY)
     image2 = models.ImageField(upload_to='products',blank=True,null=True)
     image3 = models.ImageField(upload_to='products',blank=True,null=True)
