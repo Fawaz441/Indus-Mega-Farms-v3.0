@@ -57,14 +57,14 @@
             <div class="row d-md-flex align-items-center justify-content-center">
                 <div class="col-lg-10">
                     <div class="row d-md-flex align-items-center">
-                        <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+                        <!-- <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
                             <div class="block-18">
                                 <div class="text">
                                     <strong class="number" data-number="20">0</strong>
                                     <span>Years of Experience</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
                             <div class="block-18">
                                 <div class="text">
@@ -440,9 +440,8 @@
                         </div>
                     </a>
                     {% endfor %}
-                    <a href="#" class="btn-more">View All</a>
+                    <a href="{% url 'products:product_categories' slug='LAND' %}" class="btn-more">View All</a>
                 </div>
-                <a href="{% url 'products:product_categories' slug='LAND' %}" class="btn-more">View All</a>
                 
                 {% endif %}
 

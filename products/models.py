@@ -47,7 +47,8 @@ class Product(models.Model):
         return self.name
 
     def save(self,*args, **kwargs):
-        self.slug = slugify(self.name)
+        slug_string = f"{self.id}{self.name}"
+        self.slug = slugify(slug_string)
         super().save(*args, **kwargs)
 
 
