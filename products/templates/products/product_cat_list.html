@@ -20,7 +20,7 @@
                 <span>&#8358;{{product.price|floatformat:2|intcomma}}</span>
             </h2>
             <p>
-                {{product.description}}
+                {{product.description|truncatechars:50}}
             </p>
             <!-- <div class="tags flex">
                 <span class="tag">A</span>
