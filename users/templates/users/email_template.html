@@ -1,24 +1,4 @@
-{% load inlinecss %}
-{% inlinecss "css/email.css" %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset</title>
-</head>
-
-<body>
-    <div class="container">
-        <p>Click the link below to reset your password</p>
-        <span
-            class="link">{{protocol}}://{{domain}}{% url 'users:password_reset_confirm' uidb64=uid token=token %}</span>
-        <p class="disclaimer">
-            If clicking the link doesn't work, try copying and pasting the link in a new browser window
-        </p>
-        <span class="end_tag">The Indus-Mega Farms Tech Team.</span>
-    </div>
-</body>
-</html>
-{% endinlinecss %}
+    Click the link below to reset your password
+    {{protocol}}://{{domain}}{% url 'users:password_reset_confirm' uidb64=uid token=token %}
+    If clicking the link doesn't work, try copying and pasting the link in a new browser window
+    The Indus-Mega Farms Tech Team.
