@@ -62,13 +62,16 @@ class Product(models.Model):
 
 # Ordered Products
 class OrderedProduct(models.Model):
-    item = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True,related_name='in_cart')  ##remember to set null#
+    item = models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True,related_name='in_cart')  ##remember to set null#
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     quantity = models.IntegerField(default=0)
 
     def get_normal_total_price(self):
-        return self.item.price * self.quantity
+        if self.item is not None:
+            return self.item.price * self.quantity
+        else:
+            return 0
     
 
     def get_final_price(self):
