@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'account',
     'storages',
     'paystack',
+    'django_inlinecss'
 ]
 
 
