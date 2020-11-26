@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'account',
     'storages',
     'paystack',
-    'django_inlinecss'
+    'django_inlinecss',
+    'i_competitions'
 ]
 
 
