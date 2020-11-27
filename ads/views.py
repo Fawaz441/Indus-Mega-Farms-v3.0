@@ -148,7 +148,8 @@ def sponsoredAds(request):
     parameter = request.GET.get("q")
     context = {
         'sup_ads':sup_ads,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'title':'Indus-Mega Farms'
     }
     failed = ''
     if parameter:
