@@ -6,10 +6,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from .views import homepage,about
+from ads.views import ad_categories_view
 
 urlpatterns = [
       path('oginni/', admin.site.urls),                                                               #admin
-      path('',homepage,name='home'),     
+      path('',ad_categories_view,name='home'),     
       path('ads/',include('ads.urls')),                                                                 #homepage
       path('user/',include('users.urls')),                                                            #users
       path('products/',include('products.urls')),                                                     #products
