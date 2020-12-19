@@ -2,4 +2,4 @@
 media/
 static/
 db.sqlite3
-indus_mega_farms/settings/*
+venv

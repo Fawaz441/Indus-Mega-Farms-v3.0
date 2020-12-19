@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="wrapper special">
+        <h1 class="main_title">Blog</h1>
+        <div class="contents">
+            {% for post in posts %}
+            <div class="content">
+                <div class="image">
+                    <img src={{post.header_image.url}} alt="">
+                </div>
+                <div class="details">
+                    <div class="date">{{ post.published_date|date:"D d M Y" }}</div>
+                    <h5 class="title">{{post.title}}</h5>
+                    <div class="cta">
+                        <a href="{% url 'blog:detail' post.slug %}" class="read_more">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        list-style: none;
+        font-family: Montserrat;
+    }
+
+    body,html{
+        background:#f1fef4;
+    }
+    .wrapper {
+        padding: 1rem 50px;
+    }
+
+    .wrapper.special .contents {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .wrapper.special .date {
+        color: rgb(133, 129, 129);
+    }
+
+    .wrapper.special .title {
+        margin: 0.5rem 0;
+    }
+
+    .wrapper .special .read_more {
+        font-size: 0.8rem;
+    }
+
+    .wrapper .special .image {
+        height: 250px;
+        width: 300px;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 20px 5px 60px #d9d9d950,
+            -20px -5px 60px #ffffff;
+    }
+
+    .wrapper .special .image img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        transition: 0.4s ease;
+    }
+
+    .wrapper .special .image img:hover {
+        transform: scale(1.1)
+    }
+
+    .wrapper.special .cta a {
+        color: #000;
+    }
+
+    .wrapper.special .main_title {
+        color: #000;
+    }
+
+    .wrapper.special .details {
+        margin-top: 1rem;
+    }
+
+    @media(max-width:1200px) {
+        .wrapper.special .contents {
+            grid-template-columns: repeat(3, 1fr)
+        }
+    }
+
+    @media screen and (max-width: 1027px) {
+        .wrapper.special .contents {
+            grid-template-columns: repeat(2, 1fr)
+        }
+    }
+
+    @media screen and (max-width:693px) {
+        .wrapper.special .wrapper {
+            padding: 1rem 20px;
+        }
+
+        .wrapper.special .contents {
+            grid-template-columns: 1fr;
+        }
+
+        .wrapper.special .details h2 {
+            font-size: 1.2rem;
+        }
+
+        .wrapper.special .image {
+            height: 200px;
+        }
+
+        .wrapper.special .main_title {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+{% endblock content %}

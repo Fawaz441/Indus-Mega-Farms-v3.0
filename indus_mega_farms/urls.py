@@ -9,6 +9,7 @@ from .views import homepage,about
 from ads.views import sponsoredAds
 
 urlpatterns = [
+      # path('competitions/',include('i_competitions.urls'))                                              #competitions
       path('oginni/', admin.site.urls),                                                               #admin
       path('',sponsoredAds,name='home'),     
       path('ads/',include('ads.urls')),                                                                 #homepage
@@ -18,9 +19,9 @@ urlpatterns = [
       url(r"^referrals/", include("pinax.referrals.urls", namespace="pinax_referrals")),              #pinax referrals
       url(r"^account/", include("account.urls")),                                                     #django-user-accounts(for pinax to work smoothly)
       path('paystack',include(('paystack.urls','paystack'),namespace='paystack')),                    #paystack
-      # path('competitions/',include('i_competitions.urls'))                                              #competitions
+      path('blog/',include('blog.urls')),                   
 ]
 
-# if settings.DEBUG:
-urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+      urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

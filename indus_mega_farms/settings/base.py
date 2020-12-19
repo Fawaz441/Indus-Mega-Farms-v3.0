@@ -22,7 +22,8 @@ INSTALLED_APPS = [
     'storages',
     'paystack',
     'django_inlinecss',
-    'i_competitions'
+    'i_competitions',
+    'blog'
 ]
 
 
@@ -121,3 +122,5 @@ STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR,'static'),
 )
+
+# s3 stuff

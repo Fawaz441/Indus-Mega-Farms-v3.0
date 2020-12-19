@@ -2,10 +2,14 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from mode import dev
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'indus_mega_farms.settings.prod')
+    if dev:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'indus_mega_farms.settings.dev')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'indus_mega_farms.settings.prod')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

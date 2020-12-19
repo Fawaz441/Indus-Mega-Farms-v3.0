@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="wrapper special">
+    <h3 style="font-weight: 400;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, atque?</h3>
+    <div class="date-space">
+        <div><span>Aisha jane</span>
+            <section>27th January 2020</section>
+        </div>
+    </div>
+    <div class="content">
+        <div class="header_image">
+
+        </div>
+        {% for paragraph in post.paragraphs.all %}
+        <p>
+            {{paragraph.content}}
+        </p>
+        {% endfor %}
+    </div>
+</div>
+</body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        list-style: none;
+        font-family: Montserrat;
+    }
+
+    .wrapper.special {
+        padding: 1rem 50px;
+        margin: auto;
+        max-width: 800px;
+    }
+
+    .wrapper.special .content {
+        margin: 1rem 0;
+    }
+
+    .wrapper.special .content p {
+        line-height: 1.6rem;
+        margin: 1rem 0;
+        color: rgb(112, 109, 109);
+    }
+
+    .wrapper.special .date-space {
+        display: flex;
+        margin-left: auto;
+        color: rgb(92, 86, 86);
+    }
+
+    .wrapper.special .date-space div {
+        margin-left: auto;
+    }
+
+    .wrapper.special .date-space span {
+        font-style: italic;
+        font-size: 0.9rem;
+        margin-right: 1rem;
+    }
+
+    .wrapper.special .date-space section {
+        font-size: 0.8rem;
+        display: inline-block;
+    }
+
+    .wrapper.special .header_image {
+        height: 300px;
+        background-position: center;
+        background-size: cover;
+    }
+
+    @media screen and (max-width:693px) {
+        .wrapper.special .header_image {
+            height: 200px;
+        }
+
+        .wrapper.special .date-space div {
+            margin-left: 0;
+        }
+
+        .wrapper.special {
+            padding: 1rem 20px;
+        }
+    }
+</style>
+{% endblock content %}
