@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="wrapper special">
-    <h3 style="font-weight: 400;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, atque?</h3>
+    <h3 style="font-weight: 400;">{{post.title}}</h3>
     <div class="date-space">
-        <div><span>Aisha jane</span>
-            <section>27th January 2020</section>
+        <div><span>{{post.author}}</span>
+            <section>{{ post.published_date|date:"D d M Y" }}</section>
         </div>
     </div>
     <div class="content">
-        <div class="header_image">
+    <div class="header_image" style="background:url({{post.header_image.url}})">
 
         </div>
         {% for paragraph in post.paragraphs.all %}
@@ -69,6 +69,7 @@
         height: 300px;
         background-position: center;
         background-size: cover;
+        background-repeat: no-repeat;
     }
 
     @media screen and (max-width:693px) {
