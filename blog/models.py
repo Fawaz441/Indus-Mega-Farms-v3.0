@@ -11,7 +11,7 @@ class Paragraph(models.Model):
 class Post(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.CharField(max_length=120)
-    header_image = models.ImageField(upload_to='blog',blank=True,null=True,)
+    header_image = models.ImageField(blank=True,null=True,upload_to='blog')
     title = models.CharField(max_length=300,unique=True)
     slug = models.SlugField(max_length=1000,blank=True,null=True,unique=True)
     
