@@ -6,9 +6,9 @@ from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 if dev:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drat.settings.dev')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'indus_mega_farms.settings.dev')
 else:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drat.settings.prod')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'indus_mega_farms.settings.prod')
 
 app = Celery('indus_mega_farms')
 
