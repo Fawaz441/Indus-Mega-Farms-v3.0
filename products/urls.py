@@ -9,7 +9,7 @@ app_name = 'products'
 
 urlpatterns = [
     path('',products_list,name='products'),
-    path('test/<slug>',ProdCatList.as_view(),name='product_categories'),
+    path('product-category/<slug>',ProdCatList.as_view(),name='product_categories'),
     path('add_review',add_product_review,name='add_review'),                                                 #Products
     # path('well',stranger_products,name='stranger'),                                         #products for strangers
     path('<slug>/',product_detail,name='detail'),                                  #proposed detail view for products

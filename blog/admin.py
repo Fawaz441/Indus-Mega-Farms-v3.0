@@ -1,13 +1,8 @@
 from django.contrib import admin
-from .models import Post,Paragraph
+from django_summernote.admin import SummernoteModelAdmin
+from .models import Post
 
-class ParagraphInline(admin.TabularInline):
-    model = Paragraph
-    extra = 30
-    # max_num = 30
+class PostAdmin(SummernoteModelAdmin):
+    summernote_fields = ('content',)
 
-class PostAdmin(admin.ModelAdmin):
-    inlines = [ParagraphInline,]
-
-admin.site.register(Post,PostAdmin)
-admin.site.register(Paragraph)
+admin.site.register(Post, PostAdmin)

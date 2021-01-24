@@ -23,8 +23,12 @@ INSTALLED_APPS = [
     'paystack',
     'django_inlinecss',
     'i_competitions',
-    'blog'
+    'blog',
+    'django_summernote'
 ]
+
+# for django summernote
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 MIDDLEWARE = [

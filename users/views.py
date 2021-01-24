@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model,login,authenticate
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect,reverse,render,Http404
-from django.dispatch import receiver
 
 
 from pinax.referrals.models import Referral

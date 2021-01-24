@@ -135,7 +135,7 @@ def create_ad(request):
         fixed_price = request.POST.cleaned_data.get('fixed_price')
         min_price = request.POST.cleaned_data.get('minimum_price')
         max_price = request.POST.cleaned_data.get('maximum_price')
-        image = request.POST.cleaned_data.get('.product_image')
+        image = request.POST.cleaned_data.get('product_image')
         print(ad_category)
         return redirect(request.META.get('HTTP_REFERER'))
 

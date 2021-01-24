@@ -11,11 +11,7 @@
     <div class="header_image" style="background-image:url({{post.header_image.url}})">
 
         </div>
-        {% for paragraph in post.paragraphs.all %}
-        <p>
-            {{paragraph.content}}
-        </p>
-        {% endfor %}
+        {{post.content|safe}}
     </div>
 </div>
 </body>

@@ -54,19 +54,22 @@ def set_ending_date(sender, instance, created, **kwargs):
     if created:
         duration = instance.ad_category.validity
         if(duration == '180 days'):
-            instance.ending_date = instance.created_date + timezone.timedelta(days=180)
+            instance.ending_date = timezone.now() + timezone.timedelta(days=180)
         elif(duration == '14 days'):
-            instance.ending_date = instance.created_date + timezone.timedelta(days=14)
+            instance.ending_date = timezone.now() + timezone.timedelta(days=14)
         elif(duration == '7 days'):
-            instance.ending_date = instance.created_date + timezone.timedelta(days=7)
+            instance.ending_date = timezone.now() + timezone.timedelta(days=7)
         elif(duration == '21 days'):
-            instance.ending_date = instance.created_date + timezone.timedelta(days=21)
+            instance.ending_date = timezone.now() + timezone.timedelta(days=21)
         elif(duration == '31 days'):
-            instance.ending_date = instance.created_date + timezone.timedelta(days=31)
+            instance.ending_date = timezone.now() + timezone.timedelta(days=31)
         elif(duration == '92 days'):
-            instance.ending_date = instance.created_date + timezone.timedelta(days=92)
+            instance.ending_date = timezone.now() + timezone.timedelta(days=92)
         instance.save()
 post_save.connect(set_ending_date,sender=Ad)
+
+
+
 
 
 # Seller account
