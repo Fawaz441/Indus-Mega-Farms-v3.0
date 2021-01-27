@@ -26,7 +26,7 @@
             {% endif %}
             <li><a href="{% url 'products:products' %}">Agrowell</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'blog:list' %}" class="nav_a">Blog</a></li>
+            <li><a href="{% url 'blog:list' %}">Blog</a></li>
             {% if request.user.is_authenticated %}
             <li><a href="{% url 'users:user_home' %}">Dashboard</a></li>
             <li><a href="{% url 'users:logout' %}">Logout</a></li>
