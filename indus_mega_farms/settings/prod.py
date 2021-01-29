@@ -17,7 +17,7 @@ SECURE_SSL_REDIRECT = True
 WSGI_APPLICATION = 'indus_mega_farms.wsgi.prod.application'
 
 
-# Database
+
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
