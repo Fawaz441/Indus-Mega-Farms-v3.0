@@ -294,7 +294,7 @@
                     <div class="heading-menu text-center ftco-animate">
                         <h3>Farm Tools</h3>
                     </div>
-                    {% for tool in farm_tools %}
+                    {% for item in farm_tools %}
                     <a href="{% url 'products:detail' item.slug %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
