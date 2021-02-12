@@ -15,6 +15,9 @@ class Post(models.Model):
     title = models.CharField(max_length=300,unique=True)
     slug = models.SlugField(max_length=1000,blank=True,null=True,unique=True)
     content = models.TextField(blank=True,null=True)
+
+    class Meta:
+        ordering = ['-published_date']
     
     def __str__(self):
         return self.title
