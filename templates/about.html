@@ -1,20 +1,66 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}About Indus-Mega Farms{% endblock %}
-{%block content %}
-    <link rel="stylesheet" href="{% static 'css/about.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/presets.css' %}">
-<div class="about_container" style="width:auto;">
-    <h1>About <span style="color:green">Indus-Mega Farms</span></h1>
-    <p>
-        Founded in 2019, Indus-Mega Farms is a gap-bridger between 
-        industrial markets and small farms. We encourage both small and large holder farmers to produce better by
-        creating a working zero-waste/funding farming system in Nigeria. We also have built platforms to make agriculture attractive
-        to young minds in Nigerian universities.
+{% extends 'base.html' %} {% load static %} {% block title %}About Indus-Mega
+Farms{% endblock %} {%block content %}
+<link rel="stylesheet" href="{% static 'css/about.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/presets.css' %}" />
+<style>
+  .spaced {
+    padding-bottom: 0.3rem;
+  }
+  .concrete {
+    display: block;
+    font-weight: 500;
+  }
 
-    </p>
+  ol{
+      padding-left: 1rem;
+  }
+
+  @media(max-width:500px){
+      .about_container{
+          margin-bottom: 200px;
+      }
+  }
+</style>
+<div class="about_container" style="width:auto;">
+  <h1>About <span style="color:green">Indus-Mega Farms</span></h1>
+  <br />
+  <span class="white concrete spaced">
+    Vision:
+  </span>
+
+  <span class="white">
+    “Making Agriculture better and attractive in Africa.”
+  </span>
+  <br />
+  <br />
+  <span class="white spaced concrete">Missions:</span>
+  <ol>
+    <li class="white spaced">
+      We help farmers sell their products on time by connecting them to a larger
+      market.
+    </li>
+    <li class="white spaced">
+      We also produce, aggregate, process, and package agroproducts for sell.
+    </li>
+    <li class="white spaced">
+      We build creative platforms to engage youths in agro-related adventures.
+    </li>
+  </ol>
+  <br />
+  <span class="white spaced concrete">Core Values:</span>
+  <span class="white">
+    Creative, smart, dynamic, pragmatic, innovative and flexible.
+  </span>
+  <br />
+  <br />
+  <span class="white concrete spaced">Concept note: </span>
+  <span class="white" style="line-height: 150%;">
+    "Founded in 2019, Indus-Mega Farms is a gap-bridger between industrial<br />
+    markets and farms in Nigeria. We encourage both small and large holder<br />
+    farmers to produce better by creating an enabling working evironment with<br />
+    zero-waste/funding farming system on ground. We also have built creative<br />
+    platforms to engage youths in agro-related adventures."
+  </span>
 </div>
 
 {% endblock %}
-
-   
