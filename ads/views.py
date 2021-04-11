@@ -1,13 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import AdCategory,Seller,Ad,SponsoredAd
+from .models import AdCategory,Seller,Ad,AdDetails
 from .forms import SellerForm
-from products.models import Product
-from django.views.generic import ListView
+from products.models import Product,ProductImage
+from django.views.generic import ListView,View
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from utils.functions import generate_product_code
+from django.conf import settings
+
 
 
 # View for all the ad_categories
@@ -26,16 +29,20 @@ def ad_category_detail(request,name):
     form = SellerForm()
     seller_query = Seller.objects.filter(user=request.user)
     if seller_query.exists():
-        has_seller = True
+        is_seller = True
     else:
-        has_seller = False
+        is_seller = False
     ad_category = get_object_or_404(AdCategory,name=name)
+    is_not_free = True
+    if (name=='FREE'):
+        is_not_free = False
     context = {
         'title':ad_category.name,
         'ad_category':ad_category,
-        'has_seller':has_seller,
+        'is_seller':is_seller,
         'amount':str(int(ad_category.cost)),
-        'email':request.user.email
+        'email':request.user.email,
+        'is_not_free':is_not_free
     }
     if Seller.objects.filter(user=request.user).exists():
         user_ads_items = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller,paid=True)
@@ -49,71 +56,29 @@ def ad_category_detail(request,name):
             unpaid = True
     if request.method == 'POST':
         if 'details_to_start' in request.POST:
-            form = SellerForm(request.POST)
-            seller_form = form.save(commit=False)
-            seller_form.user = request.user
-            if has_seller:
-                messages.info(request,'You already have your seller info registered.')
-                return redirect('users:user_home')
-            seller_form.save()
-            return redirect(request.META.get('HTTP_REFERER'))
-        else:
-            prod_category = request.POST.get('product_category')
-            ad_category = request.POST.get('ad_category')
-            product_name = request.POST.get('product_name')
-            negotiable = request.POST.get('negotiable')
-            fixed_price = request.POST.get('fixed_price')
-            min_price = request.POST.get('minimum_price')
-            max_price = request.POST.get('maximum_price')
-            image = request.FILES.get('product_image')
-            description = request.POST.get('description')
-            ad_category = get_object_or_404(AdCategory,name=ad_category)
-            ad_category.users.add(request.user)
-            ad_category.save()
-            if(negotiable == 'on'):
-                negotiable = True
+            print(request.POST)
+            if not request.POST.get('phone_number').startswith('+'):
+                messages.error(request,'Phone number must start with country code')
+                return redirect(request.META['HTTP_REFERER'])
+                
+            if not request.POST.get('whatsapp_number').startswith('+'):
+                messages.error(request,'Whatsapp number must start with country code')
+                return redirect(request.META['HTTP_REFERER'])
             else:
-                negotiable = False
-            if min_price == '':
-                min_price = 0
-            if max_price == '':
-                max_price = 0
-            if not unpaid or ad_category.name == 'Free Plan':
-                ad = Ad.objects.create(
-                ad_category = ad_category,
-                seller = request.user.seller,
-                minimum_price = min_price,
-                maximum_price = max_price,
-                sample_of_product = image,
-                name_of_product = product_name,
-                negotiable = negotiable,
-                description = description,
-                category = prod_category,
-                active = True
-                )
-                ad_product = Product.objects.create(name=ad.name_of_product,
-                price = ad.minimum_price,
-                image = ad.sample_of_product,
-                description = ad.description,
-                category = ad.category
-                )
-                ad.product = ad_product
-                ad.save()
-            else:
-                Ad.objects.create(
-                    ad_category = ad_category,
-                    seller = request.user.seller,
-                    minimum_price = min_price,
-                    maximum_price = max_price,
-                    sample_of_product = image,
-                    name_of_product = product_name,
-                    negotiable = negotiable,
-                    description = description,
-                    category = prod_category,
-                    active = False
-                )
-            return redirect(request.META.get('HTTP_REFERER'))
-  
+                form = SellerForm(request.POST)
+                if form.is_valid():
+                    seller_form = form.save(commit=False)
+                    seller_form.user = request.user
+                    if is_seller:
+                        messages.info(request,'You already have your seller info registered.')
+                        return redirect(request.META['HTTP_REFERER'])
+                    seller_form.save()
+                    messages.info(request,'Seller info registered.')
+                    return redirect(request.META['HTTP_REFERER'])
+                else:
+                    messages.info(request,'Error filling form.')
+                    return redirect(request.META['HTTP_REFERER'])
+
     # if request.user in ad_category.users.all():
     try:
         user_ads = Ad.objects.filter(ad_category=ad_category,seller=request.user.seller)
@@ -129,27 +94,42 @@ def ad_category_detail(request,name):
 
 def create_ad(request):
     if request.method == 'POST':
-        ad_category = request.POST.cleaned_data.get('ad_category')
-        product_name = request.POST.cleaned_data.get('product_name')
-        negotiable = request.POST.cleaned_data.get('negotiable')
-        fixed_price = request.POST.cleaned_data.get('fixed_price')
-        min_price = request.POST.cleaned_data.get('minimum_price')
-        max_price = request.POST.cleaned_data.get('maximum_price')
-        image = request.POST.cleaned_data.get('product_image')
-        print(ad_category)
+        product_category = request.POST.get('product_category')
+        ad_category = request.POST.get('ad_category')
+        product_name = request.POST.get('product_name')
+        negotiable = request.POST.get('negotiable')
+        fixed_price = request.POST.get('fixed_price')
+        price = request.POST.get('price')
+        images = request.FILES.getlist('product_images')
+        description = request.POST.get('description')
+        negotiable = (negotiable == 'on')
+        new_product = Product.objects.create(
+            name=product_name,
+            price = price,
+            description = description,
+            category = product_category,
+            is_ad = True
+            )
+        for image in images:
+            ProductImage.objects.create(image=image,product=new_product)
+        Ad.objects.create(
+            ad_category = AdCategory.objects.get(name=ad_category),
+            seller = request.user.seller,
+            negotiable = negotiable,
+            product = new_product
+            )
         return redirect(request.META.get('HTTP_REFERER'))
 
 
-def sponsoredAds(request):
-    sup_ads = SponsoredAd.objects.all()
-    paginator = Paginator(sup_ads, 25) # Show 25 contacts per page.
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+def Ads(request):
+    # paginator = Paginator(sup_ads, 25) # Show 25 contacts per page.
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
     parameter = request.GET.get("q")
     context = {
-        'sup_ads':sup_ads,
-        'page_obj':page_obj,
-        'title':'Indus-Mega Farms'
+        # 'page_obj':page_obj,
+        'title':'Indus-Mega Farms',
+        'ADS_URL':settings.ADS_URL
     }
     failed = ''
     if parameter:
@@ -169,5 +149,24 @@ def sponsoredAds(request):
 
         return JsonResponse(data=data_dict, safe=False)
 
-    return render(request,'ads/sponsoredad.html',context)
+    return render(request,'ads/ads.html',context)
     
+
+
+class AdDetailCreate(View):
+    def post(self,request):
+        ad_id = request.POST.get('ad_id')
+        ad = Ad.objects.get(id=int(ad_id))
+        labels = []
+        values = []
+        for i in request.POST:
+            if i.startswith('label'):
+                labels.append(request.POST[i])
+            if i.startswith('value'):
+                values.append(request.POST[i])
+        for (label,value) in zip(labels,values):
+            AdDetails.objects.create(ad=ad,label=label,value=value)
+                
+
+
+        return JsonResponse({},status=200)

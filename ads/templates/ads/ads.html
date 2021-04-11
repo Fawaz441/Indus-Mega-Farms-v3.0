@@ -116,6 +116,7 @@
         </div>
     </a>
 </section>
+{% comment %}
 <section class="popular_ads">
     <h1>Popular Ads</h1>
     <div class="ads grid">
@@ -139,6 +140,8 @@
         {% endfor %}
     </div>
 </section>
+{% endcomment %}
+{% comment %}
 <div class="pagination flex a_cent j_cent" style="margin-top:2rem">
     <span class="step-links">
         {% if page_obj.has_previous %}
@@ -156,11 +159,12 @@
         {% endif %}
     </span>
 </div>
+{% endcomment %}
 <script>
     const user_input = $("#user-input")
     const search_icon = $('#search-icon')
     const artists_div = $('.fresh')
-    const endpoint = 'https://www.indusmegafarms.com/ads/sponsored_ads/'
+    const endpoint = '{{ADS_URL}}'
     const delay_by_in_ms = 700
     let scheduled_function = false
 
@@ -181,19 +185,19 @@
 
 
     user_input.on('keyup', function () {
-        if($(this).val() != ''){
+        if ($(this).val() != '') {
             const request_parameters = {
                 q: $(this).val() // value of user_input: the HTML element with ID user-input
             }
-    
+
             // start animating the search icon with the CSS class
             search_icon.addClass('blink')
-    
+
             // if scheduled_function is NOT false, cancel the execution of the function
             if (scheduled_function) {
                 clearTimeout(scheduled_function)
             }
-    
+
             // setTimeout returns the ID of the function to be executed
             scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
         }
@@ -201,11 +205,11 @@
 
 </script>
 <script>
-document.querySelector('#user-input').addEventListener('keyup',() => {
-    if(document.querySelector('#user-input').value == ''){
-        document.querySelector('.results').style.display = 'none'
-    }
-})
+    document.querySelector('#user-input').addEventListener('keyup', () => {
+        if (document.querySelector('#user-input').value == '') {
+            document.querySelector('.results').style.display = 'none'
+        }
+    })
 </script>
 <script src="{% static 'js/popads.js' %}"></script>
 <style>

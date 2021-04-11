@@ -1,8 +1,19 @@
+import random
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 
+def checkExistenceOfCode(code):
+    return Product.objects.filter(code=code).exists()
+
+def generate_product_code():
+    code = ''
+    for x in range(16):
+        code+=str(random.randrange(9))
+    if checkExistenceOfCode(code):
+        return generate_product_code()
+    return code
 # Create your models here.
 
 PRODUCT_CATEGORY = (
@@ -30,33 +41,49 @@ class CompanyOrder(models.Model):
     total_price = models.FloatField()
     expected_delivery_date = models.DateField()
 
+
+
+
 # Product
 class Product(models.Model):
     name = models.CharField(max_length=1000)
+    code = models.CharField(max_length=1000,null=True,blank=True)
     price = models.FloatField()
-    image = models.ImageField(upload_to='products')
-    slug = models.SlugField(blank=True,null=True,max_length=500)
     description = models.TextField()
     category = models.CharField(max_length=40,choices=PRODUCT_CATEGORY)
-    image2 = models.ImageField(upload_to='products',blank=True,null=True)
-    image3 = models.ImageField(upload_to='products',blank=True,null=True)
-    image4 = models.ImageField(upload_to='products',blank=True,null=True)
-    image5 = models.ImageField(upload_to='products',blank=True,null=True)
-    image6 = models.ImageField(upload_to='products',blank=True,null=True)
+    is_ad = models.BooleanField(default=False)
+    ad_payment_settled = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now=True)
+
+    def save(self,*args,**kwargs):
+        self.code = generate_product_code()
+        super().save(*args,**kwargs)
+
+
     def __str__(self):
         return self.name
 
-    def save(self,*args, **kwargs):
-        slug_string = f"{self.id}{self.name}"
-        self.slug = slugify(slug_string)
-        super().save(*args, **kwargs)
-
-
     def detail(self):
-        return reverse('products:detail',kwargs={'slug':self.slug})
+        return reverse('products:detail',kwargs={'slug':self.code})
 
     def get_price(self):
         return self.price
+
+    @property
+    def image(self):
+        if ProductImage.objects.filter(product=self).exists():
+            return ProductImage.objects.filter(product=self).first().image
+        return None
+
+    @property
+    def images(self):
+        if ProductImage.objects.filter(product=self).exists():
+            return ProductImage.objects.filter(product=self)
+
+
+class ProductImage(models.Model):
+    image = models.ImageField(upload_to='products')
+    product = models.ForeignKey(Product,related_name='images',on_delete=models.CASCADE)
 
 
 

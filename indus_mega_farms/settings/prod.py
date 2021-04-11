@@ -58,3 +58,4 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 django_heroku.settings(locals(),staticfiles=False)
 # del DATABASES['default']['OPTIONS']['sslmode']
 
+ADS_URL = 'https://www.indusmegafarms.com/ads/ads/'

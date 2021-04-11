@@ -1,59 +1,53 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load humanize %}
-{% block title %}{{title}} {% endblock %}
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/product_cat_list.css' %}">
-<link rel="stylesheet" href="{% static 'css/presets.css' %}">
-{% endblock css%}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% load humanize %} {% block title%}
+{{title}} {% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/product_cat_list.css' %}" />
+<link rel="stylesheet" href="{% static 'css/presets.css' %}" />
+{% endblock css%} {% block content %}
 <div class="ads_wrapper">
     {% for product in products %}
-    <a href="{% url 'products:detail' product.slug %}">
-    <div class="ad flex">
-        <div class="ad_image">
-            <img src="{{product.image.url}}" alt="">
-        </div>
-        <div class="ad_main">
-            <h2 class="flex">
-                <span>{{product.name}}</span>
-                <span>&#8358;{{product.price|floatformat:2|intcomma}}</span>
-            </h2>
-            <p>
-                {{product.description|truncatechars:50}}
-            </p>
-            <!-- <div class="tags flex">
+    <a href="{% url 'products:detail' product.code %}">
+        <div class="ad flex">
+            <div class="ad_image">
+                <img src="{{product.image.url}}" alt="" />
+            </div>
+            <div class="ad_main">
+                <h2 class="flex">
+                    <span>{{product.name}}</span>
+                    <span>&#8358;{{product.price|floatformat:2|intcomma}}</span>
+                </h2>
+                <p>
+                    {{product.description|truncatechars:50}}
+                </p>
+                <!-- <div class="tags flex">
                 <span class="tag">A</span>
                 <span class="tag">A</span>
                 <span class="tag">A</span>
             </div> -->
+            </div>
         </div>
-    </div>
-</a>
-{% empty %}
-<p class="flex a-cent j-cent" style="align-items: center;
-justify-content: center;">No products for now.</p>
+    </a>
+    {% empty %}
+    <p class="flex a-cent j-cent" style="align-items: center;
+justify-content: center;">
+        No products for now.
+    </p>
     {% endfor %}
 </div>
 <div class="pagination flex">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-    
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-{% endblock content %}
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
-{% block footer %}
-{{ block.super }}
-{% endblock footer %}
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock content %} {% block footer %} {{ block.super }} {% endblock footer %}

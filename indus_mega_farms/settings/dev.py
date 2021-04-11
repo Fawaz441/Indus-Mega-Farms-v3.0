@@ -24,6 +24,7 @@ DATABASES = {
 
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR,'static'),
+	os.path.join(BASE_DIR,'static_revamp'),
 )
 
 
@@ -52,3 +53,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #     'CacheControl': 'max-age=86400',
 # }
 # STATIC_URL = 'https://%s/' % (AWS_S3_CUSTOM_DOMAIN)
+ADS_URL = 'http://127.0.0.1:8000/ads/ads/'

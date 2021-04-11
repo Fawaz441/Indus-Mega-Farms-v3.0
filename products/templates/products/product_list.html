@@ -112,7 +112,7 @@
                         <h3>Processed Foods</h3>
                     </div>
                     {% for item in processed_foods %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -142,7 +142,7 @@
                         <h3>Crops</h3>
                     </div>
                     {% for item in crops %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -172,7 +172,7 @@
                         <h3>Fruits</h3>
                     </div>
                     {% for item in fruits %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -203,7 +203,7 @@
                         <h3>Livestock</h3>
                     </div>
                     {% for item in livestock %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -234,7 +234,7 @@
                         <h3>Student Items</h3>
                     </div>
                     {% for item in student_items %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -264,7 +264,7 @@
                         <h3>Lands</h3>
                     </div>
                     {% for item in others %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -295,7 +295,7 @@
                         <h3>Farm Tools</h3>
                     </div>
                     {% for item in farm_tools %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -326,7 +326,7 @@
                         <h3>Farm Machinery</h3>
                     </div>
                     {% for item in farm_machinery %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -357,7 +357,7 @@
                         <h3>Farm Services</h3>
                     </div>
                     {% for item in farm_services %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -389,7 +389,7 @@
                         <h3>Food Stuff</h3>
                     </div>
                     {% for item in food_stuff %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">
@@ -420,7 +420,7 @@
                         <h3>Lands</h3>
                     </div>
                     {% for item in lands %}
-                    <a href="{% url 'products:detail' item.slug %}">
+                    <a href="{% url 'products:detail' item.code %}">
                         <div class="menus d-flex ftco-animate">
                             <div class="menu-img img" style="background-image: url({{item.image.url}});"></div>
                             <div class="text">

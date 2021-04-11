@@ -7,71 +7,80 @@
     </div>
 </div>
 <style>
-    .no_thanks{
-        padding:0.5rem 1rem;
-        background:rgb(85, 98, 95);
-        color:#fff;
-    border-radius:5px;
+    .no_thanks {
+        padding: 0.5rem 1rem;
+        background: rgb(85, 98, 95);
+        color: #fff;
+        border-radius: 5px;
 
     }
-    .popup{
-        background:rgb(12, 80, 63);
+
+    .popup {
+        background: rgb(12, 80, 63);
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
         position: fixed;
-        bottom:-400px;
-        width:80%;
-        padding:0.5rem 1rem;
-        z-index:5;
+        bottom: -400px;
+        width: 80%;
+        padding: 0.5rem 1rem;
+        z-index: 5;
         box-shadow: 0px 3px 30px 60px rgba(204, 204, 204, 0.096);
-        box-sizing:border-box;
-        transform:translateX(-50%);
-        left:50%;
-        transition:0.4s ease;
+        box-sizing: border-box;
+        transform: translateX(-50%);
+        left: 50%;
+        transition: 0.4s ease;
         z-index: 16000161;
     }
 
-    @keyframes showedup{
-        0%{}
-        100%{bottom:0;}
-    }
-    .popup h2{
-        font-size:2rem;
-        text-align: center;
-        color:#ccc;
-    }
-.view_them_all{
-    padding:0.4rem 1rem;
-    background:rgb(37, 190, 73);
-    color:#fff;
-    margin-top:1rem;
-    border-radius:5px;
-    margin-bottom: 1.5rem;
-}
+    @keyframes showedup {
+        0% {}
 
-    .popup p{
-        text-align: center;
-        color:#ccc;
+        100% {
+            bottom: 0;
+        }
     }
-    .popped{
-        animation:showedup 0.4s ease forwards;
+
+    .popup h2 {
+        font-size: 2rem;
+        text-align: center;
+        color: #ccc;
+    }
+
+    .view_them_all {
+        padding: 0.4rem 1rem;
+        background: rgb(37, 190, 73);
+        color: #fff;
+        margin-top: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+    }
+
+    .popup p {
+        text-align: center;
+        color: #ccc;
+    }
+
+    .popped {
+        animation: showedup 0.4s ease forwards;
         animation-delay: 4s;
     }
-    @media(max-width:400px){
-        .popup{
-            width:100%;
+
+    @media(max-width:500px) {
+        .popup {
+            width: 100vw;
         }
-        .popup h2{
-            font-size:1.4rem;
+
+        .popup h2 {
+            font-size: 1.4rem;
         }
     }
 </style>
 <script>
-window.addEventListener('DOMContentLoaded',() => {
-    document.querySelector('.popup').classList.add('popped')
-})
-document.querySelector('.no_thanks').addEventListener('click',() => {
-    document.querySelector('.popup').classList.remove('popped')
-    
-})
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.popup').classList.add('popped')
+    })
+    document.querySelector('.no_thanks').addEventListener('click', () => {
+        document.querySelector('.popup').classList.remove('popped')
+
+    })
 </script>

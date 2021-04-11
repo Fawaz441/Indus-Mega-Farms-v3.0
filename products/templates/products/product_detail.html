@@ -9,7 +9,7 @@
 {% block content %}
 <div class="slides_wrapper">
     <div class="slides">
-        {% if item.image2 %}
+        {% if has_images %}
         <div class="left_arrow flex a_cent j_cent" onclick="plusSlides(-1)">
             <svg xmlns="http://www.w3.org/2000/svg" width="14.533" height="22.507" viewBox="0 0 14.533 22.507">
                 <path id="Icon_awesome-angle-left" data-name="Icon awesome-angle-left"
@@ -19,23 +19,11 @@
 
         </div>
         {% endif %}
-        <img src="{{item.image.url}}" alt="" class="slide-cover">
-        {% if item.image2 %}
-        <img src="{{item.image2.url}}" alt="" class="slide-cover">
-        {% endif %}
-        {% if item.image3 %}
-        <img src="{{item.image3.url}}" alt="" class="slide-cover">
-        {% endif %}
-        {% if item.image4 %}
-        <img src="{{item.image4.url}}" alt="" class="slide-cover">
-        {% endif %}
-        {% if item.image5 %}
-        <img src="{{item.image5.url}}" alt="" class="slide-cover">
-        {% endif %}
-        {% if item.image6 %}
-        <img src="{{item.image6.url}}" alt="" class="slide-cover">
-        {% endif %}
-        {% if item.image2 %}
+        {% for image in item.images.all %}
+        <img src="{{image.image.url}}" alt="" class="slide-cover">
+        {% endfor %}
+       
+        {% if has_images %}
         <div class="right_arrow flex a_cent j_cent" onclick="plusSlides(1)">
             <svg xmlns="http://www.w3.org/2000/svg" width="14.526" height="22.507" viewBox="0 0 14.526 22.507">
                 <path id="Icon_awesome-angle-right" data-name="Icon awesome-angle-right"
@@ -59,10 +47,10 @@
         <p class="flex a-cent j-cent info_box">{{item.description}}</p>
         <div class="actions flex a-cent j-cent">
             {% if not is_an_ad %}
-            <input type="hidden" name="item" value="{{item.slug}}" class="product_slug">
+            <input type="hidden" name="item" value="{{item.code}}" class="product_slug">
             <input type="number" name="quantity" id="num" min="0" class="quantity" value="{{in_cart_quantity}}">
             <a href="#" class="add_to_cart">Add To Cart</a>
-            <a href="{% url 'products:remove_whole' item.slug %}" class="remove_from_cart">Remove</a>
+            <a href="{% url 'products:remove_whole' item.code %}" class="remove_from_cart">Remove</a>
             {% else %}
             <section class="links flex a_cent j_cent">
                     <a href="https://wa.me/{{ad.seller.whatsapp_number}}" id="whatsapp" class="flex a_cent j_cent" target="__blank">
@@ -106,7 +94,7 @@
                 <form action="{% url 'products:add_review' %}" method="POST" class="info_box review_box">
                         {% csrf_token %}
                     <input type="text" name="name" id="" placeholder="Name (optional)">
-                <input type="hidden" name="product" value={{item.slug}}>
+                <input type="hidden" name="product" value={{item.code}}>
                     
                     <textarea name="review" id="" cols="30" rows="10"  placeholder="Your review here.."></textarea>
                     <input type="submit" value="Submit" class="review_send">
@@ -119,7 +107,7 @@
     cti.addEventListener('click', () => {
         var XHRinit = new XMLHttpRequest()
         var quantity = document.querySelector(".quantity").value;
-        var slug = document.querySelector(".product_slug").value
+        var slug = document.querySelector(".product_code").value
         var data = "slug=" + slug + "&quantity=" + quantity
         XHRinit.open('POST', 'https://www.indusmegafarms.com/products/add_to_cart', true)
         XHRinit.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')

@@ -1,0 +1,59 @@
+{% load static %}
+<link href="{% static 'css/base.css' %}" rel='stylesheet'/>
+<div class="hidden_mobile">
+ 
+    <span onclick="exit_mobile()"></span>
+        <ul>{% if not request.user.is_authenticated %}
+            <li><a href="{% url 'users:login' %}">Log in</a></li>
+            <li><a href="{% url 'users:signup' %}">Sign up</a></li>
+            {% endif %}
+            <li><a href="{% url 'products:products' %}">Agrowell</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'blog:list' %}">Blog</a></li>
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'users:user_home' %}">Dashboard</a></li>
+            <li><a href="{% url 'users:logout' %}">Logout</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <nav class="mobile_nav">
+        <img class="toggler" src="{% static 'svgs/nav_toggler.svg' %}" alt="" onclick="bring_mobile()">
+        <a href="{% url 'home' %}"><img src="{% static 'svgs/logo.svg' %}" alt=""></a>
+        <a href="{% url 'products:order_final' %}"><img src="{% static 'svgs/cart.svg' %}" alt=""></a>
+    </nav>
+    <nav class="main_nav">
+        <a href="{% url 'home' %}">
+            <div class="logo">
+                <img src="{% static 'svgs/logo.svg' %}" alt="">
+                <span>Indus-Mega Farms</span>
+            </div>
+        </a>
+        <ul class="nav_list">
+            <li><a href="{% url 'products:order_final' %}" class="nav_a"><img src="{% static 'svgs/cart.svg' %}"
+                        alt="cart"></a></li>
+            <li><a href="{% url 'products:products' %}" class="nav_a">IMagrowell</a></li>
+            <li><a href="{% url 'blog:list' %}" class="nav_a">Blog</a></li>
+            <li><a href="{% url 'about' %}" class="nav_a">About</a></li>
+            {% if not request.user.is_authenticated %}
+            <li class="signup_cta"><a class="nav_signup" href="{% url 'users:login' %}">Log in</a></li>
+            {% else %}
+            <li><a href="{% url 'users:user_home' %}" class="nav_a">Dashboard</a></li>
+            <li><a href="{% url 'users:logout' %}" class="nav_a">Logout</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <script>
+            var mobile_navbar = document.querySelector(".hidden_mobile");
+            var backdrop = document.querySelector(".backdrop");
+        
+            function bring_mobile() {
+                mobile_navbar.style.top = 0;
+                backdrop.style.display = 'block';
+            }
+            function exit_mobile() {
+                mobile_navbar.style.top = "-350px";
+                backdrop.style.display = 'none';
+        
+            }
+        </script>

@@ -6,11 +6,15 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/ads_presets.css' %}">
 <link rel="stylesheet" href="{% static 'css/ads_details.css' %}">
+<script src="{% static 'js/jquery.min.js' %}"></script>
 {% endblock css%}
 {% block content %}
 <div class="plan_wrapper">
-    {% if not has_seller %}
+    {% if not is_seller %}
     <form action="" method="post" class="plan-form">
+        {% if form.errors %}
+        {{form.errors}}
+        {% endif %}
         <small>Fill in your details to get started.</small>
         {% csrf_token %}
         {{form.as_p}}
@@ -19,7 +23,7 @@
     <div class="shbackdrop"></div>
     {% endif %}
     <div class="backdrop"></div>
-    <form action="" class="ad-form" enctype="multipart/form-data" method="POST">
+    <form action="{% url 'ads:ad_create' %}" class="ad-form" enctype="multipart/form-data" method="POST">
         {% csrf_token %}
         <label for="category">Category</label>
         <select name="product_category" id="#">
@@ -37,7 +41,7 @@
         </select>
         <label for="brand_name">brand Name</label>
         <input type="hidden" name="ad_category" value="{{ad_category.name}}">
-        <input type="text" name="" id="" value="{{request.user.seller.brand_name}}">
+        <input type="text" name="brand_name" id="" value="{{request.user.seller.brand_name}}">
         <label for="Product Name">Product Name</label>
         <input type="text" name="product_name" id="">
         <label for="whatsapp_no">Whatsapp Number</label>
@@ -46,14 +50,10 @@
         <textarea name="description" id="" cols="30" rows="10"></textarea>
         <label for="negotiable" style="display: inline-block;margin-bottom: 0.5rem;">Negotiable</label>
         <input type="checkbox" name="negotiable" id="">
-        <label for="fixed_price" class="fixed_price">Fixed Price</label>
-        <input type="fixed_price" class="fixed_price" name="fixed_price" id="">
-        <label for="minimum_price" class="negotia">Minimum Price</label>
-        <input type="number" class="negotia" name="minimum_price" id="">
-        <label for="maximum_price" class="negotia">Maximum Price</label>
-        <input type="number" class="negotia" name="maximum_price" id="">
-        <label for="image">Image</label>
-        <input type="file" name="product_image" required>
+        <label for="price">Price</label>
+        <input type="number" name="price" id="">
+        <label for="product_images">Image</label>
+        <input type="file" multiple name="product_images" required>
         <label for="Location">Location</label>
         <input type="text" name="Location" id="" value="{{request.user.seller.location}}">
         <input type="submit" value="Add">
@@ -69,11 +69,11 @@
             <div class="user-ads flex j-cent">
                 {% for user_ad in all_user_ads %}
                 <div class="user-ad grid">
-                    <img src="{{user_ad.sample_of_product.url}}" alt="">
+                    <img src="{{user_ad.sample.url}}" alt="">
                     <div class="details_ad">
                         <li class="flex">
                             <span>Displayed on:</span>
-                            <span>{{user_ad.created_date.date}}</span>
+                            <span>{{user_ad.created.date}}</span>
                         </li>
                         <li class="flex">
                             <span>Ends on:</span>
@@ -83,30 +83,93 @@
                             <span>Views:</span>
                             <span>{{user_ad.view}}</span>
                         </li>
-                        <li class="flex a-cent j-cent">
+                        <li class="flex a-cent" style="justify-content: space-between">
                             {% if user_ad.product %}
-                            <a href="{% url 'products:detail' user_ad.product.slug %}" class="plan-cta">View Details</a>
+                            <a href="{% url 'products:detail' user_ad.product.code %}" class="plan-cta">View Details</a>
                             {% endif %}
+                            <img class='add_details' data-id={{user_ad.id}} src="{% static 'icons/add.svg' %}" alt=""
+                                style="height:1.3rem;width:1.3rem;cursor:pointer;">
                         </li>
                     </div>
                 </div>
+
                 {% endfor %}
                 <!-- <div class="user-ad grid"></div>
                  <div class="user-ad grid"></div> -->
                 {% if category_user_ads_count < ad_category.no_of_ads %}
                 <a href="#" class="plan-adder circ flex a-cent j-cent">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="height:1rem;stroke:#fff;fill:#fff;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                        style="height:1rem;stroke:#fff;fill:#fff;">
                         <path
                             d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                        </svg>
+                    </svg>
                 </a>
                 {% endif %}
-                {% if unpaid %}
+                {% if is_not_free %}
                 {% paystack_button amount=amount email=email button_class='btn-pay' %}
                 {% endif %}
             </div>
         </div>
     </div>
+    <div class="new_form">
+        <form class="new" style="position: relative">
+            {% csrf_token %}
+            <img src="{% static 'icons/add.svg' %}" id='formsadder'
+                style='position:absolute;right:1rem;bottom:1rem;height:1.2rem;width:1.2rem;cursor:pointer'>
+            <div class="new_container">
+                <input type="text" name="label" required placeholder="Label e.g Model Name" id='label'>
+                <input type="text" name="value" required placeholder="Value" id='value'>
+            </div>
+            <input type="submit" id='doforms' class="submit" value="Create" style="background:seagreen;color:#fff;">
+        </form>
+    </div>
+    <script>
+        var forms = 0
+        var adId;
+        var adDetailsCreateURL = "{% url 'ads:ad_details_create' %}"
+        $('.new').click(function (e) {
+            e.stopPropagation()
+        })
+        $('.add_details').click(function () {
+            adId = $(this).attr('data-id')
+            $('.new_form').show()
+        })
+        $('.new_form').click(function () {
+            $(this).hide()
+        })
+        $('#formsadder').click(function () {
+            let newLabel = $('#label').clone()
+            let newValue = $('#value').clone()
+            newLabel.val('')
+            newValue.val('')
+            $(newLabel).appendTo($('.new_container'))
+            $(newValue).appendTo($('.new_container'))
+            forms += 1
+            $(newLabel).attr('name', 'label' + forms)
+            $(newValue).attr('name', 'value' + forms)
+        })
+
+        $('form.new').submit(function (e) {
+            e.preventDefault()
+            let data = $(this).serializeArray()
+            data[data.length] = {
+                name:'ad_id',
+                value:adId
+            }
+            $.ajax({
+                data:data,
+                type:'POST',
+                url:adDetailsCreateURL,
+                success:function(response){
+                    $('.new_form').hide()
+                    alert('Successful!')
+                },
+                error:function(response){
+                    alert('There was an error!')
+                }
+            })
+        })
+    </script>
     <script>
 
         let screen = document.querySelector('.backdrop');
@@ -118,37 +181,55 @@
             form.classList.add('ad-form-show')
         })
 
-        let fixed_price = document.querySelectorAll('.fixed_price')
-        let negotiaToggle = document.querySelector("input[name='negotiable']")
-        let Negotiable = document.querySelectorAll('.negotia')
-        negotiaToggle.addEventListener('change', () => {
-            console.log('changed')
-            fixed_price.forEach(item => {
-                item.classList.toggle('negotia')
-            })
-            Negotiable.forEach(item => {
-                item.classList.toggle('negotia-show')
-            })
-
-        })
-
-        screen.style.cursor = 'pointer'
         screen.addEventListener('click', () => {
             screen.classList.remove('backdrop-show')
             form.classList.remove('ad-form-show')
         })
+
         // hi
     </script>
     <style>
-        .btn-pay{
-            outline:none;
-            border:none;
-            background:forestgreen;
-            color:#fff;
-            padding:0.4rem 1rem;
+        .btn-pay {
+            outline: none;
+            border: none;
+            background: forestgreen;
+            color: #fff;
+            padding: 0.4rem 1rem;
             border-radius: 5px;
-            margin-left:10px;
+            margin-left: 10px;
             cursor: pointer;
+        }
+
+        .new_form {
+            height: 100vh;
+            width: 100%;
+            z-index: 4;
+            position: fixed;
+            background: rgba(0, 0, 0, 0.192);
+            left: 0;
+            top: 0;
+            display: none;
+            cursor: pointer;
+        }
+
+        .new_form form {
+            background: #fff;
+            border-radius: 5px;
+            padding: 1rem;
+            max-width: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+        }
+
+        .new_form form input {
+            display: block;
+            padding: 0.4rem 0.5rem;
+            border-radius: 5px;
+            background: rgba(139, 127, 129, 0.335);
+            border: none;
+            margin-bottom: 1rem;
         }
     </style>
     {% endblock content%}
