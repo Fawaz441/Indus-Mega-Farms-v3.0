@@ -18,9 +18,9 @@
         
         <div class="product">
             <div class="flex spaced xx">
-                <div class="product_image">
+                <div class="product_image" style="height:100%">
                     <a href="{% url 'products:detail' code=product.code %}">
-                        <img src={{product.image.url}} alt="{{product.name}}">
+                        <img src={{product.image.url}} alt="{{product.name}}" style="width:100%;object-fit:cover;">
                     </a>
                 </div>
                 <div class="product_detail">
