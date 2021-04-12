@@ -18,7 +18,7 @@
                     <img src="{% static 'icons/angle-right.svg' %}" alt="">
                 </span>
             </div>
-            <div id="product_images_small" class="relative">
+            <div id="product_images_small" class="relative" style='overflow:auto;white-space: nowrap'>
                 <span class="arrow-left small-left grid centered round">
                     <img src="{% static 'icons/angle-left.svg' %}" alt="">
                 </span>
@@ -119,6 +119,13 @@
     </div>
 </div>
 {% endif %}
+<style>
+    .product_image_small.flex::-webkit-scrollbar-thumb {
+        height: 4px;
+        background: #f1fef4;
+        border-radius: 5px;
+    }
+</style>
 {% endblock content %}
 {% block scripts %}
 <script src="{% static 'js/product_detail.js' %}"></script>
