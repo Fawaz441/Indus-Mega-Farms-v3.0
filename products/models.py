@@ -149,6 +149,7 @@ class ProductReview(models.Model):
 def assign_code(sender,instance,created,**kwargs):
     if created:
         instance.code = generate_product_code()
+        instance.save()
 
 
 post_save.connect(assign_code,sender=Product)
