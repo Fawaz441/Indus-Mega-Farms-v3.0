@@ -3,7 +3,7 @@ from django.db import models
 from django.shortcuts import reverse
 from django.utils.text import slugify
 from django.contrib.auth.models import User
-from django.db.signals import pre_save
+from django.db.models.signals import post_save
 
 
 def checkExistenceOfCode(code):
@@ -151,6 +151,6 @@ def assign_code(sender,instance,created,**kwargs):
         instance.code = generate_product_code()
 
 
-pre_save.connect(assign_code,sender=Product)
+post_save.connect(assign_code,sender=Product)
 
 
