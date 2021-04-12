@@ -1,0 +1,53 @@
+{% load static %}
+<div class="sidebar">
+  <div class="sidebar-wrapper">
+
+    <div class="logo">
+      <a target="_blank" class="simple-text logo-mini" href="{% url 'home' %}">
+        <img src="{% static 'svgs/logo.svg' %}" height="30">
+      </a>
+      <a target="_blank" href="{% url 'home' %}" class="simple-text logo-normal">
+        Indus-Mega Farms
+      </a>
+    </div>
+
+    <ul class="nav">
+      {% if request.user.is_authenticated %}
+      <li>
+        <a href="/">
+          <i class="tim-icons icon-chart-pie-36"></i>
+          <p>Home Page</p>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'admn:add_product' %}">
+          <i class="tim-icons icon-simple-add"></i>
+          <p>Add Product</p>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'admn:new_ad' %}">
+          <i class="tim-icons icon-mobile"></i>
+          <p>New Ad</p>
+        </a>
+      </li>
+
+      <li>
+        <a href="{% url 'users:logout' %}">
+          <i class="tim-icons icon-user-run"></i>
+          <p>Logout</p>
+        </a>
+      </li>
+      {% else %}
+      <li class="active">
+        <a target="_blank" href="https://www.creative-tim.com/product/black-dashboard-pro-django">
+          <i class="tim-icons icon-spaceship"></i>
+          <p>PRO Version</p>
+        </a>
+      </li>
+      {% endif %}
+
+    </ul>
+
+  </div>
+</div>

@@ -20,7 +20,8 @@ urlpatterns = [
       url(r"^account/", include("account.urls")),                                                     #django-user-accounts(for pinax to work smoothly)
       path('paystack',include(('paystack.urls','paystack'),namespace='paystack')),                    #paystack
       path('blog/',include('blog.urls')), 
-      path('summernote/', include('django_summernote.urls')),                  
+      path('summernote/', include('django_summernote.urls')),    
+      path('management/',include('administration.urls')),        
 ]
 
 if settings.DEBUG:

@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'pinax.referrals',
     'account',
     'storages',
+    'administration',
     'paystack',
     'i_competitions',
     'blog',
