@@ -3,6 +3,8 @@ from django.db import models
 from django.shortcuts import reverse
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.db.signals import pre_save
+
 
 def checkExistenceOfCode(code):
     return Product.objects.filter(code=code).exists()
@@ -54,10 +56,6 @@ class Product(models.Model):
     is_ad = models.BooleanField(default=False)
     ad_payment_settled = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now=True)
-
-    def save(self,*args,**kwargs):
-        self.code = generate_product_code()
-        super().save(*args,**kwargs)
 
 
     def __str__(self):
@@ -147,4 +145,12 @@ class ProductReview(models.Model):
     user = models.CharField(max_length=10)
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='reviews',null=True,blank=True)
    
+
+def assign_code(sender,instance,created,**kwargs):
+    if created:
+        instance.code = generate_product_code()
+
+
+pre_save.connect(assign_code,sender=Product)
+
 
