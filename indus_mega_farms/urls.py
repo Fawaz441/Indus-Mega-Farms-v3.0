@@ -5,7 +5,7 @@ from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import homepage,about
+from .views import homepage,about,ads_txt
 # from ads.views import sponsoredAds
 
 urlpatterns = [
@@ -21,7 +21,8 @@ urlpatterns = [
       path('paystack',include(('paystack.urls','paystack'),namespace='paystack')),                    #paystack
       path('blog/',include('blog.urls')), 
       path('summernote/', include('django_summernote.urls')),    
-      path('management/',include('administration.urls')),        
+      path('management/',include('administration.urls')), 
+      path('ads.txt',ads_txt,name='google_ads.txt')       
 ]
 
 if settings.DEBUG:

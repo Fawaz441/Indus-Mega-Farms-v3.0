@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.views.decorators.cache import never_cache
+from django.http import HttpResponse
 from .utils import newsletter
 from users.forms import ChallengerForm
-from django.views.decorators.cache import never_cache
 
 
 # Homepage View
@@ -20,3 +21,9 @@ def about(request):
     title = "About Indus-Mega"
     newsletter(request)
     return render(request,"about.html",{"title":title})
+
+
+# ads.txt
+def ads_txt(request):
+    line = "google.com, pub-1372794899198889, DIRECT, f08c47fec0942fa0"
+    return HttpResponse(line)
