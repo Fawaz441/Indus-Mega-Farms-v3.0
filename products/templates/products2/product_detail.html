@@ -45,6 +45,9 @@
                 <p>{{item.description}}</p>
             </div>
             <h3 class="price">&#8358;{{item.price|floatformat:2|intcomma}}</h3>
+            {% if ad.negotiable %}
+            <h6>Negotiable</h6>
+            {% endif %}
             <!-- <a class="reviews">444 Reviews</a> -->
             <div class="ctas">
                 {% if is_ad %}

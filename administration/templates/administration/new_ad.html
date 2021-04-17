@@ -19,38 +19,63 @@
                     <div class="row">
                         <div class="col-md-6 pr-md-1">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" name='name'>
+                                <label>Name of Product</label>
+                                <input type="text" class="form-control" name='product_name'>
                             </div>
                         </div>
                         <div class="col-md-6 pl-md-1">
                             <div class="form-group">
                                 <label>Price</label>
-                                <input type="number" class="form-control" name='price'>
+                                <input type="number" class="form-control" name='product_price'>
                             </div>
                         </div>
                     </div>
                     <div class="row">
+                        <!-- ad categories -->
                         <div class="col-md-6 pr-md-1">
                             <div class="form-group">
                                 <label>Category</label>
-                                <select name='category' class="custom-select">
+                                <select name='ad_category' class="custom-select">
                                     {% for category in categories %}
-                                    <option value={{category}}>{{category}}</option>
+                                    <option value={{category.id}}>{{category.name}} ({{category.validity}} days -
+                                        {{category.no_of_ads}} ads)</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- sellers -->
+                        <div class="col-md-6 pr-md-1">
+                            <div class="form-group">
+                                <label>Seller</label>
+                                <select name='seller' class="custom-select" id="seller_select">
+                                    {% for seller in sellers %}
+                                    <option value={{seller.id}}>{{seller.brand_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <div class='row'>
+                        <div class="col-md-6 pl-md-1">
+                            <div class="form-group">
+                                <label>Negotiable</label>
+                                <input type="checkbox" class="form-control" name="negotiable">
+                            </div>
+                        </div>
 
-                    <!-- <div class="col-md-6 pl-md-1">
-              <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control">
-              </div>
+                        <div class="col-md-6 pr-md-1">
+                            <div class="form-group">
+                                <label>Product Category</label>
+                                <select name='prod_category' class="custom-select">
+                                    {% for cat in product_categories %}
+                                    <option value={{cat}}>{{cat}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
             </div>
-          </div> -->
-                    <!-- <div class="row">
+            <!-- <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label>Address</label>
@@ -59,8 +84,8 @@
               </div>
             </div>
           </div> -->
-                    <div class="row">
-                        <!-- <div class="col-md-4 pr-md-1">
+            <div class="row">
+                <!-- <div class="col-md-4 pr-md-1">
               <div class="form-group">
                 <label>City</label>
                 <input type="text" class="form-control" placeholder="City" value="Mike">
@@ -72,26 +97,68 @@
                 <input type="text" class="form-control" placeholder="Country" value="Andrew">
               </div>
             </div> -->
-                        <div class="col-md-12 pl-md-3">
+                <div class="col-md-12 pl-md-3">
+                    <div class="form-group">
+                        <button class="btn btn-fill btn-primary">
+                            <label>Click to Upload Images</label>
+                            <input type="file" name='images' class="form-control" multiple>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 pl-md-4" style='margin-left:0.5rem;'>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" cols="80" name='description' class="form-control"
+                            placeholder="Product Description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-fill btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="title">Create Seller</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" id='create-seller'>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 pr-md-1">
                             <div class="form-group">
-                                <button class="btn btn-fill btn-primary">
-                                    <label>Click to Upload Images</label>
-                                    <input type="file" name='images' class="form-control" multiple>
-                                </button>
+                                <label>Name of brand</label>
+                                <input type="text" class="form-control" name='brand_name'>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-md-1">
+                            <div class="form-group">
+                                <label>Phone number</label>
+                                <input type="text" class="form-control" name='seller_number'>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 pl-md-4" style='margin-left:0.5rem;'>
+                        <div class="col-md-6 pr-md-1">
                             <div class="form-group">
-                                <label>Description</label>
-                                <textarea rows="4" cols="80" name='description' class="form-control"
-                                    placeholder="Product Description"></textarea>
+                                <label>Whatsapp number</label>
+                                <input type="text" placeholder='+234..' class="form-control" name='whatsapp_number'>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                        <div class="col-md-6 pl-md-1">
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="location" class="form-control" name='location'>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -103,4 +170,33 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script>
+    var createNewSeller = "{% url 'admn:create_seller' %}"
+    let csrftoken = document.querySelector("input[name='csrfmiddlewaretoken']").value
+
+    $(document).ready(function () {
+        $('#create-seller').submit(function (e) {
+            e.preventDefault()
+            let data = $(this).serialize()
+            $.ajax({
+                type: 'POST',
+                url: createNewSeller,
+                data: data,
+                headers: { 'X-CSRFToken': csrftoken },
+                success: function (response) {
+                    $('#create-seller').trigger('reset')
+                    $('#seller_select').append(
+                        `<option value=${response.id}>${response.brand_name}</option>`
+                    )
+                    showNotification('top', 'right', 'Seller created successfully')
+                },
+                error: function (response) {
+                    alert(JSON.stringify(response))
+                }
+            })
+        })
+    })
+</script>
+
+{% endblock javascripts %}

@@ -14,7 +14,7 @@
     <ul class="nav">
       {% if request.user.is_authenticated %}
       <li>
-        <a href="/">
+        <a href="{% url 'admn:home' %}">
           <i class="tim-icons icon-chart-pie-36"></i>
           <p>Home Page</p>
         </a>
@@ -29,6 +29,12 @@
         <a href="{% url 'admn:new_ad' %}">
           <i class="tim-icons icon-mobile"></i>
           <p>New Ad</p>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'admn:all_orders' %}">
+          <i class="tim-icons icon-cart"></i>
+          <p>All Orders</p>
         </a>
       </li>
 

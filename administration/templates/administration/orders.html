@@ -1,0 +1,67 @@
+{% extends "administration/layouts/base.html" %}
+{% load humanize %}
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class='row'>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">All Orders</h4>
+                <p class="category">({{count}})</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter " id="">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Location
+                                </th>
+                                <th>
+                                    Order Time
+                                </th>
+                                <th class="text-center">
+                                    Products
+                                </th>
+
+                                <th class="text-center">
+                                    Amount paid
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>
+                                    {{order.user.get_full_name}}
+                                </td>
+                                <td>
+                                    {{order.location}}
+                                </td>
+                                <td>
+                                    {{ order.created_time|date:'Y-m-d H:i' }}
+                                </td>
+                                <td class="text-center">
+                                    {{order.products}}
+                                </td>
+                                <td class="text-center">
+                                    {{order.amount_paid|floatformat:2|intcomma}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

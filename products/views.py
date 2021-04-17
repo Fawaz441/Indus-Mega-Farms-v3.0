@@ -43,7 +43,7 @@ def products_list(request):
     View for the product list. Shows all the products available (ads inclusive)
     """
     category = request.GET.get('category')
-    products = Product.objects.all().order_by('category','-created')
+    products = Product.objects.filter(ad_payment_settled=True).order_by('category','-created')
     if category:
         products = products.filter(category=category)
     categories = [i[0] for i in PRODUCT_CATEGORY]

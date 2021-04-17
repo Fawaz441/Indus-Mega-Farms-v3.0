@@ -1,5 +1,5 @@
 {% extends "administration/layouts/base.html" %}
-
+{% load humanize %}
 {% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
@@ -8,7 +8,66 @@
 {% block content %}
 
 <div class="row">
-
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Pending Orders</h4>
+        <p class="category"> All pending orders ({{pending_orders}})</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table tablesorter " id="">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Location
+                </th>
+                <th>
+                  Order Time
+                </th>
+                <th class="text-center">
+                  Products
+                </th>
+                <th class="text-center">
+                  Amount Paid
+                </th>
+                <th>
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in pending_orders_list %}
+              <tr>
+                <td>
+                  {{order.user.full_name}}
+                </td>
+                <td>
+                  {{order.location}}
+                </td>
+                <td>
+                  {{ order.created_time|date:'Y-m-d H:i' }}
+                </td>
+                <td>
+                  {{order.products}}
+                </td>
+                <td class="text-center">
+                  {{order.amount_paid|floatformat:2|intcomma}}
+                </td>
+                <td>
+                  <a class='order_details'><i class="tim-icons icon-light-3"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col-12">
     <div class="card card-chart">
       <div class="card-header ">
