@@ -18,11 +18,11 @@
                     <img src="{% static 'icons/angle-right.svg' %}" alt="">
                 </span>
             </div>
-            <div id="product_images_small" class="relative" style='overflow:auto;white-space: nowrap'>
+            <div id="product_images_small" class="relative">
                 <span class="arrow-left small-left grid centered round">
                     <img src="{% static 'icons/angle-left.svg' %}" alt="">
                 </span>
-                <div class="product_image_small flex">
+                <div class="product_image_small flex" style='overflow:auto;white-space: nowrap'>
                     {% for image in item.images.all %}
                     <img src={{image.image.url}} alt="" style="flex-shrink:0;">
                     {% endfor %}
@@ -123,11 +123,13 @@
 </div>
 {% endif %}
 <style>
-    .product_image_small.flex::-webkit-scrollbar-thumb {
-        height: 4px;
-        background: #f1fef4;
-        border-radius: 5px;
-    }
+    .product_image_small::-webkit-scrollbar {
+    height: 5px;
+    background: grey;
+    /* display: none; */
+    border-radius: 5px;
+}
+
 </style>
 {% endblock content %}
 {% block scripts %}

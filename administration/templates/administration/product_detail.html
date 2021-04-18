@@ -1,0 +1,64 @@
+{% extends "administration/layouts/base.html" %}
+{% load humanize %}
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class='row'>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{product.name}}</h4>
+                <p class="category">&#8358;{{product.price|floatformat:2|intcomma}}</p>
+                <p class="category">Code : {{product.code}}</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>Description : <b>{{product.description}}</b></p>
+                        {% if product.is_ad %}
+                        <p><strong>Product is an Ad</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    {% for image in product.images.all %}
+                    <div class="col-md-4 col-sm-12">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="{{image.image.url}}" height='300' style="object-fit: cover">
+                            </div>
+                            <a class="btn btn-primary" href="{% url 'admn:del_prod_img' image.id %}">Delete Image</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <br />
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <p>No images for this product</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Add New Images</div>
+            </div>
+            <div class="card-body">
+                <form method='POST' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="input-group">
+                    <input type="file" multiple name="images" id="" class="form-control">
+                    </div>
+                    <input type="hidden" name="product_id" value="{{product.id}}">
+                    <button class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}

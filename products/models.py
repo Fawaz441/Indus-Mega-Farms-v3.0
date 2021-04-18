@@ -101,7 +101,7 @@ class OrderedProduct(models.Model):
         return self.get_normal_total_price()
 
     def str(self):
-        return "{} of {}".format(self.quantity, self.item.item)
+        return "{} of {}".format(self.quantity, self.item.name)
 
 # Orders
 
@@ -128,10 +128,11 @@ class Order(models.Model):
         return total
 
     @property
-    def products(self):
+    def get_products(self):
         content = ''
         for item in self.order_items.all():
-            content += str(item)+' '
+            content += '{}({}), '.format(item.item.name,item.quantity)
+        return content
 
     def str(self):
         return self.user.username

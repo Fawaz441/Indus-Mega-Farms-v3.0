@@ -1,0 +1,93 @@
+{% extends "administration/layouts/base.html" %}
+{% load humanize %}
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class='row'>
+    <div class="col-md-12">
+        <form>
+        <input name='filter' type="text" placeholder="Search Products. To see all products again, type all" class="form-control">
+        </form>
+    </div>
+    <br/>
+    <br/>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">All Products</h4>
+                <p class="category">({{products.count}})</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table tablesorter " id="">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Category
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th class="text-center">
+                                    Is Ad
+                                </th>
+
+                                <th class="text-center">
+                                    Created
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'products:detail' product.code %}">
+                                        {{product.name}}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{product.category}}
+                                </td>
+                                <td>
+                                    &#8358;{{product.price|floatformat:2|intcomma}}
+                                </td>
+                                <td class="text-center">
+                                    {{ product.is_ad }}
+                                </td>
+                                <td class="text-center">
+                                    {{product.created}}
+                                </td>
+                                <td>
+                                <a href="{% url 'admn:delete_product' product.code %}">
+                                    <i class="tim-icons icon-trash-simple"></i>
+                                </a>
+                                &nbsp;
+                                <a href="{% url 'admn:product_detail' product.code %}">
+                                    <i class="tim-icons icon-pencil"></i>
+                                </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <p>No products matched your search query</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

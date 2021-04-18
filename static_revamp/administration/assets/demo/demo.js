@@ -386,21 +386,8 @@ demo = {
 
     // start from here
 
-    var chart_labels = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC"
-    ];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+    var chart_labels = Object.keys(paidData);
+    var chart_data = Object.values(paidData);
 
     var ctx = document.getElementById("chartBig1").getContext("2d");
 
@@ -415,7 +402,7 @@ demo = {
         labels: chart_labels,
         datasets: [
           {
-            label: "My First dataset",
+            label: "Order Data",
             fill: true,
             backgroundColor: gradientStroke,
             borderColor: "#d346b1",
@@ -451,10 +438,10 @@ demo = {
     });
 
     $("#2").click(function() {
-      var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
+      var chart_data = Object.values(unpaidData);
       var data = myChartData.config.data;
       data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      data.labels = Object.keys(unpaidData);
       myChartData.update();
     });
 
@@ -469,10 +456,10 @@ demo = {
     var config = {
       type: "line",
       data: {
-        labels: chart_labels,
+        labels: Object.keys(revenue),
         datasets: [
           {
-            label: "My First dataset",
+            label: "Revenue",
             fill: true,
             backgroundColor: gradientStroke,
             borderColor: "#d346b1",
@@ -486,7 +473,7 @@ demo = {
             pointHoverRadius: 4,
             pointHoverBorderWidth: 15,
             pointRadius: 4,
-            data: chart_data
+            data: Object.values(revenue)
           }
         ]
       },

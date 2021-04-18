@@ -1,5 +1,6 @@
 {% extends "administration/layouts/base.html" %}
 {% load humanize %}
+{% load static %}
 {% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
@@ -11,8 +12,8 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Pending Orders</h4>
-        <p class="category"> All pending orders ({{pending_orders}})</p>
+        <h4 class="card-title">Pending Deliveries</h4>
+        <p class="category"> All pending deliveries ({{pending_orders}})</p>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -43,22 +44,30 @@
               {% for order in pending_orders_list %}
               <tr>
                 <td>
-                  {{order.user.full_name}}
+                  {{order.user.get_full_name}}
                 </td>
                 <td>
-                  {{order.location}}
+                  {{order.delivery_location}}
                 </td>
                 <td>
-                  {{ order.created_time|date:'Y-m-d H:i' }}
-                </td>
-                <td>
-                  {{order.products}}
+                  {{ order.created_time }}
                 </td>
                 <td class="text-center">
-                  {{order.amount_paid|floatformat:2|intcomma}}
+                  {{order.get_products}}
                 </td>
-                <td>
-                  <a class='order_details'><i class="tim-icons icon-light-3"></i></a>
+                <td class="text-center">
+                  &#8358;{{order.amount_paid|floatformat:2|intcomma}}
+                </td>
+                <td style="position:absolute"> 
+                  <div class="dropdown">
+                    <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
+                      <i class="tim-icons icon-pencil"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="{% url 'admn:deliver_order' order.id %}">
+                        Mark as Delivered</a>
+                    </div>
+                  </div>
                 </td>
               </tr>
               {% endfor %}
@@ -123,7 +132,7 @@
           </div>
           <div class="col-sm-6">
             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-              <label class="btn btn-sm btn-primary btn-simple active" id="0">
+              <!-- <label class="btn btn-sm btn-primary btn-simple active" id="0">
                 <input type="radio" name="options" checked>
                 <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Paid</span>
                 <span class="d-block d-sm-none">
@@ -136,7 +145,7 @@
                 <span class="d-block d-sm-none">
                   <i class="tim-icons icon-tap-02"></i>
                 </span>
-              </label>
+              </label> -->
             </div>
           </div>
         </div>
@@ -156,54 +165,8 @@
 
 
 <div class="row">
-  <div class="col-lg-6 col-md-12">
-    <div class="card card-tasks">
-      <div class="card-header ">
-        <h6 class="title d-inline">Pending Deliveries(5)</h6>
-        <div class="dropdown">
-          <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-            <i class="tim-icons icon-settings-gear-63"></i>
-          </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#pablo">Action</a>
-            <a class="dropdown-item" href="#pablo">Another action</a>
-            <a class="dropdown-item" href="#pablo">Something else</a>
-          </div>
-        </div>
-      </div>
-      <div class="card-body ">
-        <div class="table-full-width table-responsive">
-          <table class="table">
-            <tbody>
-              <tr>
-                <td>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox" value="">
-                      <span class="form-check-sign">
-                        <span class="check"></span>
-                      </span>
-                    </label>
-                  </div>
-                </td>
-                <td>
-                  <p class="title">Update the Documentation</p>
-                  <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
-                </td>
-                <td class="td-actions text-right">
-                  <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task"
-                    data-toggle="dropdown">
-                    <i class="tim-icons icon-pencil"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-6 col-md-12">
+
+  <div class="col-lg-12 col-md-12">
     <div class="card ">
       <div class="card-header">
         <h4 class="card-title">Current Ads</h4>
@@ -213,6 +176,9 @@
           <table class="table tablesorter " id="">
             <thead class=" text-primary">
               <tr>
+                <th>
+                  Seller
+                </th>
                 <th>
                   Name
                 </th>
@@ -225,23 +191,35 @@
                 <th class="text-center">
                   Fee
                 </th>
+                <th class="text-center">
+                  Views
+                </th>
               </tr>
             </thead>
             <tbody>
+              {% for ad in ads %}
               <tr>
                 <td>
-                  Dakota Rice
+                  {{ad.seller.brand_name}}
                 </td>
                 <td>
-                  Niger
+                  <a href="{% url 'products:detail' ad.product.code %}">
+                    {{ad.product.name}}</a>
                 </td>
                 <td>
-                  Oud-Turnhout
+                  {{ad.ad_category.name}}
+                </td>
+                <td>
+                  {{ad.ending_date}}
                 </td>
                 <td class="text-center">
-                  $36,738
+                  &#8358;{{ad.ad_category.cost|floatformat:2|intcomma}}
+                </td>
+                <td class="text-center">
+                  {{ad.view}}
                 </td>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -254,13 +232,26 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
+<script src="{% static 'administration/assets/demo/demo.js' %}"></script>
 <script>
+  var paidData, unpaidData, revenue;
+  let orderDataURL = "{% url 'admn:order_data' %}"
   $(document).ready(function () {
+    $.ajax({
+      type: 'GET',
+      url: orderDataURL,
+      success: function (response) {
+        paidData = response.paid;
+        unpaidData = response.unpaid;
+        revenue = response.revenue;
+        demo.initDashboardPageCharts();
+      },
+      error: function (response) {
+        alert('E choke')
+      }
+    })
     // Javascript method's body can be found in assets/js/demos.js
-    demo.initDashboardPageCharts();
 
   });
 </script>
-
 {% endblock javascripts %}

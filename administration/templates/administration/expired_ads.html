@@ -6,12 +6,30 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+<style>
+.floated-right{float:right;}
+</style>
 <div class='row'>
+    <div class="col-md-12">
+        <div class="deleter">
+            {% if ads.count > 0 %}
+            <form method="POST">
+                {% csrf_token %}
+                <button class="btn btn-primary floated-right">
+                    Delete All
+                    <span>
+                        <i class="tim-icons icon-trash-simple"></i>
+                    </span>
+                </a>
+            </form>
+            {% endif %}
+        </div>
+    </div>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">All Orders</h4>
-                <p class="category">({{count}})</p>
+                <h4 class="card-title">Expired Ads</h4>
+                <p class="category">({{ads.count}})</p>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -22,38 +40,41 @@
                                     Name
                                 </th>
                                 <th>
-                                    Location
+                                    Category
                                 </th>
                                 <th>
-                                    Order Time
+                                    Price
                                 </th>
                                 <th class="text-center">
-                                    Products
+                                    Created
                                 </th>
-
-                                <th class="text-center">
-                                    Amount paid
-                                </th>
-
+                               
                             </tr>
                         </thead>
                         <tbody>
-                            {% for order in orders %}
+                            {% for ad in ads %}
                             <tr>
                                 <td>
-                                    {{order.user.get_full_name}}
+                                    <a href="{% url 'products:detail' ad.product.code %}">
+                                        {{ad.product.name}}
+                                    </a>
                                 </td>
                                 <td>
-                                    {{order.delivery_location}}
+                                    {{ad.ad_category}}
                                 </td>
                                 <td>
-                                    {{ order.created_time|date:'Y-m-d H:i' }}
+                                    {{ad.ad_category.price}}
                                 </td>
+                                
                                 <td class="text-center">
-                                    {{order.get_products}}
+                                    {{ad.product.created_time}}
                                 </td>
-                                <td class="text-center">
-                                    {{order.amount_paid|floatformat:2|intcomma}}
+                                
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    <p>No expired ads.</p>
                                 </td>
                             </tr>
                             {% endfor %}
