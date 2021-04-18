@@ -123,7 +123,10 @@ class Order(models.Model):
 
     @property
     def get_amount_paid(self):
-        return float(self.amount_paid)
+        try:
+            return float(self.amount_paid[1:])
+        except:
+            return 0
 
     def get_total_order_price(self):
         total = 0
