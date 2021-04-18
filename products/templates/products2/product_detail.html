@@ -78,6 +78,7 @@
             </div>
         </div>
     </div>
+    {% if similar_items.count > 0 %}
     <div class="similar_products grid">
         <div>
             <h2>Products similar to {{item.name|title}}</h2>
@@ -101,6 +102,7 @@
 
         </div>
     </div>
+    {% endif %}
 </div>
 
 <!-- other details for ads -->
