@@ -121,6 +121,10 @@ class Order(models.Model):
     time_left = models.IntegerField(default=50)
     pay_on_delivery = models.BooleanField(default=False)
 
+    @property
+    def get_amount_paid(self):
+        return float(self.amount_paid)
+
     def get_total_order_price(self):
         total = 0
         for item in self.order_items.all():

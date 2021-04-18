@@ -53,7 +53,7 @@
                                     {{order.get_products}}
                                 </td>
                                 <td class="text-center">
-                                    {{order.amount_paid|floatformat:2|intcomma}}
+                                    {{order.get_amount_paid|floatformat:2|intcomma}}
                                 </td>
                             </tr>
                             {% endfor %}
