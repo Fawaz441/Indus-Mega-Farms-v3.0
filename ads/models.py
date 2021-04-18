@@ -37,7 +37,7 @@ class Ad(models.Model):
     def __str__(self):
         if self.product:
             return self.product.name
-        return self.id
+        return str(self.id)
 
     @property
     def sample(self):
