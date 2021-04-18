@@ -35,7 +35,9 @@ class Ad(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.product.name
+        if self.product:
+            return self.product.name
+        return self.id
 
     @property
     def sample(self):
