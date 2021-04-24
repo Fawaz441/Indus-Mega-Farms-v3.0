@@ -31,7 +31,7 @@
             <div class="price_and_cta flex spaced">
                 <span><strong>&#8358;{{product.price|floatformat:2|intcomma}}</strong></span>
                 {% if product.is_ad %}
-                <a class="purchase_cta" href="{% url 'products:detail' product.code %}">
+                <a class="purchase_cta" href="{% url 'products:detail' product.code %}" style='color:#fff'>
                     View
                 </a>
                 {% else %}
