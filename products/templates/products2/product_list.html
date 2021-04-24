@@ -10,12 +10,12 @@
         <h1>Products</h1>
         <div>
             <button class="flex spaced filter">Filter</button>
-            
+
         </div>
     </div>
     <div class="products flex">
         {% for product in products %}
-        
+
         <div class="product">
             <div class="flex spaced xx">
                 <div class="product_image" style="height:100%">
@@ -30,9 +30,11 @@
             </div>
             <div class="price_and_cta flex spaced">
                 <span><strong>&#8358;{{product.price|floatformat:2|intcomma}}</strong></span>
+                {% if not product.is_ad %}
                 <a class="purchase_cta" href="{% url 'products:add_to_cart' product.code %}">
                     <img src="{% static 'icons/basket.svg' %}">
                 </a>
+                {% endif %}
             </div>
         </div>
         {% empty %}
@@ -50,10 +52,10 @@
     </div>
 </div>
 <script>
-    $('.filter').click(function(){
+    $('.filter').click(function () {
         $('.filter-modal').show()
     })
-    $('.filter-modal').click(function(){
+    $('.filter-modal').click(function () {
         $(this).hide()
     })
 </script>
