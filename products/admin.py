@@ -8,7 +8,7 @@ class OrderAdmin(admin.ModelAdmin):
         return "\n".join([str(p.item.name) + str( p.quantity) for p in obj.order_items.all()])
 
 class ProductAdmin(admin.ModelAdmin):
-    search_fields = ['name']
+    search_fields = ['name','code']
 
 
 admin.site.register(ProductReview)
