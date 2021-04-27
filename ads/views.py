@@ -15,7 +15,7 @@ from django.conf import settings
 
 # View for all the ad_categories
 def ad_categories_view(request):
-    ad_categories = AdCategory.objects.all()
+    ad_categories = AdCategory.objects.exclude(name='infinite')
     context = {
         'title':'Ads',
         'ad_categories':ad_categories,
