@@ -16,7 +16,7 @@
             <img src="{{category.image.url}}" alt="">
                 <div class="plan_dets">
                     <h3>{{category.name}}</h3>
-                    <p>Validity : {{category.validity}}</p>
+                    <p>Validity : {{category.validity}} days</p>
                     <p>No of Ads : <span class='circ flex a-cent j-cent'>{{category.no_of_ads}}</span></p>
                     <p><span>Cost : &#8358;{{category.cost|floatformat:2|intcomma}}</span>
                         {% if request.user in category.users.all %}
