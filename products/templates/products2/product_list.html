@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="products flex">
-        {% for product in products %}
+        {% for product in object_list  %}
 
         <div class="product">
             <div class="flex spaced xx">
@@ -44,6 +44,39 @@
         {% empty %}
         <p>No products</p>
         {% endfor %}
+    </div>
+    <div class="pagination">
+        <style>
+            .step-links{padding-bottom: 1.5rem;float: right;}
+            .step-links span,.step-links a.next{
+                padding:0.3rem 0.5rem;
+                background:rgb(99, 98, 98);
+                color:#fff;
+                border-radius:5px;
+            }
+            .step-links span.current{
+                background:green;
+                margin:0.5rem;
+            }
+        
+        </style>
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; 1</a>
+                <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+    
+            <span class="current">
+                {{ page_obj.number }}
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a class='next' href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                {% if not page_obj.next_page_number == page_obj.paginator.num_pages %}
+                <a class='next' href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a>
+                {% endif %}
+            {% endif %}
+        </span>
     </div>
 </div>
 <div class="filter-modal">

@@ -203,8 +203,10 @@
                   {{ad.seller.brand_name}}
                 </td>
                 <td>
+                  {% if ad.product %}
                   <a href="{% url 'products:detail' ad.product.code %}">
                     {{ad.product.name}}</a>
+                    {% endif %}
                 </td>
                 <td>
                   {{ad.ad_category.name}}

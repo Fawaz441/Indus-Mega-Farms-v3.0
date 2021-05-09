@@ -38,21 +38,26 @@ class ProdCatList(ListView):
         context['title'] = self.kwargs['slug']
         return context
 
-def products_list(request):
+class ProductList(ListView):
     """
     View for the product list. Shows all the products available (ads inclusive)
     """
-    category = request.GET.get('category')
-    products = Product.objects.filter(ad_payment_settled=True).order_by('category')
-    if category:
-        products = products.filter(category=category)
-    categories = [i[0] for i in PRODUCT_CATEGORY]
-    context = {
-        'products':products,
-        'title':'Products',
-        'categories':categories
-    }
-    return render(request,'products2/product_list.html',context)
+    paginate_by = 20
+    template_name = 'products2/product_list.html'
+    def get_queryset(self):
+        category = self.request.GET.get('category')
+        products = Product.objects.filter(ad_payment_settled=True).order_by('category')
+        if category:
+            products = products.filter(category=category)
+        return products
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = [i[0] for i in PRODUCT_CATEGORY]
+        context['categories'] =  categories
+        context['title'] = 'Products'
+        return context
+    
 
 
 

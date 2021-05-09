@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (AddItemToCart,
-remove_whole_from_cart,order_final,product_detail,products_list,
+remove_whole_from_cart,order_final,product_detail,ProductList,
 pay_now,add_product_review,ProdCatList,remove_single_item
 )
 
@@ -8,7 +8,7 @@ pay_now,add_product_review,ProdCatList,remove_single_item
 app_name = 'products'
 
 urlpatterns = [
-    path('',products_list,name='products'),
+    path('',ProductList.as_view(),name='products'),
     path('product-category/<slug>',ProdCatList.as_view(),name='product_categories'),
     path('add_review',add_product_review,name='add_review'),                                                 #Products
     # path('well',stranger_products,name='stranger'),                                         #products for strangers
