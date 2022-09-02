@@ -1,8 +1,9 @@
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
-MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -32,7 +33,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 MIDDLEWARE = [
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -41,12 +42,11 @@ MIDDLEWARE = [
     # 'pinax.referrals.middleware.SessionJumpingMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     "account.middleware.LocaleMiddleware",
+    "account.middleware.LocaleMiddleware",
     "account.middleware.TimezoneMiddleware",
 ]
 
 ROOT_URLCONF = 'indus_mega_farms.urls'
-
 
 
 TEMPLATES = [
@@ -88,7 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -111,7 +110,6 @@ ACCOUNT_EMAIL_CONFIRMATION_EMAIL = False
 ACCOUNT_SIGNUP_REDIRECT_URL = 'users:category'
 
 
-
 PAYSTACK_SUCCESS_URL = 'users:user_home'
 PAYSTACK_FAILURE_URL = 'products:order_final'
 
@@ -122,10 +120,10 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
-STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (
-	os.path.join(BASE_DIR,'static'),
-    os.path.join(BASE_DIR,'static_revamp')
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static_revamp')
 )
 
 # s3 stuff
