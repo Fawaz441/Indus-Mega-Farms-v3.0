@@ -8,7 +8,6 @@ ALLOWED_HOSTS = ['www.indusmegafarms.com']
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-
 DEBUG = False
 
 
@@ -27,7 +26,7 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 AWS_S3_MEDIA_DOMAIN = 'indusmegabucket.s3.amazonaws.com/media/'
 
