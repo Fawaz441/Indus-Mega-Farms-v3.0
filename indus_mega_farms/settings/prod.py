@@ -1,3 +1,4 @@
+import dj_database_url
 from .base import *
 
 import django_heroku
@@ -17,19 +18,15 @@ SECURE_SSL_REDIRECT = True
 WSGI_APPLICATION = 'indus_mega_farms.wsgi.prod.application'
 
 
-
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
 DATABASES = {}
-import dj_database_url 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
-
-
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AWS_S3_MEDIA_DOMAIN = 'indusmegabucket.s3.amazonaws.com/media/'
 
@@ -55,7 +52,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
-django_heroku.settings(locals(),staticfiles=False)
+django_heroku.settings(locals(), staticfiles=False)
 # del DATABASES['default']['OPTIONS']['sslmode']
 
 ADS_URL = 'https://www.indusmegafarms.com/ads/ads/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static_revamp'),
+)
